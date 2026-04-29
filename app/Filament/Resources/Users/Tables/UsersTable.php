@@ -33,6 +33,16 @@ class UsersTable
                 TextColumn::make('two_factor_confirmed_at')
                     ->dateTime()
                     ->sortable(),
+                TextColumn::make('roles.name')
+                    ->label('Role')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'admin' => 'danger',
+                        'psychologist' => 'warning',
+                        'user' => 'success',
+                        default => 'gray',
+                    })
+                    ->searchable(),
             ])
             ->filters([
                 //
