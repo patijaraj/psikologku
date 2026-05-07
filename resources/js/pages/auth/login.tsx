@@ -138,7 +138,7 @@
                                                 tabIndex={1}
                                                 autoComplete="email"
                                                 placeholder="name@example.com"
-                                                className="bg-[#F8FAFC] border-gray-200 focus-visible:ring-[#1464BC] rounded-xl px-4 py-6"
+                                                className="bg-[#F8FAFC] border-gray-200 text-gray-900 placeholder:text-gray-400 caret-[#1464BC] focus-visible:ring-[#1464BC] rounded-xl px-4 py-6"
                                             />
                                             <InputError message={errors.email} />
                                         </div>
@@ -166,7 +166,7 @@
                                                 tabIndex={2}
                                                 autoComplete="current-password"
                                                 placeholder="••••••••"
-                                                className="bg-[#F8FAFC] border-gray-200 focus-visible:ring-[#1464BC] rounded-xl px-4 py-6"
+                                                className="bg-[#F8FAFC] border-gray-200 text-gray-900 placeholder:text-gray-400 caret-[#1464BC] focus-visible:ring-[#1464BC] rounded-xl px-4 py-6"
                                             />
                                             <InputError message={errors.password} />
                                         </div>
