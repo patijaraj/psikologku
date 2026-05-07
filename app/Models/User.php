@@ -15,12 +15,18 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles;
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'google_id', // Tambahan google_id kamu
+    ];
 
     /**
      * Get the attributes that should be cast.
