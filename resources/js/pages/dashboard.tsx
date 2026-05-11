@@ -18,7 +18,6 @@ import {
     Smile,
     SmilePlus,
     Star,
-    Video,
     X,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -38,7 +37,7 @@ const drMarcusImg =
 
 const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: true },
-    { label: 'Therapist', path: '#', active: false },
+    { label: 'Therapist', path: '/therapists', active: false },
     { label: 'Sessions', path: '#', active: false },
     { label: 'Record', path: '#', active: false },
 ];
@@ -323,14 +322,14 @@ export default function Dashboard() {
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <span className="w-fit rounded-full bg-white/20 px-3 py-1 text-[11px] font-bold tracking-wider text-white uppercase backdrop-blur-md">
-                                        Sesi Mendatang
+                                        Obrolan Mendatang
                                     </span>
                                     <h2 className="m-0 text-2xl leading-tight font-bold text-white md:text-[28px]">
                                         Dr. Julianne Moore
                                     </h2>
                                     <div className="flex items-center gap-1.5 text-sm font-medium text-blue-100 md:text-[15px]">
                                         <Calendar className="h-4 w-4" />
-                                        Hari ini, 10:30 (45 mnt)
+                                        Chat hari ini, 10:30 (45 mnt)
                                     </div>
                                 </div>
                             </div>
@@ -339,8 +338,8 @@ export default function Dashboard() {
                                 type="button"
                                 className="relative z-10 flex w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl border-none bg-white px-6 py-3.5 text-[15px] font-bold text-[#1464BC] shadow-sm transition-colors hover:bg-blue-50 md:w-auto"
                             >
-                                <Video className="h-5 w-5" />
-                                Masuk Ruang
+                                <MessageSquare className="h-5 w-5" />
+                                Masuk Obrolan
                             </button>
                         </section>
 
@@ -568,12 +567,12 @@ function TherapistCard({
                         /sesi
                     </span>
                 </div>
-                <button
-                    type="button"
+                <Link
+                    href="/therapists"
                     className="cursor-pointer rounded-[10px] border-none bg-[#f2f4f6] px-5 py-2.5 text-sm font-semibold text-[#191c1e] transition-colors hover:bg-[#e2e4e6]"
                 >
                     Pesan
-                </button>
+                </Link>
             </div>
         </div>
     );
