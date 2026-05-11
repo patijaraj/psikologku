@@ -9,6 +9,13 @@ import { store } from '@/routes/register';
 export default function Register() {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [birthDay, setBirthDay] = useState('');
+    const [birthMonth, setBirthMonth] = useState('');
+    const [birthYear, setBirthYear] = useState('');
+    const birthdate =
+        birthYear && birthMonth && birthDay
+            ? `${birthYear}-${birthMonth}-${birthDay}`
+            : '';
 
     return (
         <div
@@ -65,12 +72,14 @@ export default function Register() {
                                         error={errors.name}
                                     />
 
-                                    <Field
-                                        id="birthdate"
-                                        name="birthdate"
-                                        label="Tanggal Lahir"
-                                        type="date"
-                                        tabIndex={2}
+                                    <BirthdateField
+                                        day={birthDay}
+                                        month={birthMonth}
+                                        year={birthYear}
+                                        value={birthdate}
+                                        onDayChange={setBirthDay}
+                                        onMonthChange={setBirthMonth}
+                                        onYearChange={setBirthYear}
                                         error={errors.birthdate}
                                     />
                                 </div>
@@ -83,7 +92,7 @@ export default function Register() {
                                         type="tel"
                                         placeholder="08123456789"
                                         autoComplete="tel"
-                                        tabIndex={3}
+                                        tabIndex={5}
                                         error={errors.phone}
                                     />
 
@@ -94,7 +103,7 @@ export default function Register() {
                                         type="email"
                                         placeholder="name@example.com"
                                         autoComplete="email"
-                                        tabIndex={4}
+                                        tabIndex={6}
                                         error={errors.email}
                                     />
                                 </div>
@@ -122,7 +131,7 @@ export default function Register() {
                                             placeholder="Minimal 8 karakter"
                                             required
                                             minLength={8}
-                                            tabIndex={5}
+                                            tabIndex={7}
                                             autoComplete="new-password"
                                             className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white/90 px-4 pr-12 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                         />
@@ -183,7 +192,7 @@ export default function Register() {
                                     className="mt-4 flex h-[52px] w-full cursor-pointer items-center justify-center gap-2 rounded-[14px] border-none bg-[#1464BC] text-base font-semibold text-white shadow-[0px_8px_24px_-8px_rgba(0,93,167,0.5)] transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
                                     disabled={processing}
                                     data-test="register-user-button"
-                                    tabIndex={6}
+                                    tabIndex={8}
                                 >
                                     {processing && (
                                         <Spinner className="h-4 w-4" />
@@ -238,6 +247,126 @@ function Field({
                 tabIndex={tabIndex}
                 className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white/90 px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
             />
+            <InputError message={error} />
+        </div>
+    );
+}
+
+const months = [
+    { value: '01', label: 'Jan' },
+    { value: '02', label: 'Feb' },
+    { value: '03', label: 'Mar' },
+    { value: '04', label: 'Apr' },
+    { value: '05', label: 'Mei' },
+    { value: '06', label: 'Jun' },
+    { value: '07', label: 'Jul' },
+    { value: '08', label: 'Agu' },
+    { value: '09', label: 'Sep' },
+    { value: '10', label: 'Okt' },
+    { value: '11', label: 'Nov' },
+    { value: '12', label: 'Des' },
+];
+
+const days = Array.from({ length: 31 }, (_, index) =>
+    String(index + 1).padStart(2, '0'),
+);
+
+const years = Array.from({ length: 90 }, (_, index) =>
+    String(new Date().getFullYear() - index),
+);
+
+function BirthdateField({
+    day,
+    month,
+    year,
+    value,
+    onDayChange,
+    onMonthChange,
+    onYearChange,
+    error,
+}: {
+    day: string;
+    month: string;
+    year: string;
+    value: string;
+    onDayChange: (value: string) => void;
+    onMonthChange: (value: string) => void;
+    onYearChange: (value: string) => void;
+    error?: string;
+}) {
+    const maxDays =
+        month && year ? new Date(Number(year), Number(month), 0).getDate() : 31;
+    const availableDays = days.slice(0, maxDays);
+    const keepValidDay = (nextMonth: string, nextYear: string) => {
+        const nextMaxDays =
+            nextMonth && nextYear
+                ? new Date(Number(nextYear), Number(nextMonth), 0).getDate()
+                : 31;
+
+        if (day && Number(day) > nextMaxDays) {
+            onDayChange('');
+        }
+    };
+
+    return (
+        <div className="flex w-full flex-col gap-1.5 md:w-1/2">
+            <label className="ml-1 text-[13px] font-semibold text-[#191c1e]">
+                Tanggal Lahir
+            </label>
+            <input type="hidden" name="birthdate" value={value} />
+            <div className="grid grid-cols-[0.9fr_1fr_1.1fr] gap-2">
+                <select
+                    aria-label="Tanggal lahir"
+                    required
+                    value={day}
+                    onChange={(event) => onDayChange(event.target.value)}
+                    tabIndex={2}
+                    className="h-12 w-full cursor-pointer rounded-[14px] border border-[#e2e4e6] bg-white/90 px-3 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
+                >
+                    <option value="">Tgl</option>
+                    {availableDays.map((item) => (
+                        <option key={item} value={item}>
+                            {item}
+                        </option>
+                    ))}
+                </select>
+                <select
+                    aria-label="Bulan lahir"
+                    required
+                    value={month}
+                    onChange={(event) => {
+                        keepValidDay(event.target.value, year);
+                        onMonthChange(event.target.value);
+                    }}
+                    tabIndex={3}
+                    className="h-12 w-full cursor-pointer rounded-[14px] border border-[#e2e4e6] bg-white/90 px-3 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
+                >
+                    <option value="">Bln</option>
+                    {months.map((item) => (
+                        <option key={item.value} value={item.value}>
+                            {item.label}
+                        </option>
+                    ))}
+                </select>
+                <select
+                    aria-label="Tahun lahir"
+                    required
+                    value={year}
+                    onChange={(event) => {
+                        keepValidDay(month, event.target.value);
+                        onYearChange(event.target.value);
+                    }}
+                    tabIndex={4}
+                    className="h-12 w-full cursor-pointer rounded-[14px] border border-[#e2e4e6] bg-white/90 px-3 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
+                >
+                    <option value="">Thn</option>
+                    {years.map((item) => (
+                        <option key={item} value={item}>
+                            {item}
+                        </option>
+                    ))}
+                </select>
+            </div>
             <InputError message={error} />
         </div>
     );

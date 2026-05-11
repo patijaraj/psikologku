@@ -1,4 +1,4 @@
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
     AlertCircle,
     Bell,
@@ -9,10 +9,12 @@ import {
     FileText,
     Frown,
     Headphones,
+    LogOut,
     Menu,
     MessageSquare,
     Moon,
     Phone,
+    Settings,
     Smile,
     SmilePlus,
     Star,
@@ -20,6 +22,7 @@ import {
     X,
 } from 'lucide-react';
 import { useState } from 'react';
+import { logout } from '@/routes';
 
 const profileImg =
     'https://images.unsplash.com/photo-1758600587839-56ba05596c69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzbWlsaW5nJTIwYXNpYW4lMjB3b21hbiUyMHBvcnRyYWl0JTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc3ODAzMDI3MXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral';
@@ -65,8 +68,15 @@ function ImageWithFallback({
 
 export default function Dashboard() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const { auth } = usePage().props;
     const firstName = auth.user?.name?.split(' ')[0] ?? 'Sarah';
+    const userName = auth.user?.name ?? 'Sarah';
+    const userEmail = auth.user?.email ?? 'sarah@example.com';
+
+    const handleLogout = () => {
+        router.flushAll();
+    };
 
     return (
         <div className="min-h-screen bg-[#f7f9fb] font-sans">
@@ -128,19 +138,88 @@ export default function Dashboard() {
 
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
 
-                        <button
-                            type="button"
-                            aria-label="Profil"
-                            className="flex shrink-0 cursor-pointer items-center rounded-full border-none bg-transparent p-1 transition-all hover:ring-2 hover:ring-[#e2e4e6]"
-                        >
-                            <div className="size-9 shrink-0 overflow-hidden rounded-full">
-                                <ImageWithFallback
-                                    src={profileImg}
-                                    alt="Profil pengguna"
-                                    className="h-full w-full object-cover"
-                                />
-                            </div>
-                        </button>
+                        <div className="relative">
+                            <button
+                                type="button"
+                                aria-label="Profil"
+                                aria-expanded={isUserMenuOpen}
+                                className={`flex shrink-0 cursor-pointer items-center rounded-full border-none bg-transparent p-1 transition-all ${
+                                    isUserMenuOpen
+                                        ? 'ring-2 ring-[#1464BC]/20'
+                                        : 'hover:ring-2 hover:ring-[#e2e4e6]'
+                                }`}
+                                onClick={() => {
+                                    setIsUserMenuOpen(!isUserMenuOpen);
+                                    setIsMobileMenuOpen(false);
+                                }}
+                            >
+                                <div className="size-9 shrink-0 overflow-hidden rounded-full">
+                                    <ImageWithFallback
+                                        src={profileImg}
+                                        alt="Profil pengguna"
+                                        className="h-full w-full object-cover"
+                                    />
+                                </div>
+                            </button>
+
+                            {isUserMenuOpen && (
+                                <>
+                                    <button
+                                        type="button"
+                                        aria-label="Tutup menu profil"
+                                        className="fixed inset-0 z-40 cursor-default border-none bg-transparent"
+                                        onClick={() => setIsUserMenuOpen(false)}
+                                    />
+                                    <div className="absolute top-[52px] right-0 z-50 w-[260px] overflow-hidden rounded-3xl border border-[#e2e4e6] bg-white p-2 shadow-[0px_20px_48px_-18px_rgba(25,28,30,0.35)]">
+                                        <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
+                                            <div className="size-11 shrink-0 overflow-hidden rounded-full">
+                                                <ImageWithFallback
+                                                    src={profileImg}
+                                                    alt="Profil pengguna"
+                                                    className="h-full w-full object-cover"
+                                                />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="m-0 truncate text-sm font-bold text-[#191c1e]">
+                                                    {userName}
+                                                </p>
+                                                <p className="m-0 mt-0.5 truncate text-xs font-medium text-[#717783]">
+                                                    {userEmail}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="my-2 h-px bg-[#f2f4f6]" />
+
+                                        <button
+                                            type="button"
+                                            className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#191c1e] transition-colors hover:bg-[#f7f9fb]"
+                                            onClick={() =>
+                                                setIsUserMenuOpen(false)
+                                            }
+                                        >
+                                            <span className="flex size-9 items-center justify-center rounded-xl bg-[#eef5fe] text-[#1464BC]">
+                                                <Settings className="h-5 w-5" />
+                                            </span>
+                                            Settings
+                                        </button>
+
+                                        <Link
+                                            href={logout()}
+                                            as="button"
+                                            className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#b02a2a] transition-colors hover:bg-[#feecec]"
+                                            onClick={handleLogout}
+                                            data-test="logout-button"
+                                        >
+                                            <span className="flex size-9 items-center justify-center rounded-xl bg-[#feecec] text-[#b02a2a]">
+                                                <LogOut className="h-5 w-5" />
+                                            </span>
+                                            Log out
+                                        </Link>
+                                    </div>
+                                </>
+                            )}
+                        </div>
 
                         <button
                             type="button"
