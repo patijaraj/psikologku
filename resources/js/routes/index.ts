@@ -378,3 +378,165 @@ dashboardForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> =
 })
 
 dashboard.form = dashboardForm
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/therapists'
+*/
+export const therapists = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: therapists.url(options),
+    method: 'get',
+})
+
+therapists.definition = {
+    methods: ["get","head"],
+    url: '/therapists',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/therapists'
+*/
+therapists.url = (options?: RouteQueryOptions) => {
+    return therapists.definition.url + queryParams(options)
+}
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/therapists'
+*/
+therapists.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: therapists.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/therapists'
+*/
+therapists.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: therapists.url(options),
+    method: 'head',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/therapists'
+*/
+const therapistsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: therapists.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/therapists'
+*/
+therapistsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: therapists.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/therapists'
+*/
+therapistsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: therapists.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+therapists.form = therapistsForm
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/payment'
+*/
+export const payment = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: payment.url(options),
+    method: 'get',
+})
+
+payment.definition = {
+    methods: ["get","head"],
+    url: '/payment',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/payment'
+*/
+payment.url = (options?: RouteQueryOptions) => {
+    return payment.definition.url + queryParams(options)
+}
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/payment'
+*/
+payment.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: payment.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/payment'
+*/
+payment.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: payment.url(options),
+    method: 'head',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/payment'
+*/
+const paymentForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: payment.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/payment'
+*/
+paymentForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: payment.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/payment'
+*/
+paymentForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: payment.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+payment.form = paymentForm
