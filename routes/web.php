@@ -23,6 +23,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
     Route::inertia('therapists', 'therapists')->name('therapists');
+    Route::inertia('sessions', 'sessions')->name('sessions');
     Route::inertia('payment', 'payment')->name('payment');
 });
 

@@ -26,7 +26,7 @@ const drElenaImg =
 const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: false },
     { label: 'Therapist', path: '/therapists', active: false },
-    { label: 'Sessions', path: '/payment', active: true },
+    { label: 'Sessions', path: '/sessions', active: false },
     { label: 'Record', path: '#', active: false },
 ];
 

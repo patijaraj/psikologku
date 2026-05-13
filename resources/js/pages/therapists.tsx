@@ -29,7 +29,7 @@ const drElenaImg =
 const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: false },
     { label: 'Therapist', path: '/therapists', active: true },
-    { label: 'Sessions', path: '#', active: false },
+    { label: 'Sessions', path: '/sessions', active: false },
     { label: 'Record', path: '#', active: false },
 ];
 
