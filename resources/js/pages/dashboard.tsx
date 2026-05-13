@@ -21,10 +21,8 @@ import {
     X,
 } from 'lucide-react';
 import { useState } from 'react';
+import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
-
-const profileImg =
-    'https://images.unsplash.com/photo-1758600587839-56ba05596c69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzbWlsaW5nJTIwYXNpYW4lMjB3b21hbiUyMHBvcnRyYWl0JTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc3ODAzMDI3MXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral';
 
 const drJulianneImg =
     'https://images.unsplash.com/photo-1721674098745-7d1b76e0fc02?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBkb2N0b3IlMjBtYXR1cmUlMjB3b21hbiUyMHBvcnRyYWl0JTIwd2hpdGUlMjBiYWNrZ3JvdW5kfGVufDF8fHx8MTc3ODUxMzUwM3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral';
@@ -152,13 +150,10 @@ export default function Dashboard() {
                                     setIsMobileMenuOpen(false);
                                 }}
                             >
-                                <div className="size-9 shrink-0 overflow-hidden rounded-full">
-                                    <ImageWithFallback
-                                        src={profileImg}
-                                        alt="Profil pengguna"
-                                        className="h-full w-full object-cover"
-                                    />
-                                </div>
+                                <InitialsAvatar
+                                    name={userName}
+                                    className="size-9"
+                                />
                             </button>
 
                             {isUserMenuOpen && (
@@ -171,13 +166,10 @@ export default function Dashboard() {
                                     />
                                     <div className="absolute top-[52px] right-0 z-50 w-[260px] overflow-hidden rounded-3xl border border-[#e2e4e6] bg-white p-2 shadow-[0px_20px_48px_-18px_rgba(25,28,30,0.35)]">
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
-                                            <div className="size-11 shrink-0 overflow-hidden rounded-full">
-                                                <ImageWithFallback
-                                                    src={profileImg}
-                                                    alt="Profil pengguna"
-                                                    className="h-full w-full object-cover"
-                                                />
-                                            </div>
+                                            <InitialsAvatar
+                                                name={userName}
+                                                className="size-11 text-base"
+                                            />
                                             <div className="min-w-0">
                                                 <p className="m-0 truncate text-sm font-bold text-[#191c1e]">
                                                     {userName}

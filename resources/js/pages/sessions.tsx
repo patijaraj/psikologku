@@ -15,10 +15,8 @@ import {
     X,
 } from 'lucide-react';
 import { useState } from 'react';
+import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
-
-const profileImg =
-    'https://images.unsplash.com/photo-1758600587839-56ba05596c69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBhc2lhbiUyMHdvbWFufGVufDF8fHx8MTc3ODAzMDI3MXww&ixlib=rb-4.1.0&q=80&w=1080';
 
 const drElenaImg =
     'https://images.unsplash.com/photo-1659353887012-680771c1b497?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHhpc3BhbmljJTIwZmVtYWxlJTIwZG9jdG9yJTIwcG9ydHJhaXR8ZW58MXx8fHwxNzc4NTEzNTA3fDA&ixlib=rb-4.1.0&q=80&w=1080';
@@ -175,13 +173,10 @@ export default function Sessions() {
                                     setIsMobileMenuOpen(false);
                                 }}
                             >
-                                <div className="size-9 shrink-0 overflow-hidden rounded-full">
-                                    <ImageWithFallback
-                                        src={profileImg}
-                                        alt="Profil pengguna"
-                                        className="h-full w-full object-cover"
-                                    />
-                                </div>
+                                <InitialsAvatar
+                                    name={userName}
+                                    className="size-9"
+                                />
                             </button>
 
                             {isUserMenuOpen && (
@@ -194,13 +189,10 @@ export default function Sessions() {
                                     />
                                     <div className="absolute top-[52px] right-0 z-50 w-[260px] overflow-hidden rounded-3xl border border-[#e2e4e6] bg-white p-2 shadow-[0px_20px_48px_-18px_rgba(25,28,30,0.35)]">
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
-                                            <div className="size-11 shrink-0 overflow-hidden rounded-full">
-                                                <ImageWithFallback
-                                                    src={profileImg}
-                                                    alt="Profil pengguna"
-                                                    className="h-full w-full object-cover"
-                                                />
-                                            </div>
+                                            <InitialsAvatar
+                                                name={userName}
+                                                className="size-11 text-base"
+                                            />
                                             <div className="min-w-0">
                                                 <p className="m-0 truncate text-sm font-bold text-[#191c1e]">
                                                     {userName}

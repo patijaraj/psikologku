@@ -1,4 +1,4 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import {
     ArrowLeft,
     ArrowRight,
@@ -16,9 +16,7 @@ import {
     X,
 } from 'lucide-react';
 import { useState } from 'react';
-
-const profileImg =
-    'https://images.unsplash.com/photo-1758600587839-56ba05596c69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBhc2lhbiUyMHdvbWFufGVufDF8fHx8MTc3ODAzMDI3MXww&ixlib=rb-4.1.0&q=80&w=1080';
+import { InitialsAvatar } from '@/components/initials-avatar';
 
 const drElenaImg =
     'https://images.unsplash.com/photo-1659353887012-680771c1b497?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHhpc3BhbmljJTIwZmVtYWxlJTIwZG9jdG9yJTIwcG9ydHJhaXR8ZW58MXx8fHwxNzc4NTEzNTA3fDA&ixlib=rb-4.1.0&q=80&w=1080';
@@ -69,6 +67,8 @@ function ImageWithFallback({
 export default function Payment() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState('card');
+    const { auth } = usePage().props;
+    const userName = auth.user?.name ?? 'Sarah';
 
     return (
         <div className="min-h-screen bg-[#f7f9fb] pb-20 font-sans">
@@ -133,13 +133,10 @@ export default function Payment() {
                             aria-label="Profil"
                             className="flex shrink-0 cursor-pointer items-center rounded-full border-none bg-transparent p-1 transition-all hover:ring-2 hover:ring-[#e2e4e6]"
                         >
-                            <div className="size-9 shrink-0 overflow-hidden rounded-full">
-                                <ImageWithFallback
-                                    src={profileImg}
-                                    alt="Profil pengguna"
-                                    className="h-full w-full object-cover"
-                                />
-                            </div>
+                            <InitialsAvatar
+                                name={userName}
+                                className="size-9"
+                            />
                         </button>
                         <button
                             type="button"

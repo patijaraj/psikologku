@@ -1,6 +1,7 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { Bell, Settings } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { InitialsAvatar } from '@/components/initials-avatar';
 import type { BreadcrumbItem } from '@/types';
 
 type Props = {
@@ -8,6 +9,9 @@ type Props = {
 };
 
 export function AppHeader({ breadcrumbs: _breadcrumbs = [] }: Props) {
+    const { auth } = usePage().props;
+    const userName = auth.user?.name ?? 'User';
+
     return (
         <header className="flex h-16 w-full items-center justify-between border-b border-gray-200 bg-white px-4 font-sans md:px-8">
             {/* Bagian Kiri: Logo */}
@@ -47,17 +51,12 @@ export function AppHeader({ breadcrumbs: _breadcrumbs = [] }: Props) {
                     <Settings className="h-5 w-5" />
                 </button>
 
-                {/* Foto Profil Avatar */}
                 <button
                     type="button"
                     aria-label="Profil"
-                    className="h-9 w-9 overflow-hidden rounded-full border border-gray-200 transition-all hover:ring-2 hover:ring-[#1E70B9] hover:ring-offset-2"
+                    className="rounded-full border border-gray-200 transition-all hover:ring-2 hover:ring-[#1E70B9] hover:ring-offset-2"
                 >
-                    <img
-                        src="https://i.pravatar.cc/150?img=32"
-                        alt="Profile Avatar"
-                        className="h-full w-full object-cover"
-                    />
+                    <InitialsAvatar name={userName} className="size-9" />
                 </button>
             </div>
         </header>
