@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
+
 class UsersTable
 {
     public static function configure(Table $table): Table
@@ -21,7 +22,8 @@ class UsersTable
                     ->searchable(),
                 TextColumn::make('email_verified_at')
                     ->dateTime()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -32,6 +34,15 @@ class UsersTable
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('two_factor_confirmed_at')
                     ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('google_id')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('phone')
+                    ->searchable(),
+                TextColumn::make('birthdate')
+                    ->date()
                     ->sortable(),
                 TextColumn::make('roles.name')
                     ->label('Role')
