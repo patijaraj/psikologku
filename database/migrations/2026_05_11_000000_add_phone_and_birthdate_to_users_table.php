@@ -6,15 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('phone', 25)->nullable()->after('email');
-            $table->date('birthdate')->nullable()->after('phone');
-        });
+        // Cek dan tambah kolom phone jika belum ada
+        if (! Schema::hasColumn('users', 'phone')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('phone', 25)->nullable();
+            });
+        }
+
+        // Cek dan tambah kolom birthdate jika belum ada
+        if (! Schema::hasColumn('users', 'birthdate')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->date('birthdate')->nullable();
+            });
+        }
     }
 
     /**

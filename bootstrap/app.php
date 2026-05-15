@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\EnsureProfileIsComplete;
+use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -16,6 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
+
+        $middleware->validateCsrfTokens(except: [
+            'midtrans-callback',
+        ]);
 
         $middleware->web(append: [
             HandleAppearance::class,

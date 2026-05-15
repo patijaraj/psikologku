@@ -322,86 +322,6 @@ Controller21ef1e5e5c46d390ebe587629f10e63a.form = Controller21ef1e5e5c46d390ebe5
 /**
 * @see \Inertia\Controller::__invoke
 * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/payment'
-*/
-const Controller629c1787939cb8c983afbe33c4551b45 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: Controller629c1787939cb8c983afbe33c4551b45.url(options),
-    method: 'get',
-})
-
-Controller629c1787939cb8c983afbe33c4551b45.definition = {
-    methods: ["get","head"],
-    url: '/payment',
-} satisfies RouteDefinition<["get","head"]>
-
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/payment'
-*/
-Controller629c1787939cb8c983afbe33c4551b45.url = (options?: RouteQueryOptions) => {
-    return Controller629c1787939cb8c983afbe33c4551b45.definition.url + queryParams(options)
-}
-
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/payment'
-*/
-Controller629c1787939cb8c983afbe33c4551b45.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: Controller629c1787939cb8c983afbe33c4551b45.url(options),
-    method: 'get',
-})
-
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/payment'
-*/
-Controller629c1787939cb8c983afbe33c4551b45.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: Controller629c1787939cb8c983afbe33c4551b45.url(options),
-    method: 'head',
-})
-
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/payment'
-*/
-const Controller629c1787939cb8c983afbe33c4551b45Form = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: Controller629c1787939cb8c983afbe33c4551b45.url(options),
-    method: 'get',
-})
-
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/payment'
-*/
-Controller629c1787939cb8c983afbe33c4551b45Form.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: Controller629c1787939cb8c983afbe33c4551b45.url(options),
-    method: 'get',
-})
-
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/payment'
-*/
-Controller629c1787939cb8c983afbe33c4551b45Form.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: Controller629c1787939cb8c983afbe33c4551b45.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-Controller629c1787939cb8c983afbe33c4551b45.form = Controller629c1787939cb8c983afbe33c4551b45Form
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
 * @route '/settings/appearance'
 */
 const Controllere19ee86e9cf603ce1a59a1ec5d21dec5 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -485,7 +405,6 @@ const Controller = {
     '/dashboard': Controller42a740574ecbfbac32f8cc353fc32db9,
     '/therapists': Controller8c7bf97fade624caa481943bde421a79,
     '/sessions': Controller21ef1e5e5c46d390ebe587629f10e63a,
-    '/payment': Controller629c1787939cb8c983afbe33c4551b45,
     '/settings/appearance': Controllere19ee86e9cf603ce1a59a1ec5d21dec5,
 }
 
