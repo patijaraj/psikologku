@@ -1,5 +1,6 @@
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
+    ArrowLeft,
     ArrowRight,
     Bell,
     Calendar,
@@ -11,18 +12,31 @@ import {
     LogOut,
     Menu,
     MessageSquare,
+    Search,
     Settings,
+    ShieldQuestion,
     Smile,
-    Star,
     Wallet,
     X,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
 
-const drElenaImg =
-    'https://images.unsplash.com/photo-1659353887012-680771c1b497?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHhpc3BhbmljJTIwZmVtYWxlJTIwZG9jdG9yJTIwcG9ydHJhaXR8ZW58MXx8fHwxNzc4NTEzNTA3fDA&ixlib=rb-4.1.0&q=80&w=1080';
+type Therapist = {
+    id: number;
+    name: string;
+    email?: string | null;
+    str_number?: string | null;
+    specialization?: string | null;
+    price: number;
+    is_online: boolean;
+};
+
+type TherapistsProps = {
+    therapists?: Therapist[];
+    selectedTherapist?: Therapist | null;
+};
 
 const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: false },
@@ -67,6 +81,20 @@ const afternoonSlots = [
     { time: '17:00', label: '17:00 WIB', disabled: false },
 ];
 
+const portraitImages = [
+    'https://images.unsplash.com/photo-1659353887012-680771c1b497?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080',
+    'https://images.unsplash.com/photo-1721674098745-7d1b76e0fc02?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080',
+    'https://images.unsplash.com/photo-1642975967602-653d378f3b5b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080',
+];
+
+function formatRupiah(amount: number) {
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        maximumFractionDigits: 0,
+    }).format(amount);
+}
+
 function ImageWithFallback({
     src,
     alt,
@@ -90,15 +118,50 @@ function ImageWithFallback({
     );
 }
 
-export default function Therapists() {
+export default function Therapists({
+    therapists = [],
+    selectedTherapist = null,
+}: TherapistsProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState(5);
     const [selectedTime, setSelectedTime] = useState('14:00');
+    const [search, setSearch] = useState('');
+    const [selectedSpecialization, setSelectedSpecialization] = useState('all');
     const { auth } = usePage().props;
-    const endHour = Number(selectedTime.split(':')[0]) + 1;
     const userName = auth.user?.name ?? 'Sarah';
     const userEmail = auth.user?.email ?? 'sarah@example.com';
+    const endHour = Number(selectedTime.split(':')[0]) + 1;
+
+    const specializations = useMemo(
+        () =>
+            Array.from(
+                new Set(
+                    therapists
+                        .map((therapist) => therapist.specialization?.trim())
+                        .filter((specialization): specialization is string =>
+                            Boolean(specialization),
+                        ),
+                ),
+            ),
+        [therapists],
+    );
+
+    const filteredTherapists = useMemo(() => {
+        const query = search.trim().toLowerCase();
+
+        return therapists.filter((therapist) => {
+            const matchesSearch =
+                !query ||
+                therapist.name.toLowerCase().includes(query) ||
+                (therapist.specialization ?? '').toLowerCase().includes(query);
+            const matchesSpecialization =
+                selectedSpecialization === 'all' ||
+                therapist.specialization === selectedSpecialization;
+
+            return matchesSearch && matchesSpecialization;
+        });
+    }, [search, selectedSpecialization, therapists]);
 
     const handleLogout = () => {
         router.flushAll();
@@ -106,7 +169,11 @@ export default function Therapists() {
 
     return (
         <div className="min-h-screen bg-[#f7f9fb] font-sans">
-            <Head title="Book Therapist" />
+            <Head
+                title={
+                    selectedTherapist ? 'Jadwalkan Sesi' : 'Daftar Therapist'
+                }
+            />
 
             <nav className="sticky top-0 z-50 border-b border-[#e2e4e6] bg-white">
                 <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between px-4 sm:px-8">
@@ -274,101 +341,388 @@ export default function Therapists() {
                 )}
             </nav>
 
-            <main className="mx-auto flex max-w-[1280px] flex-col gap-8 px-4 py-8 sm:px-8 md:py-12">
-                <section className="flex flex-col gap-2">
-                    <h1 className="m-0 text-[32px] font-black tracking-tight text-[#191c1e] md:text-4xl">
-                        Jadwalkan sesi Anda
-                    </h1>
-                    <p className="m-0 text-base font-medium text-[#717783]">
-                        Pilih waktu terbaik untuk perjalanan kesehatan mental
-                        Anda.
-                    </p>
-                </section>
-
-                <div className="flex flex-col items-start gap-8 lg:flex-row">
-                    <div className="flex w-full flex-col gap-6 lg:flex-[2]">
-                        <DatePickerCard
-                            selectedDate={selectedDate}
-                            onSelectDate={setSelectedDate}
-                        />
-
-                        <TimePickerCard
-                            selectedTime={selectedTime}
-                            onSelectTime={setSelectedTime}
-                        />
-                    </div>
-
-                    <aside className="flex w-full flex-col gap-6 lg:max-w-[400px] lg:flex-1">
-                        <TherapistSummaryCard />
-
-                        <div className="rounded-3xl border border-[#e2e4e6]/50 bg-[#f2f4f6] p-6">
-                            <h3 className="m-0 mb-6 text-lg font-black text-[#191c1e]">
-                                Ringkasan Pemesanan
-                            </h3>
-
-                            <div className="mb-8 flex flex-col gap-5">
-                                <SummaryItem
-                                    icon={<Calendar className="h-4 w-4" />}
-                                    label="Tanggal"
-                                    value={`${selectedDate} Oktober 2026`}
-                                />
-                                <SummaryItem
-                                    icon={<Clock className="h-4 w-4" />}
-                                    label="Waktu"
-                                    value={`${selectedTime} - ${String(endHour).padStart(2, '0')}:00 WIB`}
-                                />
-                                <div className="flex gap-4">
-                                    <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white text-[#1464BC] shadow-sm">
-                                        <Wallet className="h-4 w-4" />
-                                    </div>
-                                    <div className="flex flex-1 items-end justify-between gap-4">
-                                        <div>
-                                            <div className="mb-1 text-[11px] font-bold tracking-wider text-[#717783] uppercase">
-                                                Biaya Konsultasi
-                                            </div>
-                                            <div className="text-xl font-bold text-[#191c1e]">
-                                                Rp 250.000
-                                            </div>
-                                        </div>
-                                        <div className="mb-1 rounded-md bg-[#e2e4e6] px-2 py-1 text-[11px] font-medium text-[#717783]">
-                                            Per sesi
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <Link
-                                href="/payment"
-                                className="mb-4 flex h-[52px] w-full cursor-pointer items-center justify-center gap-2 rounded-[14px] border-none bg-[#1464BC] text-base font-semibold text-white shadow-[0_8px_20px_-4px_rgba(0,93,167,0.4)] transition-colors hover:bg-[#1053A0]"
-                            >
-                                Konfirmasi Pemesanan
-                                <ArrowRight className="h-4 w-4" />
-                            </Link>
-
-                            <div className="flex items-center justify-center gap-2 text-[#717783]">
-                                <Lock className="h-3.5 w-3.5" />
-                                <span className="text-xs font-medium">
-                                    Pembayaran aman & terenkripsi
-                                </span>
-                            </div>
-                        </div>
-
-                        <div className="flex items-start gap-3 rounded-2xl border border-[#1464BC]/10 bg-[#e1eef9] p-4">
-                            <HelpCircle className="mt-0.5 h-5 w-5 shrink-0 text-[#1464BC]" />
-                            <p className="m-0 text-[13px] leading-normal font-medium text-[#414751]">
-                                Butuh bantuan dengan pemesanan Anda? Tim
-                                dukungan kami tersedia 24/7 untuk bantuan
-                                teknis.
-                            </p>
-                        </div>
-                    </aside>
-                </div>
-            </main>
+            {selectedTherapist ? (
+                <ScheduleView
+                    therapist={selectedTherapist}
+                    selectedDate={selectedDate}
+                    selectedTime={selectedTime}
+                    endHour={endHour}
+                    onSelectDate={setSelectedDate}
+                    onSelectTime={setSelectedTime}
+                />
+            ) : (
+                <ListingView
+                    therapists={filteredTherapists}
+                    allTherapistsCount={therapists.length}
+                    search={search}
+                    selectedSpecialization={selectedSpecialization}
+                    specializations={specializations}
+                    onSearch={setSearch}
+                    onSelectSpecialization={setSelectedSpecialization}
+                />
+            )}
         </div>
     );
 }
 
 Therapists.layout = {};
+
+function ListingView({
+    therapists,
+    allTherapistsCount,
+    search,
+    selectedSpecialization,
+    specializations,
+    onSearch,
+    onSelectSpecialization,
+}: {
+    therapists: Therapist[];
+    allTherapistsCount: number;
+    search: string;
+    selectedSpecialization: string;
+    specializations: string[];
+    onSearch: (value: string) => void;
+    onSelectSpecialization: (value: string) => void;
+}) {
+    return (
+        <main className="mx-auto grid max-w-[1280px] grid-cols-1 gap-8 px-4 py-8 sm:px-8 md:py-10 lg:grid-cols-[280px_1fr]">
+            <aside className="flex flex-col gap-8 lg:sticky lg:top-[104px] lg:h-[calc(100vh-128px)]">
+                <section>
+                    <h2 className="m-0 mb-6 text-lg font-black text-[#191c1e]">
+                        Filter
+                    </h2>
+                    <div className="mb-4 text-xs font-bold tracking-widest text-[#717783] uppercase">
+                        Spesialisasi
+                    </div>
+                    <div className="flex flex-col gap-3">
+                        <FilterButton
+                            active={selectedSpecialization === 'all'}
+                            label="Semua psikolog"
+                            onClick={() => onSelectSpecialization('all')}
+                        />
+                        {specializations.map((specialization) => (
+                            <FilterButton
+                                key={specialization}
+                                active={
+                                    selectedSpecialization === specialization
+                                }
+                                label={specialization}
+                                onClick={() =>
+                                    onSelectSpecialization(specialization)
+                                }
+                            />
+                        ))}
+                    </div>
+                </section>
+
+                <section className="mt-auto rounded-2xl bg-[#dbeafe] p-6">
+                    <h3 className="m-0 mb-2 text-base font-black text-[#0b4f8f]">
+                        Butuh bantuan cepat?
+                    </h3>
+                    <p className="m-0 mb-5 text-sm leading-relaxed font-medium text-[#0b4f8f]">
+                        Hubungi konselor darurat untuk bantuan awal.
+                    </p>
+                    <button
+                        type="button"
+                        className="h-12 w-full cursor-pointer rounded-xl border-none bg-[#0b4f8f] text-sm font-bold text-white transition-colors hover:bg-[#083d70]"
+                    >
+                        Contact Hotline
+                    </button>
+                </section>
+            </aside>
+
+            <section className="flex flex-col gap-8">
+                <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <p className="m-0 mb-3 text-sm font-bold tracking-widest text-[#1464BC] uppercase">
+                            {allTherapistsCount} therapist tersedia
+                        </p>
+                        <h1 className="m-0 max-w-[620px] text-[42px] leading-[0.95] font-black tracking-tight text-[#191c1e] md:text-[56px]">
+                            Temukan psikolog yang tepat
+                        </h1>
+                        <p className="m-0 mt-5 max-w-[620px] text-lg leading-relaxed font-medium text-[#414751]">
+                            Pilih psikolog dari database berdasarkan
+                            spesialisasi, harga sesi, dan status online.
+                        </p>
+                    </div>
+
+                    <div className="relative w-full lg:max-w-[300px]">
+                        <Search className="absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2 text-[#717783]" />
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={(event) => onSearch(event.target.value)}
+                            placeholder="Cari nama atau spesialisasi..."
+                            className="h-[74px] w-full rounded-2xl border border-transparent bg-white pr-5 pl-12 text-[15px] font-medium text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#717783] focus:border-[#1464BC] focus:ring-4 focus:ring-[#1464BC]/10"
+                        />
+                    </div>
+                </div>
+
+                {therapists.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+                        {therapists.map((therapist, index) => (
+                            <TherapistCard
+                                key={therapist.id}
+                                therapist={therapist}
+                                image={
+                                    portraitImages[
+                                        index % portraitImages.length
+                                    ]
+                                }
+                            />
+                        ))}
+                        <ReferralCard />
+                    </div>
+                ) : (
+                    <div className="flex min-h-[320px] flex-col items-center justify-center rounded-3xl border border-dashed border-[#c1c7d3] bg-white p-8 text-center">
+                        <ShieldQuestion className="mb-4 h-10 w-10 text-[#717783]" />
+                        <h2 className="m-0 text-xl font-black text-[#191c1e]">
+                            Belum ada therapist yang cocok
+                        </h2>
+                        <p className="m-0 mt-2 max-w-[420px] text-sm font-medium text-[#717783]">
+                            Coba ubah kata kunci atau filter spesialisasi.
+                        </p>
+                    </div>
+                )}
+            </section>
+        </main>
+    );
+}
+
+function FilterButton({
+    active,
+    label,
+    onClick,
+}: {
+    active: boolean;
+    label: string;
+    onClick: () => void;
+}) {
+    return (
+        <button
+            type="button"
+            className="flex cursor-pointer items-center gap-3 border-none bg-transparent p-0 text-left"
+            onClick={onClick}
+        >
+            <span
+                className={`flex size-5 items-center justify-center rounded border text-white ${
+                    active
+                        ? 'border-[#1464BC] bg-[#1464BC]'
+                        : 'border-[#c1c7d3] bg-white'
+                }`}
+            >
+                {active && <span className="size-2 rounded-full bg-white" />}
+            </span>
+            <span
+                className={`text-[15px] font-semibold ${
+                    active ? 'text-[#1464BC]' : 'text-[#414751]'
+                }`}
+            >
+                {label}
+            </span>
+        </button>
+    );
+}
+
+function TherapistCard({
+    therapist,
+    image,
+}: {
+    therapist: Therapist;
+    image: string;
+}) {
+    return (
+        <article className="flex min-h-[466px] flex-col rounded-2xl bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_-24px_rgba(25,28,30,0.45)]">
+            <div className="relative mb-6 aspect-[4/3] overflow-hidden rounded-xl bg-[#e1eef9]">
+                <ImageWithFallback
+                    src={image}
+                    alt={therapist.name}
+                    className="h-full w-full object-cover"
+                />
+                <span
+                    className={`absolute top-4 right-4 rounded-full px-3 py-1 text-xs font-bold shadow-sm ${
+                        therapist.is_online
+                            ? 'bg-[#dcfce7] text-[#166534]'
+                            : 'bg-white text-[#717783]'
+                    }`}
+                >
+                    {therapist.is_online ? 'Online' : 'Offline'}
+                </span>
+            </div>
+
+            <div className="mb-4 flex items-start justify-between gap-4">
+                <h2 className="m-0 text-[22px] leading-tight font-black text-[#191c1e]">
+                    {therapist.name}
+                </h2>
+                <div className="shrink-0 text-right">
+                    <span className="text-lg font-black text-[#1464BC]">
+                        {formatRupiah(therapist.price)}
+                    </span>
+                    <div className="text-xs font-medium text-[#717783]">
+                        per sesi
+                    </div>
+                </div>
+            </div>
+
+            {therapist.specialization && (
+                <span className="mb-4 w-fit rounded-full bg-[#eef5fe] px-3 py-1 text-xs font-bold text-[#0b4f8f]">
+                    {therapist.specialization}
+                </span>
+            )}
+
+            <div className="mb-6 flex flex-col gap-2 text-sm font-medium text-[#717783]">
+                <span>{therapist.str_number ?? 'STR belum diisi'}</span>
+                <span>Ulasan belum tersedia</span>
+            </div>
+
+            <Link
+                href={`/therapists/${therapist.id}`}
+                className="mt-auto flex h-14 items-center justify-center rounded-xl bg-[#1464BC] text-base font-bold text-white shadow-[0_8px_20px_-6px_rgba(0,93,167,0.55)] transition-colors hover:bg-[#1053A0]"
+            >
+                Book Now
+            </Link>
+        </article>
+    );
+}
+
+function ReferralCard() {
+    return (
+        <article className="flex min-h-[466px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#d8dde5] bg-white p-8 text-center">
+            <span className="mb-6 flex size-16 items-center justify-center rounded-full bg-[#f2f4f6] text-[#717783]">
+                <ShieldQuestion className="h-8 w-8" />
+            </span>
+            <h2 className="m-0 text-xl font-black text-[#191c1e]">
+                Belum menemukan yang cocok?
+            </h2>
+            <p className="m-0 mt-3 text-sm leading-relaxed font-medium text-[#717783]">
+                Ceritakan kebutuhan Anda dan tim kami akan membantu memilih
+                therapist yang sesuai.
+            </p>
+            <button
+                type="button"
+                className="mt-8 h-14 w-full cursor-pointer rounded-xl border-2 border-[#1464BC] bg-white text-base font-bold text-[#1464BC] transition-colors hover:bg-[#eef5fe]"
+            >
+                Get a Referral
+            </button>
+        </article>
+    );
+}
+
+function ScheduleView({
+    therapist,
+    selectedDate,
+    selectedTime,
+    endHour,
+    onSelectDate,
+    onSelectTime,
+}: {
+    therapist: Therapist;
+    selectedDate: number;
+    selectedTime: string;
+    endHour: number;
+    onSelectDate: (date: number) => void;
+    onSelectTime: (time: string) => void;
+}) {
+    return (
+        <main className="mx-auto flex max-w-[1280px] flex-col gap-8 px-4 py-8 sm:px-8 md:py-12">
+            <section className="flex flex-col gap-4">
+                <Link
+                    href="/therapists"
+                    className="flex w-fit items-center gap-2 text-[15px] font-semibold text-[#1464BC] transition-colors hover:text-[#1053A0]"
+                >
+                    <ArrowLeft className="h-4 w-4" />
+                    Kembali ke daftar therapist
+                </Link>
+                <div>
+                    <h1 className="m-0 text-[32px] font-black tracking-tight text-[#191c1e] md:text-4xl">
+                        Jadwalkan sesi Anda
+                    </h1>
+                    <p className="m-0 mt-2 text-base font-medium text-[#717783]">
+                        Pilih waktu terbaik untuk sesi bersama {therapist.name}.
+                    </p>
+                </div>
+            </section>
+
+            <div className="flex flex-col items-start gap-8 lg:flex-row">
+                <div className="flex w-full flex-col gap-6 lg:flex-[2]">
+                    <DatePickerCard
+                        selectedDate={selectedDate}
+                        onSelectDate={onSelectDate}
+                    />
+
+                    <TimePickerCard
+                        selectedTime={selectedTime}
+                        onSelectTime={onSelectTime}
+                    />
+                </div>
+
+                <aside className="flex w-full flex-col gap-6 lg:max-w-[400px] lg:flex-1">
+                    <TherapistSummaryCard therapist={therapist} />
+
+                    <div className="rounded-3xl border border-[#e2e4e6]/50 bg-[#f2f4f6] p-6">
+                        <h3 className="m-0 mb-6 text-lg font-black text-[#191c1e]">
+                            Ringkasan Pemesanan
+                        </h3>
+
+                        <div className="mb-8 flex flex-col gap-5">
+                            <SummaryItem
+                                icon={<Calendar className="h-4 w-4" />}
+                                label="Tanggal"
+                                value={`${selectedDate} Oktober 2026`}
+                            />
+                            <SummaryItem
+                                icon={<Clock className="h-4 w-4" />}
+                                label="Waktu"
+                                value={`${selectedTime} - ${String(endHour).padStart(2, '0')}:00 WIB`}
+                            />
+                            <div className="flex gap-4">
+                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white text-[#1464BC] shadow-sm">
+                                    <Wallet className="h-4 w-4" />
+                                </div>
+                                <div className="flex flex-1 items-end justify-between gap-4">
+                                    <div>
+                                        <div className="mb-1 text-[11px] font-bold tracking-wider text-[#717783] uppercase">
+                                            Biaya Konsultasi
+                                        </div>
+                                        <div className="text-xl font-bold text-[#191c1e]">
+                                            {formatRupiah(therapist.price)}
+                                        </div>
+                                    </div>
+                                    <div className="mb-1 rounded-md bg-[#e2e4e6] px-2 py-1 text-[11px] font-medium text-[#717783]">
+                                        Per sesi
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <Link
+                            href={`/payment?psychologist_id=${therapist.id}`}
+                            className="mb-4 flex h-[52px] w-full cursor-pointer items-center justify-center gap-2 rounded-[14px] border-none bg-[#1464BC] text-base font-semibold text-white shadow-[0_8px_20px_-4px_rgba(0,93,167,0.4)] transition-colors hover:bg-[#1053A0]"
+                        >
+                            Konfirmasi Pemesanan
+                            <ArrowRight className="h-4 w-4" />
+                        </Link>
+
+                        <div className="flex items-center justify-center gap-2 text-[#717783]">
+                            <Lock className="h-3.5 w-3.5" />
+                            <span className="text-xs font-medium">
+                                Pembayaran aman & terenkripsi
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="flex items-start gap-3 rounded-2xl border border-[#1464BC]/10 bg-[#e1eef9] p-4">
+                        <HelpCircle className="mt-0.5 h-5 w-5 shrink-0 text-[#1464BC]" />
+                        <p className="m-0 text-[13px] leading-normal font-medium text-[#414751]">
+                            Butuh bantuan dengan pemesanan Anda? Tim dukungan
+                            kami tersedia 24/7 untuk bantuan teknis.
+                        </p>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    );
+}
 
 function DatePickerCard({
     selectedDate,
@@ -538,38 +892,39 @@ function TimeSlotGroup({
     );
 }
 
-function TherapistSummaryCard() {
+function TherapistSummaryCard({ therapist }: { therapist: Therapist }) {
     return (
         <section className="rounded-3xl border border-[#e2e4e6]/50 bg-white p-5 shadow-[0px_4px_24px_rgba(0,0,0,0.02)]">
             <div className="mb-5 flex items-center gap-4 border-b border-[#f2f4f6] pb-5">
                 <div className="relative">
-                    <div className="size-16 overflow-hidden rounded-2xl">
-                        <ImageWithFallback
-                            src={drElenaImg}
-                            alt="Dr. Elena"
-                            className="h-full w-full object-cover"
-                        />
-                    </div>
-                    <div className="absolute -right-1 -bottom-1 size-4 rounded-full border-2 border-white bg-[#10b981]" />
+                    <InitialsAvatar
+                        name={therapist.name}
+                        className="size-16 rounded-2xl text-lg"
+                    />
+                    <div
+                        className={`absolute -right-1 -bottom-1 size-4 rounded-full border-2 border-white ${
+                            therapist.is_online
+                                ? 'bg-[#10b981]'
+                                : 'bg-[#c1c7d3]'
+                        }`}
+                    />
                 </div>
                 <div>
                     <h3 className="m-0 mb-1 text-base font-black text-[#191c1e]">
-                        Dr. Elena Rodriguez
+                        {therapist.name}
                     </h3>
                     <p className="m-0 mb-1 text-[13px] font-semibold text-[#1464BC]">
-                        Psikolog Klinis
+                        {therapist.specialization ?? 'Spesialisasi belum diisi'}
                     </p>
-                    <div className="flex items-center gap-1 text-xs font-medium text-[#717783]">
-                        <Star className="h-3.5 w-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                        <span className="font-bold text-[#191c1e]">4.9</span>
-                        <span>(124 ulasan)</span>
-                    </div>
+                    <p className="m-0 text-xs font-medium text-[#717783]">
+                        Ulasan belum tersedia
+                    </p>
                 </div>
             </div>
-            <div className="flex items-center justify-between text-[13px]">
-                <span className="font-medium text-[#717783]">Spesialisasi</span>
-                <span className="font-bold text-[#191c1e]">
-                    CBT & Mindfulness
+            <div className="flex items-center justify-between gap-4 text-[13px]">
+                <span className="font-medium text-[#717783]">STR</span>
+                <span className="truncate text-right font-bold text-[#191c1e]">
+                    {therapist.str_number ?? 'Belum diisi'}
                 </span>
             </div>
         </section>

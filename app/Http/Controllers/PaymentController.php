@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PsychologistProfile;
 use App\Models\Transaction;
 use App\Services\MidtransSnap;
 use Illuminate\Http\JsonResponse;
@@ -17,7 +18,8 @@ class PaymentController extends Controller
 
     public function show(Request $request): Response
     {
-        $transaction = $this->pendingTransactionFor($request);
+        $psychologist = $this->selectedPsychologist($request);
+        $transaction = $this->pendingTransactionFor($request, $psychologist);
 
         if (! $transaction->snap_token) {
             $transaction->update([
@@ -29,6 +31,7 @@ class PaymentController extends Controller
             'snapToken' => $transaction->snap_token,
             'orderId' => $transaction->order_id,
             'amount' => (float) $transaction->gross_amount,
+            'therapist' => $psychologist ? $this->serializeTherapist($psychologist) : null,
         ]);
     }
 
@@ -75,13 +78,31 @@ class PaymentController extends Controller
         return hash_equals($hashed, $signatureKey);
     }
 
-    private function pendingTransactionFor(Request $request): Transaction
+    private function selectedPsychologist(Request $request): ?PsychologistProfile
+    {
+        $psychologistId = $request->integer('psychologist_id');
+
+        if (! $psychologistId) {
+            return null;
+        }
+
+        return PsychologistProfile::query()
+            ->with('user:id,name,email')
+            ->findOrFail($psychologistId);
+    }
+
+    private function pendingTransactionFor(Request $request, ?PsychologistProfile $psychologist): Transaction
     {
         $user = $request->user();
 
         $pendingTransaction = Transaction::query()
             ->whereBelongsTo($user)
             ->where('status', 'pending')
+            ->when(
+                $psychologist,
+                fn ($query) => $query->where('psychologist_id', $psychologist->id),
+                fn ($query) => $query->whereNull('psychologist_id'),
+            )
             ->latest()
             ->first();
 
@@ -91,10 +112,24 @@ class PaymentController extends Controller
 
         return Transaction::query()->create([
             'user_id' => $user->id,
+            'psychologist_id' => $psychologist?->id,
             'order_id' => 'PSI-'.now()->format('YmdHis').'-'.$user->id.'-'.Str::upper(Str::random(6)),
-            'gross_amount' => 250000,
+            'gross_amount' => $psychologist?->price ?? 250000,
             'status' => 'pending',
         ]);
+    }
+
+    private function serializeTherapist(PsychologistProfile $profile): array
+    {
+        return [
+            'id' => $profile->id,
+            'name' => $profile->user?->name ?? 'Psikolog',
+            'email' => $profile->user?->email,
+            'str_number' => $profile->str_number,
+            'specialization' => $profile->specialization,
+            'price' => (float) $profile->price,
+            'is_online' => (bool) $profile->is_online,
+        ];
     }
 
     private function handleTransactionStatus(string $orderId, string $transactionStatus, mixed $paymentType): void

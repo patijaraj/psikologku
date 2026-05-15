@@ -11,7 +11,6 @@ import {
     MessageSquare,
     ShieldCheck,
     Smile,
-    Star,
     Wallet,
     X,
 } from 'lucide-react';
@@ -20,9 +19,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { Button } from '@/components/ui/button';
 import { dashboard, sessions, therapists } from '@/routes';
-
-const drElenaImg =
-    'https://images.unsplash.com/photo-1659353887012-680771c1b497?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHhpc3BhbmljJTIwZmVtYWxlJTIwZG9jdG9yJTIwcG9ydHJhaXR8ZW58MXx8fHwxNzc4NTEzNTA3fDA&ixlib=rb-4.1.0&q=80&w=1080';
 
 const navItems = [
     { label: 'Dashboard', path: dashboard.url(), active: false },
@@ -33,10 +29,21 @@ const navItems = [
 
 type SnapPaymentResult = Record<string, unknown>;
 
+type TherapistSummary = {
+    id: number;
+    name: string;
+    email?: string | null;
+    str_number?: string | null;
+    specialization?: string | null;
+    price: number;
+    is_online: boolean;
+};
+
 interface PaymentProps {
     snapToken?: string;
     orderId?: string;
     amount?: number;
+    therapist?: TherapistSummary | null;
 }
 
 declare global {
@@ -63,33 +70,11 @@ function formatRupiah(amount: number) {
     }).format(amount);
 }
 
-function ImageWithFallback({
-    src,
-    alt,
-    className,
-}: {
-    src: string;
-    alt: string;
-    className?: string;
-}) {
-    return (
-        <img
-            src={src}
-            alt={alt}
-            className={className}
-            loading="lazy"
-            onError={(event) => {
-                event.currentTarget.src =
-                    'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1080&auto=format&fit=crop';
-            }}
-        />
-    );
-}
-
 export default function Payment({
     snapToken,
     orderId = 'Menunggu order',
     amount = 150000,
+    therapist = null,
 }: PaymentProps) {
     const clientKey = import.meta.env.VITE_MIDTRANS_CLIENT_KEY;
     const snapScriptUrl =
@@ -275,7 +260,11 @@ export default function Payment({
             <main className="mx-auto flex max-w-[1024px] flex-col gap-8 px-4 py-8 sm:px-8 md:py-12">
                 <section className="flex flex-col gap-6">
                     <Link
-                        href={therapists.url()}
+                        href={
+                            therapist
+                                ? `/therapists/${therapist.id}`
+                                : therapists.url()
+                        }
                         className="flex w-fit items-center gap-2 text-[15px] font-semibold text-[#1464BC] transition-colors hover:text-[#1053A0]"
                     >
                         <ArrowLeft className="h-4 w-4" />
@@ -348,24 +337,22 @@ export default function Payment({
                             </h2>
 
                             <div className="mb-8 flex items-center gap-4 rounded-2xl bg-white p-4 shadow-sm">
-                                <div className="size-14 shrink-0 overflow-hidden rounded-xl">
-                                    <ImageWithFallback
-                                        src={drElenaImg}
-                                        alt="Dr. Elena"
-                                        className="h-full w-full object-cover"
-                                    />
-                                </div>
+                                <InitialsAvatar
+                                    name={therapist?.name ?? 'Psikolog'}
+                                    className="size-14 rounded-xl text-lg"
+                                />
                                 <div>
                                     <h3 className="m-0 mb-0.5 text-base font-bold text-[#191c1e]">
-                                        Dr. Elena Rodriguez
+                                        {therapist?.name ??
+                                            'Konsultasi Psikolog'}
                                     </h3>
                                     <p className="m-0 mb-1 text-[13px] font-medium text-[#717783]">
-                                        Cognitive Behavioral Therapy
+                                        {therapist?.specialization ??
+                                            'Spesialisasi belum diisi'}
                                     </p>
-                                    <div className="flex items-center gap-1 text-xs font-bold text-[#10b981]">
-                                        <Star className="h-3.5 w-3.5 fill-[#10b981] text-[#10b981]" />
-                                        <span>4.9 (124 ulasan)</span>
-                                    </div>
+                                    <p className="m-0 text-xs font-medium text-[#717783]">
+                                        Ulasan belum tersedia
+                                    </p>
                                 </div>
                             </div>
 

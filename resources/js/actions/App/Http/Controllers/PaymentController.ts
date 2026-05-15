@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:35
+* @see app/Http/Controllers/PaymentController.php:38
 * @route '/midtrans-callback'
 */
 export const callback = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ callback.definition = {
 
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:35
+* @see app/Http/Controllers/PaymentController.php:38
 * @route '/midtrans-callback'
 */
 callback.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ callback.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:35
+* @see app/Http/Controllers/PaymentController.php:38
 * @route '/midtrans-callback'
 */
 callback.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -35,7 +35,7 @@ callback.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:35
+* @see app/Http/Controllers/PaymentController.php:38
 * @route '/midtrans-callback'
 */
 const callbackForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -45,7 +45,7 @@ const callbackForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> 
 
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:35
+* @see app/Http/Controllers/PaymentController.php:38
 * @route '/midtrans-callback'
 */
 callbackForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -57,7 +57,7 @@ callback.form = callbackForm
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:18
+* @see app/Http/Controllers/PaymentController.php:19
 * @route '/payment'
 */
 export const show = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -72,7 +72,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:18
+* @see app/Http/Controllers/PaymentController.php:19
 * @route '/payment'
 */
 show.url = (options?: RouteQueryOptions) => {
@@ -81,7 +81,7 @@ show.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:18
+* @see app/Http/Controllers/PaymentController.php:19
 * @route '/payment'
 */
 show.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -91,7 +91,7 @@ show.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:18
+* @see app/Http/Controllers/PaymentController.php:19
 * @route '/payment'
 */
 show.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -101,7 +101,7 @@ show.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:18
+* @see app/Http/Controllers/PaymentController.php:19
 * @route '/payment'
 */
 const showForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -111,7 +111,7 @@ const showForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:18
+* @see app/Http/Controllers/PaymentController.php:19
 * @route '/payment'
 */
 showForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -121,7 +121,7 @@ showForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:18
+* @see app/Http/Controllers/PaymentController.php:19
 * @route '/payment'
 */
 showForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

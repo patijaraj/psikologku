@@ -12,6 +12,7 @@ class Transaction extends Model
 
     protected $fillable = [
         'user_id',
+        'psychologist_id', // <-- Ini yang baru ditambahkan
         'order_id',
         'gross_amount',
         'status',
@@ -31,9 +32,16 @@ class Transaction extends Model
         ];
     }
 
-    // Relasi balik ke User
+    // Relasi balik ke User (Pasien yang membayar)
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Relasi ke Profil Psikolog (Pihak yang menerima pembayaran)
+    public function psychologistProfile(): BelongsTo
+    {
+        // Parameter kedua ('psychologist_id') memastikan Laravel mencari di kolom yang tepat
+        return $this->belongsTo(PsychologistProfile::class, 'psychologist_id');
     }
 }

@@ -162,86 +162,6 @@ Controller42a740574ecbfbac32f8cc353fc32db9.form = Controller42a740574ecbfbac32f8
 /**
 * @see \Inertia\Controller::__invoke
 * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/therapists'
-*/
-const Controller8c7bf97fade624caa481943bde421a79 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: Controller8c7bf97fade624caa481943bde421a79.url(options),
-    method: 'get',
-})
-
-Controller8c7bf97fade624caa481943bde421a79.definition = {
-    methods: ["get","head"],
-    url: '/therapists',
-} satisfies RouteDefinition<["get","head"]>
-
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/therapists'
-*/
-Controller8c7bf97fade624caa481943bde421a79.url = (options?: RouteQueryOptions) => {
-    return Controller8c7bf97fade624caa481943bde421a79.definition.url + queryParams(options)
-}
-
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/therapists'
-*/
-Controller8c7bf97fade624caa481943bde421a79.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: Controller8c7bf97fade624caa481943bde421a79.url(options),
-    method: 'get',
-})
-
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/therapists'
-*/
-Controller8c7bf97fade624caa481943bde421a79.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: Controller8c7bf97fade624caa481943bde421a79.url(options),
-    method: 'head',
-})
-
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/therapists'
-*/
-const Controller8c7bf97fade624caa481943bde421a79Form = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: Controller8c7bf97fade624caa481943bde421a79.url(options),
-    method: 'get',
-})
-
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/therapists'
-*/
-Controller8c7bf97fade624caa481943bde421a79Form.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: Controller8c7bf97fade624caa481943bde421a79.url(options),
-    method: 'get',
-})
-
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
-* @route '/therapists'
-*/
-Controller8c7bf97fade624caa481943bde421a79Form.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: Controller8c7bf97fade624caa481943bde421a79.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-Controller8c7bf97fade624caa481943bde421a79.form = Controller8c7bf97fade624caa481943bde421a79Form
-/**
-* @see \Inertia\Controller::__invoke
-* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
 * @route '/sessions'
 */
 const Controller21ef1e5e5c46d390ebe587629f10e63a = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -403,7 +323,6 @@ Controllere19ee86e9cf603ce1a59a1ec5d21dec5.form = Controllere19ee86e9cf603ce1a59
 const Controller = {
     '/': Controller980bb49ee7ae63891f1d891d2fbcf1c9,
     '/dashboard': Controller42a740574ecbfbac32f8cc353fc32db9,
-    '/therapists': Controller8c7bf97fade624caa481943bde421a79,
     '/sessions': Controller21ef1e5e5c46d390ebe587629f10e63a,
     '/settings/appearance': Controllere19ee86e9cf603ce1a59a1ec5d21dec5,
 }

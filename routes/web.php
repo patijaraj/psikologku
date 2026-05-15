@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\CompleteProfileController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TherapistController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -25,7 +26,8 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
-    Route::inertia('therapists', 'therapists')->name('therapists');
+    Route::get('therapists', [TherapistController::class, 'index'])->name('therapists');
+    Route::get('therapists/{psychologistProfile}', [TherapistController::class, 'show'])->name('therapists.show');
     Route::inertia('sessions', 'sessions')->name('sessions');
     Route::get('payment', [PaymentController::class, 'show'])->name('payment');
 });
