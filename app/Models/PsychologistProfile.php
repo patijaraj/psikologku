@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class PsychologistProfile extends Model
 {
-    protected $fillable = ['user_id', 
-                            'str_number', 
-                            'specialization', 
-                            'price', 
-                            'is_online'];
+    protected $fillable = ['user_id',
+        'str_number',
+        'specialization',
+        'price',
+        'is_online'];
 
     public function user()
     {

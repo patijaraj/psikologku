@@ -4,10 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
-use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
-use Filament\Tables\Columns\Layout\Panel as LayoutPanel;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -19,7 +17,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles;
+    use HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable;
 
     protected $fillable = [
         'name',
@@ -44,14 +42,24 @@ class User extends Authenticatable implements FilamentUser
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
-    public function canAccessPanel(\Filament\Panel $panel): bool
+
+    public function isPsychologist(): bool
+    {
+        return $this->hasAnyRole(['psychologist', 'psychologhist'])
+            || $this->roles()
+                ->whereIn('name', ['psychologist', 'psychologhist'])
+                ->exists();
+    }
+
+    public function canAccessPanel(Panel $panel): bool
     {
         if ($panel->getId() === 'admin') {
-            return $this->hasAnyRole(['admin', 'psychologist']);
+            return $this->hasRole('admin') || $this->isPsychologist();
         }
+
         return false;
     }
-    
+
     public function psychologistProfile()
     {
         return $this->hasOne(PsychologistProfile::class);

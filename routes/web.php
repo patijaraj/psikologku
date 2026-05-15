@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\CompleteProfileController;
 use App\Http\Controllers\Auth\SocialiteController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TherapistController;
 use Illuminate\Support\Facades\Route;
@@ -25,7 +26,9 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'show'])->name('dashboard');
+    Route::patch('psychologist/availability', [DashboardController::class, 'updateAvailability'])
+        ->name('psychologist.availability');
     Route::get('therapists', [TherapistController::class, 'index'])->name('therapists');
     Route::get('therapists/{psychologistProfile}', [TherapistController::class, 'show'])->name('therapists.show');
     Route::inertia('sessions', 'sessions')->name('sessions');
