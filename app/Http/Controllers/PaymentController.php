@@ -92,7 +92,7 @@ class PaymentController extends Controller
         return Transaction::query()->create([
             'user_id' => $user->id,
             'order_id' => 'PSI-'.now()->format('YmdHis').'-'.$user->id.'-'.Str::upper(Str::random(6)),
-            'gross_amount' => 150000,
+            'gross_amount' => 250000,
             'status' => 'pending',
         ]);
     }
