@@ -27,6 +27,10 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'show'])->name('dashboard');
+    Route::get('psychologist-profile', [DashboardController::class, 'editPsychologistProfile'])
+        ->name('psychologist.profile.edit');
+    Route::post('psychologist-profile', [DashboardController::class, 'storePsychologistProfile'])
+        ->name('psychologist.profile.store');
     Route::patch('psychologist/availability', [DashboardController::class, 'updateAvailability'])
         ->name('psychologist.availability');
     Route::get('therapists', [TherapistController::class, 'index'])->name('therapists');

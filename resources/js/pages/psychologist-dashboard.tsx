@@ -51,7 +51,7 @@ const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: true },
     { label: 'Sessions', path: '#', active: false },
     { label: 'Records', path: '#', active: false },
-    { label: 'Profile', path: '#', active: false },
+    { label: 'Profile', path: '/psychologist-profile', active: false },
 ];
 
 function formatRupiah(amount: number) {
@@ -209,8 +209,8 @@ export default function PsychologistDashboard({
 
                                         <div className="my-2 h-px bg-[#f2f4f6]" />
 
-                                        <button
-                                            type="button"
+                                        <Link
+                                            href="/psychologist-profile"
                                             className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#191c1e] transition-colors hover:bg-[#f7f9fb]"
                                             onClick={() =>
                                                 setIsUserMenuOpen(false)
@@ -220,7 +220,7 @@ export default function PsychologistDashboard({
                                                 <Settings className="h-5 w-5" />
                                             </span>
                                             Profile
-                                        </button>
+                                        </Link>
 
                                         <Link
                                             href={logout()}
@@ -295,14 +295,6 @@ export default function PsychologistDashboard({
                         onToggle={toggleAvailability}
                     />
                 </section>
-
-                {!profile && (
-                    <section className="rounded-2xl border border-[#facc15]/30 bg-[#fef9c3] p-5 text-sm font-semibold text-[#854d0e]">
-                        Profil psikolog belum dibuat. Buat data di tabel
-                        psychologist_profiles agar status online, jadwal, dan
-                        tarif bisa aktif.
-                    </section>
-                )}
 
                 <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
                     <SummaryCard

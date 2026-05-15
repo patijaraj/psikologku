@@ -1,7 +1,8 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
+import profile from './profile'
 /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:58
+* @see app/Http/Controllers/DashboardController.php:104
 * @route '/psychologist/availability'
 */
 export const availability = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -16,7 +17,7 @@ availability.definition = {
 
 /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:58
+* @see app/Http/Controllers/DashboardController.php:104
 * @route '/psychologist/availability'
 */
 availability.url = (options?: RouteQueryOptions) => {
@@ -25,7 +26,7 @@ availability.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:58
+* @see app/Http/Controllers/DashboardController.php:104
 * @route '/psychologist/availability'
 */
 availability.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -35,7 +36,7 @@ availability.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => 
 
 /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:58
+* @see app/Http/Controllers/DashboardController.php:104
 * @route '/psychologist/availability'
 */
 const availabilityForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -50,7 +51,7 @@ const availabilityForm = (options?: RouteQueryOptions): RouteFormDefinition<'pos
 
 /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:58
+* @see app/Http/Controllers/DashboardController.php:104
 * @route '/psychologist/availability'
 */
 availabilityForm.patch = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -66,6 +67,7 @@ availabilityForm.patch = (options?: RouteQueryOptions): RouteFormDefinition<'pos
 availability.form = availabilityForm
 
 const psychologist = {
+    profile: Object.assign(profile, profile),
     availability: Object.assign(availability, availability),
 }
 
