@@ -20,7 +20,7 @@ import {
     Star,
     X,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
 
@@ -64,6 +64,26 @@ function ImageWithFallback({
 }
 
 export default function Dashboard() {
+    const quotesIndo = [
+        "Sebab tidak ada yang lebih setia selain luka yang kau rawat sendiri. — M. Aan Mansyur",
+        "Mencintai diri sendiri adalah awal dari romansa seumur hidup. — Oscar Wilde",
+        "Apa pun yang terjadi, jangan pernah kehilangan harapan pada dirimu sendiri. — Chairil Anwar",
+        "Ada perasaan yang harus dijaga, meski hanya dalam diam dan doa. — Sapardi Djoko Damono",
+        "Jangan terburu-buru, hal-hal baik sedang dalam perjalanan menuju kepadamu. — Rupi Kaur",
+        "Kita adalah apa yang kita pikirkan. Semua yang kita alami lahir dari pikiran kita. — Dhammapada",
+        "Bersabarlah dengan segala sesuatu yang belum terselesaikan di hatimu. — Rainer Maria Rilke",
+        "Kadang kau harus menghilang untuk bisa benar-benar ditemukan kembali. — Buku Puisi",
+        "Hanya karena jalannya berbeda, bukan berarti kamu sedang tersesat. — Anonim",
+        "Istirahatlah, jiwa yang lelah pun butuh waktu untuk sekadar menjadi. — Kutipan Sastra"
+    ];
+
+    const [quote, setQuote] = useState(quotesIndo[0]);
+
+    const handleRefresh = () => {
+        const randomIndex = Math.floor(Math.random() * quotesIndo.length);
+        setQuote(quotesIndo[randomIndex]);
+    };
+
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const { auth } = usePage().props;
@@ -334,55 +354,34 @@ export default function Dashboard() {
                                 Masuk Obrolan
                             </button>
                         </section>
-
-                        <section className="flex flex-col gap-5">
-                            <div className="flex items-end justify-between">
-                                <div className="flex flex-col gap-1">
-                                    <h3 className="m-0 text-[22px] font-bold text-[#191c1e]">
-                                        Rekomendasi untukmu
+                        
+                        <section className="relative overflow-hidden rounded-3xl border border-[#e2e4e6] bg-white p-8 shadow-sm">
+                            <div className="absolute -top-10 -right-10 size-32 rounded-full bg-[#eef5fe]/50 blur-3xl" />
+                            
+                            <div className="relative z-10 flex flex-col items-center gap-4 text-center">
+                                <div className="flex size-14 items-center justify-center rounded-2xl bg-[#eef5fe] text-[#1464BC]">
+                                    <Brain className="h-8 w-8" />
+                                </div>
+                                
+                                <div className="flex flex-col gap-2">
+                                    <h3 className="m-0 text-xl font-bold text-[#191c1e]">
+                                        Kata-kata hari ini bosku
                                     </h3>
-                                    <p className="m-0 text-[15px] text-[#717783]">
-                                        Berdasarkan progres dan preferensimu
+                                    <p className="m-0 max-w-[500px] text-[17px] font-medium italic leading-relaxed text-[#717783]">
+                                        "{quote}"
                                     </p>
                                 </div>
-                                <Link
-                                    href="#"
-                                    className="hidden items-center gap-1 text-[15px] font-semibold text-[#1464BC] hover:underline sm:flex"
-                                >
-                                    Lihat Semua
-                                    <ChevronRight className="h-4 w-4" />
-                                </Link>
-                            </div>
 
-                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-                                <TherapistCard
-                                    image={drElenaImg}
-                                    name="Dr. Elena Rodriguez"
-                                    specialty="Terapi Perilaku Kognitif"
-                                    rating="4.9"
-                                    reviews="124 ulasan"
-                                    match="MATCH 98%"
-                                    price="Rp 250rb"
-                                    imageBg="bg-green-100"
-                                />
-                                <TherapistCard
-                                    image={drMarcusImg}
-                                    name="Dr. Marcus Chen"
-                                    specialty="Mindfulness & Manajemen Stres"
-                                    rating="4.8"
-                                    reviews="89 ulasan"
-                                    match="MATCH 94%"
-                                    price="Rp 200rb"
-                                    imageBg="bg-blue-100"
-                                />
-
-                                <Link
-                                    href="#"
-                                    className="mt-2 flex items-center justify-center gap-1 text-[15px] font-semibold text-[#1464BC] sm:hidden"
+                                <button
+                                    type="button"
+                                    onClick={handleRefresh}
+                                    className="mt-2 flex cursor-pointer items-center gap-2 rounded-xl bg-[#f2f4f6] px-5 py-2.5 text-sm font-bold text-[#1464BC] transition-all hover:bg-[#eef5fe] active:scale-95"
                                 >
-                                    Lihat Semua Psikolog
-                                    <ChevronRight className="h-4 w-4" />
-                                </Link>
+                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    </svg>
+                                    Refresh Inspirasi
+                                </button>
                             </div>
                         </section>
                     </div>
