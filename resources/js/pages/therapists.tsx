@@ -597,9 +597,12 @@ return [];
         const d = new Date(today);
         d.setDate(today.getDate() + i);
         const dayName = dayNamesMap[d.getDay()];
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
         dates.push({
             dateObj: d,
-            dateStr: d.toISOString().split('T')[0],
+            dateStr: `${year}-${month}-${day}`,
             dayNum: d.getDate(),
             dayNameShort: dayName.substring(0, 3).toUpperCase(),
             disabled: !availableDays.has(dayName),
@@ -628,7 +631,8 @@ function ScheduleView({
             return false;
         }
 
-        const d = new Date(selectedDate);
+        const [y, m, day] = selectedDate.split('-').map(Number);
+        const d = new Date(y, m - 1, day);
         const dayNamesMap: Record<number, string> = {
             0: 'minggu', 1: 'senin', 2: 'selasa', 3: 'rabu', 4: 'kamis', 5: 'jumat', 6: 'sabtu'
         };
@@ -921,9 +925,9 @@ function TimeSlotGroup({
                             type="button"
                             onClick={() => {
                                 if (isSelected) {
-                                    onSelectTimes(selectedTimes.filter(t => !(t.schedule_id === slot.schedule_id && t.start_time === slot.start_time)));
+                                    onSelectTimes([]);
                                 } else {
-                                    onSelectTimes([...selectedTimes, slot]);
+                                    onSelectTimes([slot]);
                                 }
                             }}
                             className={`flex h-[42px] cursor-pointer items-center justify-center rounded-xl border-none text-[15px] font-bold transition-all ${
