@@ -29,10 +29,10 @@ type PsychologistProfileSetupProps = {
 };
 
 const navItems = [
-    { label: 'Dashboard', path: '/dashboard', active: false },
+    { label: 'Dashboard', path: '/dashboard', active: true },
+    { label: 'Appointments', path: '#', active: false },
     { label: 'Sessions', path: '#', active: false },
     { label: 'Records', path: '#', active: false },
-    { label: 'Profile', path: '/psychologist-profile', active: true },
 ];
 
 export default function PsychologistProfileSetup({

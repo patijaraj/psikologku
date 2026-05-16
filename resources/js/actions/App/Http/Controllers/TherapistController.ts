@@ -85,7 +85,7 @@ index.form = indexForm
 * @see app/Http/Controllers/TherapistController.php:20
 * @route '/therapists/{psychologistProfile}'
 */
-export const show = (args: { psychologistProfile: string | number | { id: string | number } } | [psychologistProfile: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const show = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -100,7 +100,7 @@ show.definition = {
 * @see app/Http/Controllers/TherapistController.php:20
 * @route '/therapists/{psychologistProfile}'
 */
-show.url = (args: { psychologistProfile: string | number | { id: string | number } } | [psychologistProfile: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+show.url = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { psychologistProfile: args }
     }
@@ -133,7 +133,7 @@ show.url = (args: { psychologistProfile: string | number | { id: string | number
 * @see app/Http/Controllers/TherapistController.php:20
 * @route '/therapists/{psychologistProfile}'
 */
-show.get = (args: { psychologistProfile: string | number | { id: string | number } } | [psychologistProfile: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show.get = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -143,7 +143,7 @@ show.get = (args: { psychologistProfile: string | number | { id: string | number
 * @see app/Http/Controllers/TherapistController.php:20
 * @route '/therapists/{psychologistProfile}'
 */
-show.head = (args: { psychologistProfile: string | number | { id: string | number } } | [psychologistProfile: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show.head = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
@@ -153,7 +153,7 @@ show.head = (args: { psychologistProfile: string | number | { id: string | numbe
 * @see app/Http/Controllers/TherapistController.php:20
 * @route '/therapists/{psychologistProfile}'
 */
-const showForm = (args: { psychologistProfile: string | number | { id: string | number } } | [psychologistProfile: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+const showForm = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
     method: 'get',
 })
@@ -163,7 +163,7 @@ const showForm = (args: { psychologistProfile: string | number | { id: string | 
 * @see app/Http/Controllers/TherapistController.php:20
 * @route '/therapists/{psychologistProfile}'
 */
-showForm.get = (args: { psychologistProfile: string | number | { id: string | number } } | [psychologistProfile: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+showForm.get = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, options),
     method: 'get',
 })
@@ -173,7 +173,7 @@ showForm.get = (args: { psychologistProfile: string | number | { id: string | nu
 * @see app/Http/Controllers/TherapistController.php:20
 * @route '/therapists/{psychologistProfile}'
 */
-showForm.head = (args: { psychologistProfile: string | number | { id: string | number } } | [psychologistProfile: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+showForm.head = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
     action: show.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'HEAD',

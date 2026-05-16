@@ -49,9 +49,10 @@ type PsychologistDashboardProps = {
 
 const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: true },
+    { label: 'Appointments', path: '#', active: false },
     { label: 'Sessions', path: '#', active: false },
     { label: 'Records', path: '#', active: false },
-    { label: 'Profile', path: '/psychologist-profile', active: false },
+    
 ];
 
 function formatRupiah(amount: number) {
