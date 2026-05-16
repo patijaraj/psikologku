@@ -4,8 +4,6 @@ import {
     ArrowRight,
     Bell,
     Calendar,
-    ChevronLeft,
-    ChevronRight,
     Clock,
     HelpCircle,
     Lock,
@@ -23,6 +21,13 @@ import { useMemo, useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
 
+type Schedule = {
+    id: number;
+    day_of_week: string;
+    start_time: string;
+    end_time: string;
+};
+
 type Therapist = {
     id: number;
     name: string;
@@ -31,6 +36,7 @@ type Therapist = {
     specialization?: string | null;
     price: number;
     is_online: boolean;
+    schedules?: Schedule[];
 };
 
 type TherapistsProps = {
@@ -45,41 +51,6 @@ const navItems = [
     { label: 'Record', path: '#', active: false },
 ];
 
-const days = ['SEN', 'SEL', 'RAB', 'KAM', 'JUM', 'SAB', 'MIN'];
-
-const week1 = [
-    { date: 28, disabled: true },
-    { date: 29, disabled: true },
-    { date: 30, disabled: true },
-    { date: 31, disabled: true },
-    { date: 1, disabled: false },
-    { date: 2, disabled: false },
-    { date: 3, disabled: false },
-];
-
-const week2 = [
-    { date: 4, disabled: false },
-    { date: 5, disabled: false },
-    { date: 6, disabled: false },
-    { date: 7, disabled: false },
-    { date: 8, disabled: false },
-    { date: 9, disabled: false },
-    { date: 10, disabled: false },
-];
-
-const morningSlots = [
-    { time: '09:00', label: '09:00 WIB', disabled: false },
-    { time: '10:00', label: '10:00 WIB', disabled: false },
-    { time: '11:00', label: '11:00 WIB', disabled: false },
-    { time: '11:30', label: '11:30 WIB', disabled: true },
-];
-
-const afternoonSlots = [
-    { time: '14:00', label: '14:00 WIB', disabled: false },
-    { time: '15:00', label: '15:00 WIB', disabled: false },
-    { time: '16:30', label: '16:30 WIB', disabled: false },
-    { time: '17:00', label: '17:00 WIB', disabled: false },
-];
 
 const portraitImages = [
     'https://images.unsplash.com/photo-1659353887012-680771c1b497?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080',
@@ -124,14 +95,13 @@ export default function Therapists({
 }: TherapistsProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-    const [selectedDate, setSelectedDate] = useState(5);
-    const [selectedTime, setSelectedTime] = useState('14:00');
+    const [selectedDate, setSelectedDate] = useState<string>('');
+    const [selectedTimes, setSelectedTimes] = useState<{schedule_id: number, start_time: string, end_time: string}[]>([]);
     const [search, setSearch] = useState('');
     const [selectedSpecialization, setSelectedSpecialization] = useState('all');
     const { auth } = usePage().props;
     const userName = auth.user?.name ?? 'Sarah';
     const userEmail = auth.user?.email ?? 'sarah@example.com';
-    const endHour = Number(selectedTime.split(':')[0]) + 1;
 
     const specializations = useMemo(
         () =>
@@ -345,10 +315,9 @@ export default function Therapists({
                 <ScheduleView
                     therapist={selectedTherapist}
                     selectedDate={selectedDate}
-                    selectedTime={selectedTime}
-                    endHour={endHour}
+                    selectedTimes={selectedTimes}
                     onSelectDate={setSelectedDate}
-                    onSelectTime={setSelectedTime}
+                    onSelectTimes={setSelectedTimes}
                 />
             ) : (
                 <ListingView
@@ -608,21 +577,68 @@ function ReferralCard() {
     );
 }
 
+// Helper for date generation
+function getNext14Days(schedules?: Schedule[]) {
+    if (!schedules || schedules.length === 0) {
+return [];
+}
+
+    const availableDays = new Set(schedules.map((s) => s.day_of_week.toLowerCase()));
+    
+    const dayNamesMap: Record<number, string> = {
+        0: 'minggu', 1: 'senin', 2: 'selasa', 3: 'rabu', 4: 'kamis', 5: 'jumat', 6: 'sabtu'
+    };
+    
+    const dates = [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    for (let i = 0; i < 14; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() + i);
+        const dayName = dayNamesMap[d.getDay()];
+        dates.push({
+            dateObj: d,
+            dateStr: d.toISOString().split('T')[0],
+            dayNum: d.getDate(),
+            dayNameShort: dayName.substring(0, 3).toUpperCase(),
+            disabled: !availableDays.has(dayName),
+        });
+    }
+
+    return dates;
+}
+
 function ScheduleView({
     therapist,
     selectedDate,
-    selectedTime,
-    endHour,
+    selectedTimes,
     onSelectDate,
-    onSelectTime,
+    onSelectTimes,
 }: {
     therapist: Therapist;
-    selectedDate: number;
-    selectedTime: string;
-    endHour: number;
-    onSelectDate: (date: number) => void;
-    onSelectTime: (time: string) => void;
+    selectedDate: string;
+    selectedTimes: any[];
+    onSelectDate: (date: string) => void;
+    onSelectTimes: (times: any[]) => void;
 }) {
+    const availableDates = getNext14Days(therapist.schedules);
+    const availableSchedules = (therapist.schedules || []).filter(s => {
+        if (!selectedDate) {
+            return false;
+        }
+
+        const d = new Date(selectedDate);
+        const dayNamesMap: Record<number, string> = {
+            0: 'minggu', 1: 'senin', 2: 'selasa', 3: 'rabu', 4: 'kamis', 5: 'jumat', 6: 'sabtu'
+        };
+
+        return s.day_of_week.toLowerCase() === dayNamesMap[d.getDay()];
+    });
+
+    const sessionCount = selectedTimes.length || 1;
+    const totalPrice = therapist.price * sessionCount;
+
     return (
         <main className="mx-auto flex max-w-[1280px] flex-col gap-8 px-4 py-8 sm:px-8 md:py-12">
             <section className="flex flex-col gap-4">
@@ -646,13 +662,18 @@ function ScheduleView({
             <div className="flex flex-col items-start gap-8 lg:flex-row">
                 <div className="flex w-full flex-col gap-6 lg:flex-[2]">
                     <DatePickerCard
+                        availableDates={availableDates}
                         selectedDate={selectedDate}
-                        onSelectDate={onSelectDate}
+                        onSelectDate={(date) => {
+                            onSelectDate(date);
+                            onSelectTimes([]); // Reset selected slots when changing date
+                        }}
                     />
 
                     <TimePickerCard
-                        selectedTime={selectedTime}
-                        onSelectTime={onSelectTime}
+                        availableSchedules={availableSchedules}
+                        selectedTimes={selectedTimes}
+                        onSelectTimes={onSelectTimes}
                     />
                 </div>
 
@@ -668,12 +689,12 @@ function ScheduleView({
                             <SummaryItem
                                 icon={<Calendar className="h-4 w-4" />}
                                 label="Tanggal"
-                                value={`${selectedDate} Oktober 2026`}
+                                value={selectedDate ? new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' }).format(new Date(selectedDate)) : '-'}
                             />
                             <SummaryItem
                                 icon={<Clock className="h-4 w-4" />}
                                 label="Waktu"
-                                value={`${selectedTime} - ${String(endHour).padStart(2, '0')}:00 WIB`}
+                                value={selectedTimes.length > 0 ? selectedTimes.map(t => t.start_time.substring(0,5)).join(', ') + ' WIB' : '-'}
                             />
                             <div className="flex gap-4">
                                 <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white text-[#1464BC] shadow-sm">
@@ -685,19 +706,24 @@ function ScheduleView({
                                             Biaya Konsultasi
                                         </div>
                                         <div className="text-xl font-bold text-[#191c1e]">
-                                            {formatRupiah(therapist.price)}
+                                            {formatRupiah(totalPrice)}
                                         </div>
                                     </div>
                                     <div className="mb-1 rounded-md bg-[#e2e4e6] px-2 py-1 text-[11px] font-medium text-[#717783]">
-                                        Per sesi
+                                        {sessionCount} sesi
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <Link
-                            href={`/payment?psychologist_id=${therapist.id}`}
-                            className="mb-4 flex h-[52px] w-full cursor-pointer items-center justify-center gap-2 rounded-[14px] border-none bg-[#1464BC] text-base font-semibold text-white shadow-[0_8px_20px_-4px_rgba(0,93,167,0.4)] transition-colors hover:bg-[#1053A0]"
+                            href={`/payment?psychologist_id=${therapist.id}${selectedTimes.length > 0 && selectedDate ? `&schedule_id=${selectedTimes[0].schedule_id}&date=${selectedDate}&times=${selectedTimes.map(t => t.start_time).join(',')}` : ''}`}
+                            className={`mb-4 flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] border-none text-base font-semibold text-white shadow-[0_8px_20px_-4px_rgba(0,93,167,0.4)] transition-colors ${selectedTimes.length > 0 && selectedDate ? 'bg-[#1464BC] hover:bg-[#1053A0] cursor-pointer' : 'bg-[#c1c7d3] cursor-not-allowed'}`}
+                            onClick={(e) => {
+                                if (selectedTimes.length === 0 || !selectedDate) {
+                                    e.preventDefault();
+                                }
+                            }}
                         >
                             Konfirmasi Pemesanan
                             <ArrowRight className="h-4 w-4" />
@@ -725,12 +751,17 @@ function ScheduleView({
 }
 
 function DatePickerCard({
+    availableDates,
     selectedDate,
     onSelectDate,
 }: {
-    selectedDate: number;
-    onSelectDate: (date: number) => void;
+    availableDates: any[];
+    selectedDate: string;
+    onSelectDate: (date: string) => void;
 }) {
+    const week1 = availableDates.slice(0, 7);
+    const week2 = availableDates.slice(7, 14);
+
     return (
         <section className="rounded-3xl border border-[#e2e4e6]/50 bg-white p-6 shadow-[0px_4px_24px_rgba(0,0,0,0.02)]">
             <div className="mb-8 flex items-center justify-between">
@@ -742,34 +773,9 @@ function DatePickerCard({
                         Pilih Tanggal
                     </h2>
                 </div>
-                <div className="flex items-center gap-2">
-                    <button
-                        type="button"
-                        className="flex size-8 cursor-pointer items-center justify-center rounded-full border border-[#e2e4e6] bg-white text-[#717783] transition-colors hover:bg-[#f2f4f6]"
-                    >
-                        <ChevronLeft className="h-4 w-4" />
-                    </button>
-                    <button
-                        type="button"
-                        className="flex size-8 cursor-pointer items-center justify-center rounded-full border border-[#e2e4e6] bg-white text-[#191c1e] transition-colors hover:bg-[#f2f4f6]"
-                    >
-                        <ChevronRight className="h-4 w-4" />
-                    </button>
-                </div>
             </div>
 
             <div className="flex flex-col gap-4">
-                <div className="grid grid-cols-7 gap-2 text-center">
-                    {days.map((day) => (
-                        <div
-                            key={day}
-                            className="pb-2 text-xs font-bold tracking-widest text-[#a0a5b1]"
-                        >
-                            {day}
-                        </div>
-                    ))}
-                </div>
-
                 <DateRow
                     items={week1}
                     selectedDate={selectedDate}
@@ -790,40 +796,67 @@ function DateRow({
     selectedDate,
     onSelectDate,
 }: {
-    items: Array<{ date: number; disabled: boolean }>;
-    selectedDate: number;
-    onSelectDate: (date: number) => void;
+    items: any[];
+    selectedDate: string;
+    onSelectDate: (date: string) => void;
 }) {
+    if (items.length === 0) {
+        return null;
+    }
+
     return (
         <div className="grid grid-cols-7 gap-2 lg:gap-4">
             {items.map((item) => (
-                <button
-                    key={item.date}
-                    type="button"
-                    disabled={item.disabled}
-                    onClick={() => !item.disabled && onSelectDate(item.date)}
-                    className={`flex aspect-square cursor-pointer items-center justify-center rounded-[14px] border-none text-[15px] font-semibold transition-all md:aspect-auto md:h-14 ${
-                        item.disabled
-                            ? 'cursor-not-allowed bg-transparent text-[#c1c7d3]'
-                            : selectedDate === item.date
-                              ? 'bg-[#1464BC] text-white shadow-[0_8px_16px_-4px_rgba(0,93,167,0.3)]'
-                              : 'bg-[#f7f9fb] text-[#191c1e] hover:bg-[#e2e4e6]'
-                    }`}
-                >
-                    {item.date}
-                </button>
+                <div key={item.dateStr} className="flex flex-col items-center gap-2">
+                    <div className="text-[11px] font-bold tracking-widest text-[#a0a5b1]">
+                        {item.dayNameShort}
+                    </div>
+                    <button
+                        type="button"
+                        disabled={item.disabled}
+                        onClick={() => !item.disabled && onSelectDate(item.dateStr)}
+                        className={`flex aspect-square w-full cursor-pointer items-center justify-center rounded-[14px] border-none text-[15px] font-semibold transition-all md:aspect-auto md:h-14 ${
+                            item.disabled
+                                ? 'cursor-not-allowed bg-transparent text-[#c1c7d3]'
+                                : selectedDate === item.dateStr
+                                  ? 'bg-[#1464BC] text-white shadow-[0_8px_16px_-4px_rgba(0,93,167,0.3)]'
+                                  : 'bg-[#f7f9fb] text-[#191c1e] hover:bg-[#e2e4e6]'
+                        }`}
+                    >
+                        {item.dayNum}
+                    </button>
+                </div>
             ))}
         </div>
     );
 }
 
 function TimePickerCard({
-    selectedTime,
-    onSelectTime,
+    availableSchedules,
+    selectedTimes,
+    onSelectTimes,
 }: {
-    selectedTime: string;
-    onSelectTime: (time: string) => void;
+    availableSchedules: Schedule[];
+    selectedTimes: any[];
+    onSelectTimes: (times: any[]) => void;
 }) {
+    // Generate 1-hour slots from available schedules
+    const slots: any[] = [];
+    availableSchedules.forEach(schedule => {
+        const startHour = parseInt(schedule.start_time.split(':')[0]);
+        const endHour = parseInt(schedule.end_time.split(':')[0]);
+        for (let h = startHour; h < endHour; h++) {
+            slots.push({
+                schedule_id: schedule.id,
+                start_time: `${h.toString().padStart(2, '0')}:00:00`,
+                end_time: `${(h+1).toString().padStart(2, '0')}:00:00`
+            });
+        }
+    });
+
+    const morningSlots = slots.filter(s => parseInt(s.start_time.split(':')[0]) < 12);
+    const afternoonSlots = slots.filter(s => parseInt(s.start_time.split(':')[0]) >= 12);
+
     return (
         <section className="rounded-3xl border border-[#e2e4e6]/50 bg-white p-6 shadow-[0px_4px_24px_rgba(0,0,0,0.02)]">
             <div className="mb-8 flex items-center gap-3">
@@ -835,18 +868,29 @@ function TimePickerCard({
                 </h2>
             </div>
 
-            <TimeSlotGroup
-                title="Sesi Pagi"
-                slots={morningSlots}
-                selectedTime={selectedTime}
-                onSelectTime={onSelectTime}
-            />
-            <TimeSlotGroup
-                title="Sesi Siang / Sore"
-                slots={afternoonSlots}
-                selectedTime={selectedTime}
-                onSelectTime={onSelectTime}
-            />
+            {slots.length === 0 && (
+                <div className="text-sm font-medium text-[#717783] py-4 text-center">
+                    Pilih tanggal yang tersedia untuk melihat jadwal.
+                </div>
+            )}
+
+            {morningSlots.length > 0 && (
+                <TimeSlotGroup
+                    title="Sesi Pagi"
+                    slots={morningSlots}
+                    selectedTimes={selectedTimes}
+                    onSelectTimes={onSelectTimes}
+                />
+            )}
+            
+            {afternoonSlots.length > 0 && (
+                <TimeSlotGroup
+                    title="Sesi Siang / Sore"
+                    slots={afternoonSlots}
+                    selectedTimes={selectedTimes}
+                    onSelectTimes={onSelectTimes}
+                />
+            )}
         </section>
     );
 }
@@ -854,39 +898,44 @@ function TimePickerCard({
 function TimeSlotGroup({
     title,
     slots,
-    selectedTime,
-    onSelectTime,
+    selectedTimes,
+    onSelectTimes,
 }: {
     title: string;
-    slots: Array<{ time: string; label: string; disabled: boolean }>;
-    selectedTime: string;
-    onSelectTime: (time: string) => void;
+    slots: any[];
+    selectedTimes: any[];
+    onSelectTimes: (times: any[]) => void;
 }) {
     return (
         <div className="mb-6 last:mb-0">
-            <div className="mb-4 text-xs font-bold tracking-widest text-[#a0a5b1] uppercase">
+            <h3 className="m-0 mb-4 text-[13px] font-bold tracking-widest text-[#a0a5b1] uppercase">
                 {title}
-            </div>
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                {slots.map((slot) => (
-                    <button
-                        key={slot.time}
-                        type="button"
-                        disabled={slot.disabled}
-                        onClick={() =>
-                            !slot.disabled && onSelectTime(slot.time)
-                        }
-                        className={`flex h-12 cursor-pointer items-center justify-center rounded-[14px] border-none text-sm font-semibold transition-all ${
-                            slot.disabled
-                                ? 'cursor-not-allowed bg-[#f7f9fb]/50 text-[#c1c7d3]'
-                                : selectedTime === slot.time
-                                  ? 'bg-[#1464BC] text-white shadow-[0_4px_12px_-2px_rgba(0,93,167,0.3)]'
-                                  : 'bg-[#f7f9fb] text-[#191c1e] hover:bg-[#e2e4e6]'
-                        }`}
-                    >
-                        {slot.label}
-                    </button>
-                ))}
+            </h3>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {slots.map((slot) => {
+                    const isSelected = selectedTimes.some(t => t.schedule_id === slot.schedule_id && t.start_time === slot.start_time);
+
+                    return (
+                        <button
+                            key={`${slot.schedule_id}-${slot.start_time}`}
+                            type="button"
+                            onClick={() => {
+                                if (isSelected) {
+                                    onSelectTimes(selectedTimes.filter(t => !(t.schedule_id === slot.schedule_id && t.start_time === slot.start_time)));
+                                } else {
+                                    onSelectTimes([...selectedTimes, slot]);
+                                }
+                            }}
+                            className={`flex h-[42px] cursor-pointer items-center justify-center rounded-xl border-none text-[15px] font-bold transition-all ${
+                                isSelected
+                                    ? 'bg-[#eef5fe] text-[#1464BC] ring-2 ring-[#1464BC]'
+                                    : 'bg-[#f7f9fb] text-[#414751] hover:bg-[#e2e4e6] hover:text-[#191c1e]'
+                            }`}
+                        >
+                            {slot.start_time.substring(0, 5)} WIB
+                        </button>
+                    );
+                })}
             </div>
         </div>
     );

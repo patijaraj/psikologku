@@ -19,7 +19,9 @@ class TherapistController extends Controller
 
     public function show(PsychologistProfile $psychologistProfile): Response
     {
-        $psychologistProfile->load('user:id,name,email');
+        $psychologistProfile->load(['user:id,name,email', 'schedules' => function ($query) {
+            $query->where('is_active', true);
+        }]);
 
         return Inertia::render('therapists', [
             'therapists' => $this->therapists(),
@@ -30,7 +32,9 @@ class TherapistController extends Controller
     private function therapists(): Collection
     {
         return PsychologistProfile::query()
-            ->with('user:id,name,email')
+            ->with(['user:id,name,email', 'schedules' => function ($query) {
+                $query->where('is_active', true);
+            }])
             ->latest()
             ->get()
             ->map(fn (PsychologistProfile $profile): array => $this->serializeTherapist($profile));
@@ -46,6 +50,12 @@ class TherapistController extends Controller
             'specialization' => $profile->specialization,
             'price' => (float) $profile->price,
             'is_online' => (bool) $profile->is_online,
+            'schedules' => $profile->relationLoaded('schedules') ? $profile->schedules->map(fn ($schedule) => [
+                'id' => $schedule->id,
+                'day_of_week' => $schedule->day_of_week,
+                'start_time' => $schedule->start_time,
+                'end_time' => $schedule->end_time,
+            ])->toArray() : [],
         ];
     }
 }

@@ -21,4 +21,14 @@ class PsychologistProfile extends Model
     {
         return $this->hasMany(Transaction::class, 'psychologist_id');
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class, 'psychologist_id');
+    }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class, 'psychologist_id');
+    }
 }

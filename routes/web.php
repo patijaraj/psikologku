@@ -4,6 +4,8 @@ use App\Http\Controllers\Auth\CompleteProfileController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PsychologistAppointmentController;
+use App\Http\Controllers\PsychologistScheduleController;
 use App\Http\Controllers\TherapistController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -31,6 +33,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('psychologist.profile.edit');
     Route::post('psychologist-profile', [DashboardController::class, 'storePsychologistProfile'])
         ->name('psychologist.profile.store');
+    Route::get('psychologist/appointments', [PsychologistAppointmentController::class, 'index'])
+        ->name('psychologist.appointments');
+    
+    // Psychologist Schedules
+    Route::get('psychologist/schedules', [PsychologistScheduleController::class, 'index'])
+        ->name('psychologist.schedules.index');
+    Route::post('psychologist/schedules', [PsychologistScheduleController::class, 'store'])
+        ->name('psychologist.schedules.store');
+    Route::patch('psychologist/schedules/{schedule}', [PsychologistScheduleController::class, 'update'])
+        ->name('psychologist.schedules.update');
+    Route::delete('psychologist/schedules/{schedule}', [PsychologistScheduleController::class, 'destroy'])
+        ->name('psychologist.schedules.destroy');
+
     Route::patch('psychologist/availability', [DashboardController::class, 'updateAvailability'])
         ->name('psychologist.availability');
     Route::get('therapists', [TherapistController::class, 'index'])->name('therapists');

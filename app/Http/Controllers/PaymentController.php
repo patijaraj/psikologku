@@ -19,7 +19,12 @@ class PaymentController extends Controller
     public function show(Request $request): Response
     {
         $psychologist = $this->selectedPsychologist($request);
-        $transaction = $this->pendingTransactionFor($request, $psychologist);
+        $scheduleId = $request->integer('schedule_id');
+        $appointmentDate = $request->input('date');
+        $timesRaw = $request->input('times'); // comma-separated e.g. "13:00:00,14:00:00"
+        $times = $timesRaw ? explode(',', $timesRaw) : [];
+
+        $transaction = $this->pendingTransactionFor($request, $psychologist, $scheduleId, $appointmentDate, $times);
 
         if (! $transaction->snap_token) {
             $transaction->update([
@@ -91,9 +96,12 @@ class PaymentController extends Controller
             ->findOrFail($psychologistId);
     }
 
-    private function pendingTransactionFor(Request $request, ?PsychologistProfile $psychologist): Transaction
+    private function pendingTransactionFor(Request $request, ?PsychologistProfile $psychologist, int $scheduleId = 0, ?string $appointmentDate = null, array $times = []): Transaction
     {
         $user = $request->user();
+        
+        $sessionCount = count($times) ?: 1;
+        $totalPrice = ($psychologist?->price ?? 250000) * $sessionCount;
 
         $pendingTransaction = Transaction::query()
             ->whereBelongsTo($user)
@@ -106,17 +114,46 @@ class PaymentController extends Controller
             ->latest()
             ->first();
 
-        if ($pendingTransaction) {
-            return $pendingTransaction;
+        if (! $pendingTransaction) {
+            $pendingTransaction = Transaction::query()->create([
+                'user_id' => $user->id,
+                'psychologist_id' => $psychologist?->id,
+                'order_id' => 'PSI-'.now()->format('YmdHis').'-'.$user->id.'-'.Str::upper(Str::random(6)),
+                'gross_amount' => $totalPrice,
+                'status' => 'pending',
+            ]);
+        } else {
+            // Update gross amount if it changed
+            if ($pendingTransaction->gross_amount != $totalPrice) {
+                $pendingTransaction->update(['gross_amount' => $totalPrice]);
+            }
         }
 
-        return Transaction::query()->create([
-            'user_id' => $user->id,
-            'psychologist_id' => $psychologist?->id,
-            'order_id' => 'PSI-'.now()->format('YmdHis').'-'.$user->id.'-'.Str::upper(Str::random(6)),
-            'gross_amount' => $psychologist?->price ?? 250000,
-            'status' => 'pending',
-        ]);
+        if ($psychologist && $scheduleId && $appointmentDate && !empty($times)) {
+            // Delete old pending appointments for this transaction
+            \App\Models\Appointment::query()
+                ->where('transaction_id', $pendingTransaction->id)
+                ->delete();
+
+            // Create new appointments for each selected time
+            foreach ($times as $time) {
+                $startDateTime = \Carbon\Carbon::parse($time);
+                $endDateTime = $startDateTime->copy()->addHour();
+
+                \App\Models\Appointment::query()->create([
+                    'user_id' => $user->id,
+                    'transaction_id' => $pendingTransaction->id,
+                    'psychologist_id' => $psychologist->id,
+                    'schedule_id' => $scheduleId,
+                    'appointment_date' => $appointmentDate,
+                    'start_time' => $startDateTime->format('H:i:s'),
+                    'end_time' => $endDateTime->format('H:i:s'),
+                    'status' => 'upcoming',
+                ]);
+            }
+        }
+
+        return $pendingTransaction;
     }
 
     private function serializeTherapist(PsychologistProfile $profile): array

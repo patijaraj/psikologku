@@ -64,4 +64,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasOne(PsychologistProfile::class);
     }
+
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 }

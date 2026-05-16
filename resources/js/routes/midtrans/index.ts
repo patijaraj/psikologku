@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:38
+* @see app/Http/Controllers/PaymentController.php:43
 * @route '/midtrans-callback'
 */
 export const callback = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ callback.definition = {
 
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:38
+* @see app/Http/Controllers/PaymentController.php:43
 * @route '/midtrans-callback'
 */
 callback.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ callback.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:38
+* @see app/Http/Controllers/PaymentController.php:43
 * @route '/midtrans-callback'
 */
 callback.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -35,7 +35,7 @@ callback.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:38
+* @see app/Http/Controllers/PaymentController.php:43
 * @route '/midtrans-callback'
 */
 const callbackForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -45,7 +45,7 @@ const callbackForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> 
 
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:38
+* @see app/Http/Controllers/PaymentController.php:43
 * @route '/midtrans-callback'
 */
 callbackForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

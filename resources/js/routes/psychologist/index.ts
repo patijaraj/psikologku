@@ -1,5 +1,87 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
 import profile from './profile'
+import schedules from './schedules'
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::appointments
+* @see app/Http/Controllers/PsychologistAppointmentController.php:11
+* @route '/psychologist/appointments'
+*/
+export const appointments = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: appointments.url(options),
+    method: 'get',
+})
+
+appointments.definition = {
+    methods: ["get","head"],
+    url: '/psychologist/appointments',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::appointments
+* @see app/Http/Controllers/PsychologistAppointmentController.php:11
+* @route '/psychologist/appointments'
+*/
+appointments.url = (options?: RouteQueryOptions) => {
+    return appointments.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::appointments
+* @see app/Http/Controllers/PsychologistAppointmentController.php:11
+* @route '/psychologist/appointments'
+*/
+appointments.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: appointments.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::appointments
+* @see app/Http/Controllers/PsychologistAppointmentController.php:11
+* @route '/psychologist/appointments'
+*/
+appointments.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: appointments.url(options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::appointments
+* @see app/Http/Controllers/PsychologistAppointmentController.php:11
+* @route '/psychologist/appointments'
+*/
+const appointmentsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: appointments.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::appointments
+* @see app/Http/Controllers/PsychologistAppointmentController.php:11
+* @route '/psychologist/appointments'
+*/
+appointmentsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: appointments.url(options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::appointments
+* @see app/Http/Controllers/PsychologistAppointmentController.php:11
+* @route '/psychologist/appointments'
+*/
+appointmentsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: appointments.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+appointments.form = appointmentsForm
+
 /**
 * @see \App\Http\Controllers\DashboardController::availability
 * @see app/Http/Controllers/DashboardController.php:104
@@ -68,6 +150,8 @@ availability.form = availabilityForm
 
 const psychologist = {
     profile: Object.assign(profile, profile),
+    appointments: Object.assign(appointments, appointments),
+    schedules: Object.assign(schedules, schedules),
     availability: Object.assign(availability, availability),
 }
 

@@ -1,59 +1,40 @@
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
     Bell,
-    CalendarClock,
-    CheckCircle2,
-    Clock,
+    Calendar,
     LogOut,
     Menu,
     MessageSquare,
     Settings,
     Smile,
     UserRound,
-    Wallet,
     X,
 } from 'lucide-react';
 import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
 
-type PsychologistProfile = {
-    id: number;
-    str_number?: string | null;
-    specialization?: string | null;
-    price: number;
-    is_online: boolean;
-};
-
-type TodaySession = {
+type Appointment = {
     id: number;
     patient_name: string;
     patient_email?: string | null;
+    date: string;
+    time: string;
     status: string;
+    payment_status: string;
     amount: number;
-    time?: string | null;
 };
 
-type Summary = {
-    today_sessions: number;
-    paid_sessions: number;
-    pending_sessions: number;
-    today_revenue: number;
-};
-
-type PsychologistDashboardProps = {
-    profile?: PsychologistProfile | null;
-    todaySessions?: TodaySession[];
-    summary?: Summary;
+type PsychologistAppointmentsProps = {
+    appointments: Appointment[];
 };
 
 const navItems = [
-    { label: 'Dashboard', path: '/dashboard', active: true },
+    { label: 'Dashboard', path: '/dashboard', active: false },
     { label: 'Schedules', path: '/psychologist/schedules', active: false },
-    { label: 'Appointments', path: '/psychologist/appointments', active: false },
+    { label: 'Appointments', path: '/psychologist/appointments', active: true },
     { label: 'Sessions', path: '#', active: false },
     { label: 'Records', path: '#', active: false },
-    
 ];
 
 function formatRupiah(amount: number) {
@@ -64,20 +45,11 @@ function formatRupiah(amount: number) {
     }).format(amount);
 }
 
-export default function PsychologistDashboard({
-    profile = null,
-    todaySessions = [],
-    summary = {
-        today_sessions: 0,
-        paid_sessions: 0,
-        pending_sessions: 0,
-        today_revenue: 0,
-    },
-}: PsychologistDashboardProps) {
+export default function PsychologistAppointments({
+    appointments = [],
+}: PsychologistAppointmentsProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-    const [isOnline, setIsOnline] = useState(profile?.is_online ?? false);
-    const [isUpdatingAvailability, setIsUpdatingAvailability] = useState(false);
     const { auth } = usePage().props;
     const userName = auth.user?.name ?? 'Psikolog';
     const userEmail = auth.user?.email ?? 'psikolog@example.com';
@@ -86,29 +58,9 @@ export default function PsychologistDashboard({
         router.flushAll();
     };
 
-    const toggleAvailability = () => {
-        if (!profile || isUpdatingAvailability) {
-            return;
-        }
-
-        const nextValue = !isOnline;
-        setIsOnline(nextValue);
-        setIsUpdatingAvailability(true);
-
-        router.patch(
-            '/psychologist/availability',
-            { is_online: nextValue },
-            {
-                preserveScroll: true,
-                onError: () => setIsOnline(!nextValue),
-                onFinish: () => setIsUpdatingAvailability(false),
-            },
-        );
-    };
-
     return (
         <div className="min-h-screen bg-[#f7f9fb] font-sans">
-            <Head title="Dashboard Psikolog" />
+            <Head title="Appointments Psikolog" />
 
             <nav className="sticky top-0 z-50 border-b border-[#e2e4e6] bg-white">
                 <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between px-4 sm:px-8">
@@ -280,243 +232,104 @@ export default function PsychologistDashboard({
                 <section className="flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-sm md:flex-row md:items-center md:justify-between md:p-8">
                     <div>
                         <p className="m-0 mb-2 text-sm font-bold tracking-widest text-[#1464BC] uppercase">
-                            Pusat Kendali
+                            Semua Appointment
                         </p>
                         <h1 className="m-0 text-[34px] leading-tight font-black tracking-tight text-[#191c1e] md:text-[44px]">
-                            Selamat datang, {userName}.
+                            Daftar Appointment.
                         </h1>
                         <p className="m-0 mt-3 max-w-[660px] text-base leading-relaxed font-medium text-[#717783]">
-                            Pantau sesi hari ini, status ketersediaan, dan hal
-                            yang butuh perhatian cepat.
+                            Kelola jadwal pertemuan dan sesi terapi Anda dengan pasien di sini.
                         </p>
                     </div>
-
-                    <AvailabilitySwitch
-                        enabled={isOnline}
-                        disabled={!profile || isUpdatingAvailability}
-                        onToggle={toggleAvailability}
-                    />
                 </section>
 
-                <section className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-                    <SummaryCard
-                        icon={<CalendarClock className="h-5 w-5" />}
-                        label="Sesi Hari Ini"
-                        value={String(summary.today_sessions)}
-                        helper="Transaksi dibuat hari ini"
-                    />
-                    <SummaryCard
-                        icon={<CheckCircle2 className="h-5 w-5" />}
-                        label="Siap Dimulai"
-                        value={String(summary.paid_sessions)}
-                        helper="Status pembayaran paid"
-                    />
-                    <SummaryCard
-                        icon={<Clock className="h-5 w-5" />}
-                        label="Menunggu"
-                        value={String(summary.pending_sessions)}
-                        helper="Masih pending"
-                    />
-                    <SummaryCard
-                        icon={<Wallet className="h-5 w-5" />}
-                        label="Pendapatan Hari Ini"
-                        value={formatRupiah(summary.today_revenue)}
-                        helper="Dari sesi paid"
-                    />
-                </section>
-
-                <section className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]">
-                    <div className="rounded-3xl bg-white p-6 shadow-sm md:p-8">
-                        <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                            <div>
-                                <h2 className="m-0 text-2xl font-black text-[#191c1e]">
-                                    Jadwal Hari Ini
-                                </h2>
-                                <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
-                                    Pasien yang perlu dipantau hari ini.
-                                </p>
-                            </div>
-                            <span
-                                className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${
-                                    isOnline
-                                        ? 'bg-[#dcfce7] text-[#166534]'
-                                        : 'bg-[#f2f4f6] text-[#717783]'
-                                }`}
-                            >
-                                {isOnline ? 'Online' : 'Offline'}
-                            </span>
+                <section className="rounded-3xl bg-white p-6 shadow-sm md:p-8">
+                    <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                        <div>
+                            <h2 className="m-0 text-2xl font-black text-[#191c1e]">
+                                Semua Jadwal
+                            </h2>
+                            <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
+                                Pasien yang telah menjadwalkan sesi dengan Anda.
+                            </p>
                         </div>
-
-                        {todaySessions.length > 0 ? (
-                            <div className="flex flex-col gap-3">
-                                {todaySessions.map((session) => (
-                                    <SessionRow
-                                        key={session.id}
-                                        session={session}
-                                    />
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="flex min-h-[260px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#d8dde5] bg-[#f7f9fb] p-8 text-center">
-                                <UserRound className="mb-4 h-10 w-10 text-[#a0a5b1]" />
-                                <h3 className="m-0 text-lg font-black text-[#191c1e]">
-                                    Belum ada jadwal hari ini
-                                </h3>
-                                <p className="m-0 mt-2 max-w-[420px] text-sm font-medium text-[#717783]">
-                                    Sesi akan muncul di sini setelah pasien
-                                    melakukan pemesanan untuk Anda.
-                                </p>
-                            </div>
-                        )}
                     </div>
 
-                    <aside className="flex flex-col gap-5">
-                        <section className="rounded-3xl bg-[#1464BC] p-6 text-white shadow-[0_18px_40px_-24px_rgba(0,93,167,0.55)]">
-                            <p className="m-0 mb-2 text-xs font-bold tracking-widest text-blue-100 uppercase">
-                                Profil Praktik
-                            </p>
-                            <h2 className="m-0 text-2xl font-black">
-                                {profile?.specialization ??
-                                    'Spesialisasi belum diisi'}
-                            </h2>
-                            <div className="mt-6 flex flex-col gap-4">
-                                <PracticeMeta
-                                    label="Tarif sesi"
-                                    value={
-                                        profile
-                                            ? formatRupiah(profile.price)
-                                            : '-'
-                                    }
+                    {appointments.length > 0 ? (
+                        <div className="flex flex-col gap-3">
+                            {appointments.map((appointment) => (
+                                <AppointmentRow
+                                    key={appointment.id}
+                                    appointment={appointment}
                                 />
-                                <PracticeMeta
-                                    label="STR"
-                                    value={profile?.str_number ?? '-'}
-                                />
-                            </div>
-                        </section>
-
-                        <section className="rounded-3xl border border-[#e2e4e6] bg-white p-6 shadow-sm">
-                            <h2 className="m-0 mb-3 text-lg font-black text-[#191c1e]">
-                                Catatan Cepat
-                            </h2>
-                            <p className="m-0 text-sm leading-relaxed font-medium text-[#717783]">
-                                Sessions, Records, dan Profile di header sudah
-                                disiapkan sebagai navigasi kosong untuk fitur
-                                berikutnya.
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="flex min-h-[260px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#d8dde5] bg-[#f7f9fb] p-8 text-center">
+                            <Calendar className="mb-4 h-10 w-10 text-[#a0a5b1]" />
+                            <h3 className="m-0 text-lg font-black text-[#191c1e]">
+                                Belum ada appointment
+                            </h3>
+                            <p className="m-0 mt-2 max-w-[420px] text-sm font-medium text-[#717783]">
+                                Sesi akan muncul di sini setelah pasien
+                                melakukan pemesanan untuk Anda.
                             </p>
-                        </section>
-                    </aside>
+                        </div>
+                    )}
                 </section>
             </main>
         </div>
     );
 }
 
-PsychologistDashboard.layout = {};
+PsychologistAppointments.layout = {};
 
-function AvailabilitySwitch({
-    enabled,
-    disabled,
-    onToggle,
-}: {
-    enabled: boolean;
-    disabled: boolean;
-    onToggle: () => void;
-}) {
-    return (
-        <button
-            type="button"
-            disabled={disabled}
-            onClick={onToggle}
-            className={`flex w-full cursor-pointer items-center justify-between gap-4 rounded-2xl border-none p-4 text-left transition-all md:w-[300px] ${
-                enabled
-                    ? 'bg-[#dcfce7] text-[#166534]'
-                    : 'bg-[#f2f4f6] text-[#414751]'
-            } ${disabled ? 'cursor-not-allowed opacity-60' : 'hover:scale-[1.01]'}`}
-        >
-            <div>
-                <div className="text-xs font-bold tracking-widest uppercase">
-                    Status Praktik
-                </div>
-                <div className="mt-1 text-2xl font-black">
-                    {enabled ? 'Online' : 'Offline'}
-                </div>
-            </div>
-            <span
-                className={`flex h-9 w-16 items-center rounded-full p-1 transition-colors ${
-                    enabled ? 'bg-[#16a34a]' : 'bg-[#c1c7d3]'
-                }`}
-            >
-                <span
-                    className={`size-7 rounded-full bg-white shadow-sm transition-transform ${
-                        enabled ? 'translate-x-7' : 'translate-x-0'
-                    }`}
-                />
-            </span>
-        </button>
-    );
-}
-
-function SummaryCard({
-    icon,
-    label,
-    value,
-    helper,
-}: {
-    icon: React.ReactNode;
-    label: string;
-    value: string;
-    helper: string;
-}) {
-    return (
-        <section className="rounded-3xl bg-white p-5 shadow-sm">
-            <div className="mb-5 flex size-11 items-center justify-center rounded-2xl bg-[#eef5fe] text-[#1464BC]">
-                {icon}
-            </div>
-            <div className="text-[28px] font-black text-[#191c1e]">{value}</div>
-            <div className="mt-1 text-sm font-bold text-[#414751]">{label}</div>
-            <div className="mt-2 text-xs font-medium text-[#717783]">
-                {helper}
-            </div>
-        </section>
-    );
-}
-
-function SessionRow({ session }: { session: TodaySession }) {
-    const isPaid = session.status === 'paid';
+function AppointmentRow({ appointment }: { appointment: Appointment }) {
+    const isPaid = appointment.payment_status === 'paid';
 
     return (
         <article className="flex flex-col gap-4 rounded-2xl border border-[#f2f4f6] bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
                 <InitialsAvatar
-                    name={session.patient_name}
+                    name={appointment.patient_name}
                     className="size-12 rounded-2xl"
                 />
                 <div>
                     <h3 className="m-0 text-base font-black text-[#191c1e]">
-                        {session.patient_name}
+                        {appointment.patient_name}
                     </h3>
                     <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
-                        {session.time ?? '--:--'} WIB ·{' '}
-                        {formatRupiah(session.amount)}
+                        {appointment.date} · {appointment.time} ·{' '}
+                        {formatRupiah(appointment.amount)}
                     </p>
                 </div>
             </div>
 
             <div className="flex flex-col gap-3 sm:items-end">
-                <span
-                    className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${
-                        isPaid
-                            ? 'bg-[#dcfce7] text-[#166534]'
-                            : 'bg-[#fef3c7] text-[#92400e]'
-                    }`}
-                >
-                    {session.status}
-                </span>
+                <div className="flex gap-2">
+                    <span
+                        className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${
+                            isPaid
+                                ? 'bg-[#dcfce7] text-[#166534]'
+                                : 'bg-[#fef3c7] text-[#92400e]'
+                        }`}
+                    >
+                        {appointment.payment_status}
+                    </span>
+                    <span
+                        className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${
+                            appointment.status === 'upcoming'
+                                ? 'bg-[#e1eef9] text-[#1464BC]'
+                                : 'bg-[#f2f4f6] text-[#717783]'
+                        }`}
+                    >
+                        {appointment.status}
+                    </span>
+                </div>
                 <Link
                     href="#"
                     className={`flex h-11 items-center justify-center rounded-xl px-5 text-sm font-bold transition-colors ${
-                        isPaid
+                        isPaid && appointment.status === 'upcoming'
                             ? 'bg-[#1464BC] text-white hover:bg-[#1053A0]'
                             : 'bg-[#f2f4f6] text-[#717783]'
                     }`}
@@ -525,16 +338,5 @@ function SessionRow({ session }: { session: TodaySession }) {
                 </Link>
             </div>
         </article>
-    );
-}
-
-function PracticeMeta({ label, value }: { label: string; value: string }) {
-    return (
-        <div className="rounded-2xl bg-white/10 p-4">
-            <div className="mb-1 text-xs font-bold tracking-widest text-blue-100 uppercase">
-                {label}
-            </div>
-            <div className="text-base font-black text-white">{value}</div>
-        </div>
     );
 }
