@@ -395,17 +395,6 @@ export default function PsychologistDashboard({
                                 />
                             </div>
                         </section>
-
-                        <section className="rounded-3xl border border-[#e2e4e6] bg-white p-6 shadow-sm">
-                            <h2 className="m-0 mb-3 text-lg font-black text-[#191c1e]">
-                                Catatan Cepat
-                            </h2>
-                            <p className="m-0 text-sm leading-relaxed font-medium text-[#717783]">
-                                Sessions, Records, dan Profile di header sudah
-                                disiapkan sebagai navigasi kosong untuk fitur
-                                berikutnya.
-                            </p>
-                        </section>
                     </aside>
                 </section>
             </main>
