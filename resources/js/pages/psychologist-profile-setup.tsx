@@ -29,8 +29,9 @@ type PsychologistProfileSetupProps = {
 };
 
 const navItems = [
-    { label: 'Dashboard', path: '/dashboard', active: true },
-    { label: 'Appointments', path: '#', active: false },
+    { label: 'Dashboard', path: '/dashboard', active: false },
+    { label: 'Schedules', path: '/psychologist/schedules', active: false },
+    { label: 'Appointments', path: '/psychologist/appointments', active: false },
     { label: 'Sessions', path: '#', active: false },
     { label: 'Records', path: '#', active: false },
 ];
