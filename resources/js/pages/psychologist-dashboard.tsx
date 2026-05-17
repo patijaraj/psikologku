@@ -32,6 +32,7 @@ type TodaySession = {
     status: string;
     amount: number;
     time?: string | null;
+    date?: string | null;
 };
 
 type Summary = {
@@ -484,9 +485,10 @@ function SummaryCard({
 
 function SessionRow({ session }: { session: TodaySession }) {
     const isPaid = session.status === 'paid';
+    const isOverdue = session.status === 'overdue';
 
     return (
-        <article className="flex flex-col gap-4 rounded-2xl border border-[#f2f4f6] bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
+        <article className={`flex flex-col gap-4 rounded-2xl border ${isOverdue ? 'border-[#feecec] bg-[#fff5f5]' : 'border-[#f2f4f6] bg-white'} p-4 sm:flex-row sm:items-center sm:justify-between`}>
             <div className="flex items-center gap-4">
                 <InitialsAvatar
                     name={session.patient_name}
@@ -497,7 +499,7 @@ function SessionRow({ session }: { session: TodaySession }) {
                         {session.patient_name}
                     </h3>
                     <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
-                        {session.time ?? '--:--'} WIB ·{' '}
+                        {session.date ? `${session.date} · ` : ''}{session.time ?? '--:--'} WIB ·{' '}
                         {formatRupiah(session.amount)}
                     </p>
                 </div>
@@ -505,9 +507,11 @@ function SessionRow({ session }: { session: TodaySession }) {
 
             <div className="flex flex-col gap-3 sm:items-end">
                 <span
-                    className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${
+                    className={`w-fit rounded-full px-3 py-1 text-xs font-bold uppercase ${
                         isPaid
                             ? 'bg-[#dcfce7] text-[#166534]'
+                            : isOverdue
+                            ? 'bg-[#feecec] text-[#b02a2a]'
                             : 'bg-[#fef3c7] text-[#92400e]'
                     }`}
                 >
@@ -516,7 +520,7 @@ function SessionRow({ session }: { session: TodaySession }) {
                 <Link
                     href="#"
                     className={`flex h-11 items-center justify-center rounded-xl px-5 text-sm font-bold transition-colors ${
-                        isPaid
+                        isPaid || isOverdue
                             ? 'bg-[#1464BC] text-white hover:bg-[#1053A0]'
                             : 'bg-[#f2f4f6] text-[#717783]'
                     }`}

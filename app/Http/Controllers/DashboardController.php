@@ -15,12 +15,24 @@ class DashboardController extends Controller
         $user = $request->user();
 
         if ($user->isPsychologist()) {
+            $localToday = now()->timezone('Asia/Jakarta')->toDateString();
+
             $profile = $user->psychologistProfile()
                 ->with([
+                    'appointments' => fn ($query) => $query
+                        ->with(['user:id,name,email', 'transaction'])
+                        ->whereNotIn('status', ['cancelled', 'failed'])
+                        ->where(function ($q) use ($localToday) {
+                            $q->whereDate('appointment_date', $localToday)
+                              ->orWhere(function ($q2) use ($localToday) {
+                                  $q2->whereDate('appointment_date', '<', $localToday)
+                                     ->where('status', 'upcoming');
+                              });
+                        })
+                        ->orderBy('appointment_date', 'asc')
+                        ->orderBy('start_time', 'asc'),
                     'transactions' => fn ($query) => $query
-                        ->with('user:id,name,email')
-                        ->whereDate('created_at', today())
-                        ->latest(),
+                        ->whereDate('created_at', $localToday),
                 ])
                 ->first();
 
@@ -36,18 +48,25 @@ class DashboardController extends Controller
                     'price' => (float) $profile->price,
                     'is_online' => (bool) $profile->is_online,
                 ],
-                'todaySessions' => $profile->transactions->map(fn ($transaction): array => [
-                    'id' => $transaction->id,
-                    'patient_name' => $transaction->user?->name ?? 'Pasien',
-                    'patient_email' => $transaction->user?->email,
-                    'status' => $transaction->status,
-                    'amount' => (float) $transaction->gross_amount,
-                    'time' => $transaction->created_at?->timezone(config('app.timezone'))->format('H:i'),
-                ])->values(),
+                'todaySessions' => $profile->appointments->map(function ($appointment) {
+                    $appointmentDateTimeStr = $appointment->appointment_date->format('Y-m-d') . ' ' . $appointment->end_time->format('H:i:s');
+                    $appointmentDateTime = \Carbon\Carbon::parse($appointmentDateTimeStr, 'Asia/Jakarta');
+                    $isOverdue = $appointmentDateTime->isPast() && $appointment->status === 'upcoming';
+
+                    return [
+                        'id' => $appointment->id,
+                        'patient_name' => $appointment->user?->name ?? 'Pasien',
+                        'patient_email' => $appointment->user?->email,
+                        'status' => $isOverdue ? 'overdue' : ($appointment->transaction?->status ?? $appointment->status),
+                        'amount' => $appointment->transaction ? ((float) $appointment->transaction->gross_amount) : 0,
+                        'time' => $appointment->start_time->format('H:i') . ' - ' . $appointment->end_time->format('H:i'),
+                        'date' => $appointment->appointment_date->format('d M Y'),
+                    ];
+                })->values(),
                 'summary' => [
-                    'today_sessions' => $profile->transactions->count(),
-                    'paid_sessions' => $profile->transactions->where('status', 'paid')->count(),
-                    'pending_sessions' => $profile->transactions->where('status', 'pending')->count(),
+                    'today_sessions' => $profile->appointments->count(),
+                    'paid_sessions' => $profile->appointments->filter(fn($a) => $a->transaction?->status === 'paid')->count(),
+                    'pending_sessions' => $profile->appointments->filter(fn($a) => $a->transaction?->status === 'pending')->count(),
                     'today_revenue' => (float) ($profile->transactions
                         ->where('status', 'paid')
                         ->sum('gross_amount') ?? 0),
@@ -56,23 +75,37 @@ class DashboardController extends Controller
         }
 
         if (! $user->isPsychologist()) {
+            $localToday = now()->timezone('Asia/Jakarta')->toDateString();
             $appointments = \App\Models\Appointment::query()
                 ->with(['psychologist.user'])
                 ->where('user_id', $user->id)
                 ->whereNotIn('status', ['cancelled', 'failed'])
+                ->where(function($q) use ($localToday) {
+                    $q->whereDate('appointment_date', '>=', $localToday)
+                      ->orWhere(function($q2) use ($localToday) {
+                          $q2->whereDate('appointment_date', '<', $localToday)
+                             ->where('status', 'upcoming');
+                      });
+                })
                 ->orderBy('appointment_date', 'asc')
                 ->orderBy('start_time', 'asc')
                 ->get()
-                ->map(fn ($appointment) => [
-                    'id' => $appointment->id,
-                    'psychologist_name' => $appointment->psychologist->user->name ?? 'Psikolog',
-                    'specialization' => $appointment->psychologist->specialization ?? 'Umum',
-                    'appointment_date' => $appointment->appointment_date->format('Y-m-d'),
-                    'start_time' => $appointment->start_time->format('H:i'),
-                    'end_time' => $appointment->end_time->format('H:i'),
-                    'status' => $appointment->status,
-                    'meeting_link' => $appointment->meeting_link,
-                ]);
+                ->map(function ($appointment) {
+                    $appointmentDateTimeStr = $appointment->appointment_date->format('Y-m-d') . ' ' . $appointment->end_time->format('H:i:s');
+                    $appointmentDateTime = \Carbon\Carbon::parse($appointmentDateTimeStr, 'Asia/Jakarta');
+                    $isOverdue = $appointmentDateTime->isPast() && $appointment->status === 'upcoming';
+
+                    return [
+                        'id' => $appointment->id,
+                        'psychologist_name' => $appointment->psychologist->user->name ?? 'Psikolog',
+                        'specialization' => $appointment->psychologist->specialization ?? 'Umum',
+                        'appointment_date' => $appointment->appointment_date->format('Y-m-d'),
+                        'start_time' => $appointment->start_time->format('H:i'),
+                        'end_time' => $appointment->end_time->format('H:i'),
+                        'status' => $isOverdue ? 'overdue' : $appointment->status,
+                        'meeting_link' => $appointment->meeting_link,
+                    ];
+                });
 
             return Inertia::render('dashboard', [
                 'appointments' => $appointments,

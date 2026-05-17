@@ -84,7 +84,7 @@ appointments.form = appointmentsForm
 
 /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:128
+* @see app/Http/Controllers/DashboardController.php:161
 * @route '/psychologist/availability'
 */
 export const availability = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -99,7 +99,7 @@ availability.definition = {
 
 /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:128
+* @see app/Http/Controllers/DashboardController.php:161
 * @route '/psychologist/availability'
 */
 availability.url = (options?: RouteQueryOptions) => {
@@ -108,7 +108,7 @@ availability.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:128
+* @see app/Http/Controllers/DashboardController.php:161
 * @route '/psychologist/availability'
 */
 availability.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -118,7 +118,7 @@ availability.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => 
 
 /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:128
+* @see app/Http/Controllers/DashboardController.php:161
 * @route '/psychologist/availability'
 */
 const availabilityForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -133,7 +133,7 @@ const availabilityForm = (options?: RouteQueryOptions): RouteFormDefinition<'pos
 
 /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:128
+* @see app/Http/Controllers/DashboardController.php:161
 * @route '/psychologist/availability'
 */
 availabilityForm.patch = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
