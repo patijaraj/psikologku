@@ -114,6 +114,12 @@ class PaymentController extends Controller
             ->latest()
             ->first();
 
+        if ($pendingTransaction && $pendingTransaction->created_at->diffInHours(now()) >= 23) {
+            $pendingTransaction->update(['status' => 'expired']);
+            \App\Models\Appointment::query()->where('transaction_id', $pendingTransaction->id)->delete();
+            $pendingTransaction = null;
+        }
+
         if (! $pendingTransaction) {
             $pendingTransaction = Transaction::query()->create([
                 'user_id' => $user->id,
@@ -123,9 +129,18 @@ class PaymentController extends Controller
                 'status' => 'pending',
             ]);
         } else {
-            // Update gross amount if it changed
+            // Update gross amount if it changed. A new amount requires a new order_id for Midtrans.
             if ($pendingTransaction->gross_amount != $totalPrice) {
-                $pendingTransaction->update(['gross_amount' => $totalPrice]);
+                $pendingTransaction->update(['status' => 'cancelled']);
+                \App\Models\Appointment::query()->where('transaction_id', $pendingTransaction->id)->delete();
+                
+                $pendingTransaction = Transaction::query()->create([
+                    'user_id' => $user->id,
+                    'psychologist_id' => $psychologist?->id,
+                    'order_id' => 'PSI-'.now()->format('YmdHis').'-'.$user->id.'-'.Str::upper(Str::random(6)),
+                    'gross_amount' => $totalPrice,
+                    'status' => 'pending',
+                ]);
             }
         }
 
