@@ -37,6 +37,12 @@ type Therapist = {
     price: number;
     is_online: boolean;
     schedules?: Schedule[];
+    booked_appointments?: {
+        schedule_id: number;
+        appointment_date: string;
+        start_time: string;
+        end_time: string;
+    }[];
 };
 
 type TherapistsProps = {
@@ -640,6 +646,11 @@ function ScheduleView({
         return s.day_of_week.toLowerCase() === dayNamesMap[d.getDay()];
     });
 
+    const bookedForDate = (therapist.booked_appointments || []).filter(a => {
+        const aDate = a.appointment_date.split('T')[0];
+        return aDate === selectedDate;
+    });
+
     const sessionCount = selectedTimes.length || 1;
     const totalPrice = therapist.price * sessionCount;
 
@@ -676,6 +687,7 @@ function ScheduleView({
 
                     <TimePickerCard
                         availableSchedules={availableSchedules}
+                        bookedForDate={bookedForDate}
                         selectedTimes={selectedTimes}
                         onSelectTimes={onSelectTimes}
                     />
@@ -837,10 +849,12 @@ function DateRow({
 
 function TimePickerCard({
     availableSchedules,
+    bookedForDate,
     selectedTimes,
     onSelectTimes,
 }: {
     availableSchedules: Schedule[];
+    bookedForDate: any[];
     selectedTimes: any[];
     onSelectTimes: (times: any[]) => void;
 }) {
@@ -850,11 +864,19 @@ function TimePickerCard({
         const startHour = parseInt(schedule.start_time.split(':')[0]);
         const endHour = parseInt(schedule.end_time.split(':')[0]);
         for (let h = startHour; h < endHour; h++) {
-            slots.push({
-                schedule_id: schedule.id,
-                start_time: `${h.toString().padStart(2, '0')}:00:00`,
-                end_time: `${(h+1).toString().padStart(2, '0')}:00:00`
-            });
+            const slotStartTime = `${h.toString().padStart(2, '0')}:00:00`;
+            const isBooked = bookedForDate.some(b => 
+                b.schedule_id === schedule.id && 
+                b.start_time.startsWith(slotStartTime.substring(0, 5))
+            );
+            
+            if (!isBooked) {
+                slots.push({
+                    schedule_id: schedule.id,
+                    start_time: slotStartTime,
+                    end_time: `${(h+1).toString().padStart(2, '0')}:00:00`
+                });
+            }
         }
     });
 

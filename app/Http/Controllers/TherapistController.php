@@ -23,9 +23,18 @@ class TherapistController extends Controller
             $query->where('is_active', true);
         }]);
 
+        $bookedAppointments = \App\Models\Appointment::query()
+            ->where('psychologist_id', $psychologistProfile->id)
+            ->whereDate('appointment_date', '>=', now()->toDateString())
+            ->whereNotIn('status', ['cancelled', 'failed'])
+            ->get(['schedule_id', 'appointment_date', 'start_time', 'end_time']);
+
+        $serializedTherapist = $this->serializeTherapist($psychologistProfile);
+        $serializedTherapist['booked_appointments'] = $bookedAppointments->toArray();
+
         return Inertia::render('therapists', [
             'therapists' => $this->therapists(),
-            'selectedTherapist' => $this->serializeTherapist($psychologistProfile),
+            'selectedTherapist' => $serializedTherapist,
         ]);
     }
 
