@@ -55,6 +55,30 @@ class DashboardController extends Controller
             ]);
         }
 
+        if (! $user->isPsychologist()) {
+            $appointments = \App\Models\Appointment::query()
+                ->with(['psychologist.user'])
+                ->where('user_id', $user->id)
+                ->whereNotIn('status', ['cancelled', 'failed'])
+                ->orderBy('appointment_date', 'asc')
+                ->orderBy('start_time', 'asc')
+                ->get()
+                ->map(fn ($appointment) => [
+                    'id' => $appointment->id,
+                    'psychologist_name' => $appointment->psychologist->user->name ?? 'Psikolog',
+                    'specialization' => $appointment->psychologist->specialization ?? 'Umum',
+                    'appointment_date' => $appointment->appointment_date->format('Y-m-d'),
+                    'start_time' => $appointment->start_time->format('H:i'),
+                    'end_time' => $appointment->end_time->format('H:i'),
+                    'status' => $appointment->status,
+                    'meeting_link' => $appointment->meeting_link,
+                ]);
+
+            return Inertia::render('dashboard', [
+                'appointments' => $appointments,
+            ]);
+        }
+
         return Inertia::render('dashboard');
     }
 

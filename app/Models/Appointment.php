@@ -23,7 +23,7 @@ class Appointment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function psychologistProfile(): BelongsTo
+    public function psychologist(): BelongsTo
     {
         return $this->belongsTo(PsychologistProfile::class);
     }

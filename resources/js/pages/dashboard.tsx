@@ -63,7 +63,13 @@ function ImageWithFallback({
     );
 }
 
-export default function Dashboard() {
+export default function Dashboard({ appointments = [] }: { appointments?: any[] }) {
+    const upcomingAppointments = appointments?.filter(a => {
+        const appointmentDateTime = new Date(`${a.appointment_date}T${a.start_time}`);
+        return appointmentDateTime >= new Date();
+    }) || [];
+    const closestAppointment = upcomingAppointments.length > 0 ? upcomingAppointments[0] : null;
+
     const quotesIndo = [
         "Sebab tidak ada yang lebih setia selain luka yang kau rawat sendiri. — M. Aan Mansyur",
         "Mencintai diri sendiri adalah awal dari romansa seumur hidup. — Oscar Wilde",
@@ -328,8 +334,8 @@ export default function Dashboard() {
                                 <div className="size-20 shrink-0 overflow-hidden rounded-2xl border-2 border-white/20 shadow-inner md:size-[100px]">
                                     <ImageWithFallback
                                         src={drJulianneImg}
-                                        alt="Dr. Julianne Moore"
-                                        className="h-full w-full object-cover"
+                                        alt={closestAppointment ? closestAppointment.psychologist_name : "Tidak ada jadwal"}
+                                        className="h-full w-full object-cover bg-white"
                                     />
                                 </div>
                                 <div className="flex flex-col gap-2">
@@ -337,22 +343,29 @@ export default function Dashboard() {
                                         Obrolan Mendatang
                                     </span>
                                     <h2 className="m-0 text-2xl leading-tight font-bold text-white md:text-[28px]">
-                                        Dr. Julianne Moore
+                                        {closestAppointment ? closestAppointment.psychologist_name : "Belum ada jadwal"}
                                     </h2>
+                                    {closestAppointment ? (
                                     <div className="flex items-center gap-1.5 text-sm font-medium text-blue-100 md:text-[15px]">
                                         <Calendar className="h-4 w-4" />
-                                        Chat hari ini, 10:30 (45 mnt)
+                                        {new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' }).format(new Date(closestAppointment.appointment_date))}, {closestAppointment.start_time.substring(0,5)} WIB
                                     </div>
+                                    ) : (
+                                    <div className="flex items-center gap-1.5 text-sm font-medium text-blue-100 md:text-[15px]">
+                                        <Calendar className="h-4 w-4" />
+                                        Silakan jadwalkan sesi dengan psikolog kami.
+                                    </div>
+                                    )}
                                 </div>
                             </div>
 
-                            <button
-                                type="button"
-                                className="relative z-10 flex w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl border-none bg-white px-6 py-3.5 text-[15px] font-bold text-[#1464BC] shadow-sm transition-colors hover:bg-blue-50 md:w-auto"
+                            <Link
+                                href={closestAppointment?.meeting_link ?? '/sessions'}
+                                className={`relative z-10 flex w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl border-none px-6 py-3.5 text-[15px] font-bold text-[#1464BC] shadow-sm transition-colors md:w-auto ${closestAppointment ? 'bg-white hover:bg-blue-50' : 'bg-[#e2e4e6] cursor-not-allowed opacity-80'}`}
                             >
                                 <MessageSquare className="h-5 w-5" />
                                 Masuk Obrolan
-                            </button>
+                            </Link>
                         </section>
                         
                         <section className="relative overflow-hidden rounded-3xl border border-[#e2e4e6] bg-white p-8 shadow-sm">
@@ -389,27 +402,25 @@ export default function Dashboard() {
                     <aside className="flex flex-col gap-6 lg:col-span-4">
                         <section className="rounded-3xl border border-[#e2e4e6] bg-white p-6 shadow-sm">
                             <h3 className="m-0 mb-6 text-lg font-bold text-[#191c1e]">
-                                Progres Mingguan
+                                Jadwal Terdekat
                             </h3>
                             <div className="flex flex-col gap-5">
-                                <ProgressItem
-                                    label="Keseimbangan Emosi"
-                                    percent={78}
-                                    color="bg-[#1464BC]"
-                                    textColor="text-[#1464BC]"
-                                />
-                                <ProgressItem
-                                    label="Kualitas Tidur"
-                                    percent={62}
-                                    color="bg-[#08714a]"
-                                    textColor="text-[#08714a]"
-                                />
-                                <ProgressItem
-                                    label="Praktik Mindfulness"
-                                    percent={45}
-                                    color="bg-[#7069c7]"
-                                    textColor="text-[#7069c7]"
-                                />
+                                {upcomingAppointments.length > 0 ? (
+                                    upcomingAppointments.slice(0, 3).map((appointment, idx) => (
+                                        <div key={appointment.id} className="flex flex-col gap-2 border-b border-[#f2f4f6] pb-4 last:border-0 last:pb-0">
+                                            <div className="flex items-center justify-between">
+                                                <span className="font-semibold text-[#191c1e]">{appointment.psychologist_name}</span>
+                                                <span className="text-[11px] font-bold text-[#1464BC] bg-[#eef5fe] px-2 py-1 rounded-md uppercase tracking-wider">{appointment.status}</span>
+                                            </div>
+                                            <div className="text-[13px] font-medium text-[#717783] flex items-center gap-1.5">
+                                                <Calendar className="w-3.5 h-3.5" />
+                                                <span>{new Intl.DateTimeFormat('id-ID', { dateStyle: 'medium' }).format(new Date(appointment.appointment_date))} • {appointment.start_time.substring(0,5)} - {appointment.end_time.substring(0,5)} WIB</span>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="text-sm font-medium text-[#717783] text-center py-4">Belum ada jadwal tersimpan.</div>
+                                )}
                             </div>
                         </section>
 
