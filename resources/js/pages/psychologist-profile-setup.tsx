@@ -152,7 +152,7 @@ export default function PsychologistProfileSetup({
                         Lengkapi data psikolog Anda.
                     </h1>
                     <p className="m-0 mt-5 text-base leading-relaxed font-medium text-blue-50">
-                        Data ini mengisi tabel psychologist_profiles dan
+                        Data ini 
                         digunakan untuk listing therapist, dashboard psikolog,
                         tarif konsultasi, serta status praktik.
                     </p>
