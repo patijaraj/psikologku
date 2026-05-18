@@ -5,15 +5,14 @@ import PsychologistAppointmentController from './PsychologistAppointmentControll
 import PsychologistScheduleController from './PsychologistScheduleController'
 import TherapistController from './TherapistController'
 import Settings from './Settings'
-
 const Controllers = {
     Auth: Object.assign(Auth, Auth),
-    PaymentController: Object.assign(PaymentController, PaymentController),
-    DashboardController: Object.assign(DashboardController, DashboardController),
-    PsychologistAppointmentController: Object.assign(PsychologistAppointmentController, PsychologistAppointmentController),
-    PsychologistScheduleController: Object.assign(PsychologistScheduleController, PsychologistScheduleController),
-    TherapistController: Object.assign(TherapistController, TherapistController),
-    Settings: Object.assign(Settings, Settings),
+PaymentController: Object.assign(PaymentController, PaymentController),
+DashboardController: Object.assign(DashboardController, DashboardController),
+PsychologistAppointmentController: Object.assign(PsychologistAppointmentController, PsychologistAppointmentController),
+PsychologistScheduleController: Object.assign(PsychologistScheduleController, PsychologistScheduleController),
+TherapistController: Object.assign(TherapistController, TherapistController),
+Settings: Object.assign(Settings, Settings),
 }
 
 export default Controllers

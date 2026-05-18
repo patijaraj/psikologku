@@ -3,9 +3,9 @@ import profile from './profile'
 import schedules from './schedules'
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:11
-* @route '/psychologist/appointments'
-*/
+ * @see app/Http/Controllers/PsychologistAppointmentController.php:11
+ * @route '/psychologist/appointments'
+ */
 export const appointments = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: appointments.url(options),
     method: 'get',
@@ -18,75 +18,72 @@ appointments.definition = {
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:11
-* @route '/psychologist/appointments'
-*/
+ * @see app/Http/Controllers/PsychologistAppointmentController.php:11
+ * @route '/psychologist/appointments'
+ */
 appointments.url = (options?: RouteQueryOptions) => {
     return appointments.definition.url + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:11
-* @route '/psychologist/appointments'
-*/
+ * @see app/Http/Controllers/PsychologistAppointmentController.php:11
+ * @route '/psychologist/appointments'
+ */
 appointments.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: appointments.url(options),
     method: 'get',
 })
-
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:11
-* @route '/psychologist/appointments'
-*/
+ * @see app/Http/Controllers/PsychologistAppointmentController.php:11
+ * @route '/psychologist/appointments'
+ */
 appointments.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: appointments.url(options),
     method: 'head',
 })
 
-/**
+    /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:11
-* @route '/psychologist/appointments'
-*/
-const appointmentsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: appointments.url(options),
-    method: 'get',
-})
+ * @see app/Http/Controllers/PsychologistAppointmentController.php:11
+ * @route '/psychologist/appointments'
+ */
+    const appointmentsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: appointments.url(options),
+        method: 'get',
+    })
 
-/**
+            /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:11
-* @route '/psychologist/appointments'
-*/
-appointmentsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: appointments.url(options),
-    method: 'get',
-})
-
-/**
+ * @see app/Http/Controllers/PsychologistAppointmentController.php:11
+ * @route '/psychologist/appointments'
+ */
+        appointmentsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: appointments.url(options),
+            method: 'get',
+        })
+            /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:11
-* @route '/psychologist/appointments'
-*/
-appointmentsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: appointments.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'HEAD',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'get',
-})
-
-appointments.form = appointmentsForm
-
+ * @see app/Http/Controllers/PsychologistAppointmentController.php:11
+ * @route '/psychologist/appointments'
+ */
+        appointmentsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: appointments.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    appointments.form = appointmentsForm
 /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:161
-* @route '/psychologist/availability'
-*/
+ * @see app/Http/Controllers/DashboardController.php:161
+ * @route '/psychologist/availability'
+ */
 export const availability = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: availability.url(options),
     method: 'patch',
@@ -99,60 +96,59 @@ availability.definition = {
 
 /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:161
-* @route '/psychologist/availability'
-*/
+ * @see app/Http/Controllers/DashboardController.php:161
+ * @route '/psychologist/availability'
+ */
 availability.url = (options?: RouteQueryOptions) => {
     return availability.definition.url + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:161
-* @route '/psychologist/availability'
-*/
+ * @see app/Http/Controllers/DashboardController.php:161
+ * @route '/psychologist/availability'
+ */
 availability.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: availability.url(options),
     method: 'patch',
 })
 
-/**
+    /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:161
-* @route '/psychologist/availability'
-*/
-const availabilityForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: availability.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'PATCH',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'post',
-})
+ * @see app/Http/Controllers/DashboardController.php:161
+ * @route '/psychologist/availability'
+ */
+    const availabilityForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        action: availability.url({
+                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                        _method: 'PATCH',
+                        ...(options?.query ?? options?.mergeQuery ?? {}),
+                    }
+                }),
+        method: 'post',
+    })
 
-/**
+            /**
 * @see \App\Http\Controllers\DashboardController::availability
-* @see app/Http/Controllers/DashboardController.php:161
-* @route '/psychologist/availability'
-*/
-availabilityForm.patch = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-    action: availability.url({
-        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-            _method: 'PATCH',
-            ...(options?.query ?? options?.mergeQuery ?? {}),
-        }
-    }),
-    method: 'post',
-})
-
-availability.form = availabilityForm
-
+ * @see app/Http/Controllers/DashboardController.php:161
+ * @route '/psychologist/availability'
+ */
+        availabilityForm.patch = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+            action: availability.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'PATCH',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'post',
+        })
+    
+    availability.form = availabilityForm
 const psychologist = {
     profile: Object.assign(profile, profile),
-    appointments: Object.assign(appointments, appointments),
-    schedules: Object.assign(schedules, schedules),
-    availability: Object.assign(availability, availability),
+appointments: Object.assign(appointments, appointments),
+schedules: Object.assign(schedules, schedules),
+availability: Object.assign(availability, availability),
 }
 
 export default psychologist
