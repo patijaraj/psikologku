@@ -51,10 +51,13 @@ type PsychologistDashboardProps = {
 const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: true },
     { label: 'Schedules', path: '/psychologist/schedules', active: false },
-    { label: 'Appointments', path: '/psychologist/appointments', active: false },
-    { label: 'Sessions', path: '#', active: false },
+    {
+        label: 'Appointments',
+        path: '/psychologist/appointments',
+        active: false,
+    },
+    { label: 'Sessions', path: '/sessions', active: false },
     { label: 'Records', path: '#', active: false },
-    
 ];
 
 function formatRupiah(amount: number) {
@@ -477,7 +480,9 @@ function SessionRow({ session }: { session: TodaySession }) {
     const isOverdue = session.status === 'overdue';
 
     return (
-        <article className={`flex flex-col gap-4 rounded-2xl border ${isOverdue ? 'border-[#feecec] bg-[#fff5f5]' : 'border-[#f2f4f6] bg-white'} p-4 sm:flex-row sm:items-center sm:justify-between`}>
+        <article
+            className={`flex flex-col gap-4 rounded-2xl border ${isOverdue ? 'border-[#feecec] bg-[#fff5f5]' : 'border-[#f2f4f6] bg-white'} p-4 sm:flex-row sm:items-center sm:justify-between`}
+        >
             <div className="flex items-center gap-4">
                 <InitialsAvatar
                     name={session.patient_name}
@@ -488,7 +493,8 @@ function SessionRow({ session }: { session: TodaySession }) {
                         {session.patient_name}
                     </h3>
                     <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
-                        {session.date ? `${session.date} · ` : ''}{session.time ?? '--:--'} WIB ·{' '}
+                        {session.date ? `${session.date} · ` : ''}
+                        {session.time ?? '--:--'} WIB ·{' '}
                         {formatRupiah(session.amount)}
                     </p>
                 </div>
@@ -500,14 +506,14 @@ function SessionRow({ session }: { session: TodaySession }) {
                         isPaid
                             ? 'bg-[#dcfce7] text-[#166534]'
                             : isOverdue
-                            ? 'bg-[#feecec] text-[#b02a2a]'
-                            : 'bg-[#fef3c7] text-[#92400e]'
+                              ? 'bg-[#feecec] text-[#b02a2a]'
+                              : 'bg-[#fef3c7] text-[#92400e]'
                     }`}
                 >
                     {session.status}
                 </span>
                 <Link
-                    href="#"
+                    href={isPaid || isOverdue ? '/sessions' : '#'}
                     className={`flex h-11 items-center justify-center rounded-xl px-5 text-sm font-bold transition-colors ${
                         isPaid || isOverdue
                             ? 'bg-[#1464BC] text-white hover:bg-[#1053A0]'

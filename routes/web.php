@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PsychologistAppointmentController;
 use App\Http\Controllers\PsychologistScheduleController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TherapistController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
@@ -35,7 +36,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('psychologist.profile.store');
     Route::get('psychologist/appointments', [PsychologistAppointmentController::class, 'index'])
         ->name('psychologist.appointments');
-    
+    Route::patch('psychologist/appointments/{appointment}/complete', [PsychologistAppointmentController::class, 'complete'])
+        ->name('psychologist.appointments.complete');
+
     // Psychologist Schedules
     Route::get('psychologist/schedules', [PsychologistScheduleController::class, 'index'])
         ->name('psychologist.schedules.index');
@@ -50,7 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('psychologist.availability');
     Route::get('therapists', [TherapistController::class, 'index'])->name('therapists');
     Route::get('therapists/{psychologistProfile}', [TherapistController::class, 'show'])->name('therapists.show');
-    Route::inertia('sessions', 'sessions')->name('sessions');
+    Route::get('sessions', [SessionController::class, 'index'])->name('sessions');
     Route::get('payment', [PaymentController::class, 'show'])->name('payment');
 });
 

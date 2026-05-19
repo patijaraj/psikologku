@@ -2,6 +2,7 @@ import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
     Bell,
     Calendar,
+    CheckCircle2,
     LogOut,
     Menu,
     MessageSquare,
@@ -12,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
+import { complete } from '@/actions/App/Http/Controllers/PsychologistAppointmentController';
 import { logout } from '@/routes';
 
 type Appointment = {
@@ -33,7 +35,7 @@ const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: false },
     { label: 'Schedules', path: '/psychologist/schedules', active: false },
     { label: 'Appointments', path: '/psychologist/appointments', active: true },
-    { label: 'Sessions', path: '#', active: false },
+    { label: 'Sessions', path: '/sessions', active: false },
     { label: 'Records', path: '#', active: false },
 ];
 
@@ -238,7 +240,8 @@ export default function PsychologistAppointments({
                             Daftar Appointment.
                         </h1>
                         <p className="m-0 mt-3 max-w-[660px] text-base leading-relaxed font-medium text-[#717783]">
-                            Kelola jadwal pertemuan dan sesi terapi Anda dengan pasien di sini.
+                            Kelola jadwal pertemuan dan sesi terapi Anda dengan
+                            pasien di sini.
                         </p>
                     </div>
                 </section>
@@ -286,6 +289,20 @@ PsychologistAppointments.layout = {};
 
 function AppointmentRow({ appointment }: { appointment: Appointment }) {
     const isPaid = appointment.payment_status === 'paid';
+    const canStart = isPaid && appointment.status === 'upcoming';
+    const canComplete = isPaid && appointment.status !== 'completed';
+
+    const completeAppointment = () => {
+        if (!canComplete) {
+            return;
+        }
+
+        router.patch(
+            complete.url(appointment.id),
+            {},
+            { preserveScroll: true },
+        );
+    };
 
     return (
         <article className="flex flex-col gap-4 rounded-2xl border border-[#f2f4f6] bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
@@ -326,16 +343,31 @@ function AppointmentRow({ appointment }: { appointment: Appointment }) {
                         {appointment.status}
                     </span>
                 </div>
-                <Link
-                    href="#"
-                    className={`flex h-11 items-center justify-center rounded-xl px-5 text-sm font-bold transition-colors ${
-                        isPaid && appointment.status === 'upcoming'
-                            ? 'bg-[#1464BC] text-white hover:bg-[#1053A0]'
-                            : 'bg-[#f2f4f6] text-[#717783]'
-                    }`}
-                >
-                    Mulai Sesi
-                </Link>
+                <div className="flex flex-wrap gap-2 sm:justify-end">
+                    <Link
+                        href={canStart ? '/sessions' : '#'}
+                        className={`flex h-11 items-center justify-center rounded-xl px-5 text-sm font-bold transition-colors ${
+                            canStart
+                                ? 'bg-[#1464BC] text-white hover:bg-[#1053A0]'
+                                : 'bg-[#f2f4f6] text-[#717783]'
+                        }`}
+                    >
+                        Mulai Sesi
+                    </Link>
+                    <button
+                        type="button"
+                        onClick={completeAppointment}
+                        disabled={!canComplete}
+                        className={`flex h-11 cursor-pointer items-center justify-center gap-2 rounded-xl px-5 text-sm font-bold transition-colors disabled:cursor-not-allowed ${
+                            canComplete
+                                ? 'bg-[#dcfce7] text-[#166534] hover:bg-[#bbf7d0]'
+                                : 'bg-[#f2f4f6] text-[#717783]'
+                        }`}
+                    >
+                        <CheckCircle2 className="h-4 w-4" />
+                        Selesai
+                    </button>
+                </div>
             </div>
         </article>
     );

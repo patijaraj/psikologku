@@ -35,8 +35,12 @@ type PsychologistSchedulesProps = {
 const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: false },
     { label: 'Schedules', path: '/psychologist/schedules', active: true },
-    { label: 'Appointments', path: '/psychologist/appointments', active: false },
-    { label: 'Sessions', path: '#', active: false },
+    {
+        label: 'Appointments',
+        path: '/psychologist/appointments',
+        active: false,
+    },
+    { label: 'Sessions', path: '/sessions', active: false },
     { label: 'Records', path: '#', active: false },
 ];
 
@@ -70,20 +74,30 @@ export default function PsychologistSchedules({
             preserveScroll: true,
             onSuccess: () => {
                 setIsAdding(false);
-                setForm({ day_of_week: 'Senin', start_time: '09:00', end_time: '17:00' });
+                setForm({
+                    day_of_week: 'Senin',
+                    start_time: '09:00',
+                    end_time: '17:00',
+                });
             },
         });
     };
 
     const toggleActive = (schedule: Schedule) => {
-        router.patch(`/psychologist/schedules/${schedule.id}`, {
-            is_active: !schedule.is_active,
-        }, { preserveScroll: true });
+        router.patch(
+            `/psychologist/schedules/${schedule.id}`,
+            {
+                is_active: !schedule.is_active,
+            },
+            { preserveScroll: true },
+        );
     };
 
     const deleteSchedule = (id: number) => {
         if (confirm('Apakah Anda yakin ingin menghapus jadwal ini?')) {
-            router.delete(`/psychologist/schedules/${id}`, { preserveScroll: true });
+            router.delete(`/psychologist/schedules/${id}`, {
+                preserveScroll: true,
+            });
         }
     };
 
@@ -94,7 +108,10 @@ export default function PsychologistSchedules({
             <nav className="sticky top-0 z-50 border-b border-[#e2e4e6] bg-white">
                 <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between px-4 sm:px-8">
                     <div className="flex items-center gap-8 lg:gap-16">
-                        <Link href="/dashboard" className="flex items-center gap-2 no-underline">
+                        <Link
+                            href="/dashboard"
+                            className="flex items-center gap-2 no-underline"
+                        >
                             <div className="flex size-8 items-center justify-center rounded-xl bg-[#1464BC] text-white shadow-sm shadow-blue-900/20">
                                 <Smile className="h-5 w-5" />
                             </div>
@@ -139,7 +156,10 @@ export default function PsychologistSchedules({
                                     setIsMobileMenuOpen(false);
                                 }}
                             >
-                                <InitialsAvatar name={userName} className="size-9" />
+                                <InitialsAvatar
+                                    name={userName}
+                                    className="size-9"
+                                />
                             </button>
 
                             {isUserMenuOpen && (
@@ -152,7 +172,10 @@ export default function PsychologistSchedules({
                                     />
                                     <div className="absolute top-[52px] right-0 z-50 w-[260px] overflow-hidden rounded-3xl border border-[#e2e4e6] bg-white p-2 shadow-[0px_20px_48px_-18px_rgba(25,28,30,0.35)]">
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
-                                            <InitialsAvatar name={userName} className="size-11 text-base" />
+                                            <InitialsAvatar
+                                                name={userName}
+                                                className="size-11 text-base"
+                                            />
                                             <div className="min-w-0">
                                                 <p className="m-0 truncate text-sm font-bold text-[#191c1e]">
                                                     {userName}
@@ -194,9 +217,15 @@ export default function PsychologistSchedules({
                             type="button"
                             aria-label="Buka menu"
                             className="cursor-pointer border-none bg-transparent p-1 text-[#717783] md:hidden"
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            onClick={() =>
+                                setIsMobileMenuOpen(!isMobileMenuOpen)
+                            }
                         >
-                            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                            {isMobileMenuOpen ? (
+                                <X className="h-6 w-6" />
+                            ) : (
+                                <Menu className="h-6 w-6" />
+                            )}
                         </button>
                     </div>
                 </div>
@@ -226,7 +255,7 @@ export default function PsychologistSchedules({
                         {flash.success}
                     </div>
                 )}
-                
+
                 <section className="flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-sm md:flex-row md:items-center md:justify-between md:p-8">
                     <div>
                         <p className="m-0 mb-2 text-sm font-bold tracking-widest text-[#1464BC] uppercase">
@@ -236,7 +265,8 @@ export default function PsychologistSchedules({
                             Jadwal Anda.
                         </h1>
                         <p className="m-0 mt-3 max-w-[660px] text-base leading-relaxed font-medium text-[#717783]">
-                            Atur hari dan jam ketersediaan Anda agar pasien dapat memilih waktu konsultasi.
+                            Atur hari dan jam ketersediaan Anda agar pasien
+                            dapat memilih waktu konsultasi.
                         </p>
                     </div>
                     <button
@@ -252,7 +282,9 @@ export default function PsychologistSchedules({
                 {isAdding && (
                     <section className="rounded-3xl border border-[#e2e4e6] bg-white p-6 shadow-sm">
                         <div className="mb-6 flex items-center justify-between">
-                            <h2 className="m-0 text-xl font-black text-[#191c1e]">Tambah Jadwal Baru</h2>
+                            <h2 className="m-0 text-xl font-black text-[#191c1e]">
+                                Tambah Jadwal Baru
+                            </h2>
                             <button
                                 type="button"
                                 onClick={() => setIsAdding(false)}
@@ -261,39 +293,77 @@ export default function PsychologistSchedules({
                                 <X className="h-5 w-5" />
                             </button>
                         </div>
-                        <form onSubmit={submit} className="grid grid-cols-1 gap-6 md:grid-cols-4">
+                        <form
+                            onSubmit={submit}
+                            className="grid grid-cols-1 gap-6 md:grid-cols-4"
+                        >
                             <div>
-                                <label className="mb-2 block text-sm font-bold text-[#414751]">Hari</label>
+                                <label className="mb-2 block text-sm font-bold text-[#414751]">
+                                    Hari
+                                </label>
                                 <select
                                     value={form.day_of_week}
-                                    onChange={(e) => setForm({ ...form, day_of_week: e.target.value })}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            day_of_week: e.target.value,
+                                        })
+                                    }
                                     className="h-11 w-full rounded-xl border border-[#d8dde5] bg-[#f7f9fb] px-4 text-sm font-medium text-[#191c1e] outline-none focus:border-[#1464BC]"
                                 >
                                     {days.map((d) => (
-                                        <option key={d} value={d}>{d}</option>
+                                        <option key={d} value={d}>
+                                            {d}
+                                        </option>
                                     ))}
                                 </select>
-                                {errors?.day_of_week && <p className="mt-1 text-xs text-red-500">{errors.day_of_week}</p>}
+                                {errors?.day_of_week && (
+                                    <p className="mt-1 text-xs text-red-500">
+                                        {errors.day_of_week}
+                                    </p>
+                                )}
                             </div>
                             <div>
-                                <label className="mb-2 block text-sm font-bold text-[#414751]">Jam Mulai</label>
+                                <label className="mb-2 block text-sm font-bold text-[#414751]">
+                                    Jam Mulai
+                                </label>
                                 <input
                                     type="time"
                                     value={form.start_time}
-                                    onChange={(e) => setForm({ ...form, start_time: e.target.value })}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            start_time: e.target.value,
+                                        })
+                                    }
                                     className="h-11 w-full rounded-xl border border-[#d8dde5] bg-[#f7f9fb] px-4 text-sm font-medium text-[#191c1e] outline-none focus:border-[#1464BC]"
                                 />
-                                {errors?.start_time && <p className="mt-1 text-xs text-red-500">{errors.start_time}</p>}
+                                {errors?.start_time && (
+                                    <p className="mt-1 text-xs text-red-500">
+                                        {errors.start_time}
+                                    </p>
+                                )}
                             </div>
                             <div>
-                                <label className="mb-2 block text-sm font-bold text-[#414751]">Jam Selesai</label>
+                                <label className="mb-2 block text-sm font-bold text-[#414751]">
+                                    Jam Selesai
+                                </label>
                                 <input
                                     type="time"
                                     value={form.end_time}
-                                    onChange={(e) => setForm({ ...form, end_time: e.target.value })}
+                                    onChange={(e) =>
+                                        setForm({
+                                            ...form,
+                                            end_time: e.target.value,
+                                        })
+                                    }
                                     className="h-11 w-full rounded-xl border border-[#d8dde5] bg-[#f7f9fb] px-4 text-sm font-medium text-[#191c1e] outline-none focus:border-[#1464BC]"
                                 />
-                                {errors?.end_time && <p className="mt-1 text-xs text-red-500">{errors.end_time}</p>}
+                                {errors?.end_time && (
+                                    <p className="mt-1 text-xs text-red-500">
+                                        {errors.end_time}
+                                    </p>
+                                )}
                             </div>
                             <div className="flex items-end">
                                 <button
@@ -319,39 +389,53 @@ export default function PsychologistSchedules({
                     {schedules.length > 0 ? (
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             {schedules.map((schedule) => (
-                                <article key={schedule.id} className="flex flex-col gap-4 rounded-2xl border border-[#f2f4f6] bg-[#f7f9fb] p-5 transition-all hover:border-[#1464BC]/20">
+                                <article
+                                    key={schedule.id}
+                                    className="flex flex-col gap-4 rounded-2xl border border-[#f2f4f6] bg-[#f7f9fb] p-5 transition-all hover:border-[#1464BC]/20"
+                                >
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-center gap-3">
                                             <div className="flex size-10 items-center justify-center rounded-xl bg-[#eef5fe] text-[#1464BC]">
                                                 <Calendar className="h-5 w-5" />
                                             </div>
                                             <div>
-                                                <h3 className="m-0 text-lg font-black text-[#191c1e]">{schedule.day_of_week}</h3>
+                                                <h3 className="m-0 text-lg font-black text-[#191c1e]">
+                                                    {schedule.day_of_week}
+                                                </h3>
                                                 <div className="flex items-center gap-1.5 text-sm font-medium text-[#717783]">
                                                     <Clock className="h-3.5 w-3.5" />
-                                                    {schedule.start_time} - {schedule.end_time} WIB
+                                                    {schedule.start_time} -{' '}
+                                                    {schedule.end_time} WIB
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div className="mt-2 flex items-center justify-between border-t border-[#e2e4e6] pt-4">
                                         <button
                                             type="button"
-                                            onClick={() => toggleActive(schedule)}
+                                            onClick={() =>
+                                                toggleActive(schedule)
+                                            }
                                             className={`flex cursor-pointer items-center gap-2 rounded-full border-none px-3 py-1.5 text-xs font-bold transition-colors ${
                                                 schedule.is_active
                                                     ? 'bg-[#dcfce7] text-[#166534] hover:bg-[#bbf7d0]'
                                                     : 'bg-[#f2f4f6] text-[#717783] hover:bg-[#e2e4e6]'
                                             }`}
                                         >
-                                            <span className={`size-2 rounded-full ${schedule.is_active ? 'bg-[#16a34a]' : 'bg-[#a0a5b1]'}`} />
-                                            {schedule.is_active ? 'Aktif' : 'Nonaktif'}
+                                            <span
+                                                className={`size-2 rounded-full ${schedule.is_active ? 'bg-[#16a34a]' : 'bg-[#a0a5b1]'}`}
+                                            />
+                                            {schedule.is_active
+                                                ? 'Aktif'
+                                                : 'Nonaktif'}
                                         </button>
-                                        
+
                                         <button
                                             type="button"
-                                            onClick={() => deleteSchedule(schedule.id)}
+                                            onClick={() =>
+                                                deleteSchedule(schedule.id)
+                                            }
                                             className="cursor-pointer rounded-lg border-none bg-transparent p-2 text-[#717783] hover:bg-[#feecec] hover:text-[#b02a2a]"
                                             aria-label="Hapus jadwal"
                                         >
@@ -368,7 +452,8 @@ export default function PsychologistSchedules({
                                 Belum ada jadwal
                             </h3>
                             <p className="m-0 mt-2 max-w-[420px] text-sm font-medium text-[#717783]">
-                                Silakan tambahkan jadwal praktik Anda agar pasien bisa memesan sesi terapi.
+                                Silakan tambahkan jadwal praktik Anda agar
+                                pasien bisa memesan sesi terapi.
                             </p>
                             <button
                                 type="button"

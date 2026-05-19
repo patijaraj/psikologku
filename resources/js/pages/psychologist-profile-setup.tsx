@@ -31,8 +31,12 @@ type PsychologistProfileSetupProps = {
 const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: false },
     { label: 'Schedules', path: '/psychologist/schedules', active: false },
-    { label: 'Appointments', path: '/psychologist/appointments', active: false },
-    { label: 'Sessions', path: '#', active: false },
+    {
+        label: 'Appointments',
+        path: '/psychologist/appointments',
+        active: false,
+    },
+    { label: 'Sessions', path: '/sessions', active: false },
     { label: 'Records', path: '#', active: false },
 ];
 
@@ -153,9 +157,8 @@ export default function PsychologistProfileSetup({
                         Lengkapi data psikolog Anda.
                     </h1>
                     <p className="m-0 mt-5 text-base leading-relaxed font-medium text-blue-50">
-                        Data ini 
-                        digunakan untuk listing therapist, dashboard psikolog,
-                        tarif konsultasi, serta status praktik.
+                        Data ini digunakan untuk listing therapist, dashboard
+                        psikolog, tarif konsultasi, serta status praktik.
                     </p>
 
                     <div className="mt-10 flex flex-col gap-4">
