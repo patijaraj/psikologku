@@ -179,7 +179,10 @@ export default function PsychologistAppointments({
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
                                             <InitialsAvatar
                                                 name={userName}
-                                                photoUrl={(auth.user as any)?.photo_url}
+                                                photoUrl={
+                                                    (auth.user as any)
+                                                        ?.photo_url
+                                                }
                                                 className="size-11 text-base"
                                             />
                                             <div className="min-w-0">
@@ -378,9 +381,25 @@ function AppointmentSection({
 
 function AppointmentRow({ appointment }: { appointment: Appointment }) {
     const isPaid = appointment.payment_status === 'paid';
-    const canStart =
-        isPaid && ['upcoming', 'due', 'overdue'].includes(appointment.status);
     const canComplete = appointment.can_complete;
+
+    let chatButtonText = 'Mulai Sesi';
+    let chatButtonLink = '#';
+    let chatButtonStyle = 'bg-[#f2f4f6] text-[#717783]';
+
+    if (isPaid) {
+        chatButtonLink = '/sessions';
+        if (appointment.status === 'completed') {
+            chatButtonText = 'Riwayat Chat';
+            chatButtonStyle = 'bg-[#eef5fe] text-[#1464BC] hover:bg-[#d9e8fc]';
+        } else if (appointment.status === 'ongoing') {
+            chatButtonText = 'Lanjut Sesi';
+            chatButtonStyle = 'bg-[#1464BC] text-white hover:bg-[#1053A0]';
+        } else {
+            chatButtonText = 'Buka Sesi';
+            chatButtonStyle = 'bg-[#1464BC] text-white hover:bg-[#1053A0]';
+        }
+    }
 
     const completeAppointment = () => {
         if (!canComplete) {
@@ -439,14 +458,10 @@ function AppointmentRow({ appointment }: { appointment: Appointment }) {
                 </div>
                 <div className="flex flex-wrap gap-2 sm:justify-end">
                     <Link
-                        href={canStart ? '/sessions' : '#'}
-                        className={`flex h-11 items-center justify-center rounded-xl px-5 text-sm font-bold transition-colors ${
-                            canStart
-                                ? 'bg-[#1464BC] text-white hover:bg-[#1053A0]'
-                                : 'bg-[#f2f4f6] text-[#717783]'
-                        }`}
+                        href={chatButtonLink}
+                        className={`flex h-11 items-center justify-center rounded-xl px-5 text-sm font-bold transition-colors ${chatButtonStyle}`}
                     >
-                        Mulai Sesi
+                        {chatButtonText}
                     </Link>
                     <button
                         type="button"
