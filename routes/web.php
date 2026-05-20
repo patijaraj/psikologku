@@ -38,6 +38,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('psychologist.appointments');
     Route::patch('psychologist/appointments/{appointment}/complete', [PsychologistAppointmentController::class, 'complete'])
         ->name('psychologist.appointments.complete');
+    Route::patch('psychologist/appointments/{appointment}/start', [PsychologistAppointmentController::class, 'start'])
+        ->name('psychologist.appointments.start');
 
     // Psychologist Schedules
     Route::get('psychologist/schedules', [PsychologistScheduleController::class, 'index'])

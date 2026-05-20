@@ -89,8 +89,99 @@ completeForm.patch = (args: { appointment: number | { id: number } } | [appointm
 
 complete.form = completeForm
 
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::start
+* @see app/Http/Controllers/PsychologistAppointmentController.php:77
+* @route '/psychologist/appointments/{appointment}/start'
+*/
+export const start = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: start.url(args, options),
+    method: 'patch',
+})
+
+start.definition = {
+    methods: ["patch"],
+    url: '/psychologist/appointments/{appointment}/start',
+} satisfies RouteDefinition<["patch"]>
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::start
+* @see app/Http/Controllers/PsychologistAppointmentController.php:77
+* @route '/psychologist/appointments/{appointment}/start'
+*/
+start.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { appointment: args }
+    }
+
+    if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+        args = { appointment: args.id }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            appointment: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        appointment: typeof args.appointment === 'object'
+        ? args.appointment.id
+        : args.appointment,
+    }
+
+    return start.definition.url
+            .replace('{appointment}', parsedArgs.appointment.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::start
+* @see app/Http/Controllers/PsychologistAppointmentController.php:77
+* @route '/psychologist/appointments/{appointment}/start'
+*/
+start.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: start.url(args, options),
+    method: 'patch',
+})
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::start
+* @see app/Http/Controllers/PsychologistAppointmentController.php:77
+* @route '/psychologist/appointments/{appointment}/start'
+*/
+const startForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: start.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'PATCH',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::start
+* @see app/Http/Controllers/PsychologistAppointmentController.php:77
+* @route '/psychologist/appointments/{appointment}/start'
+*/
+startForm.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: start.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'PATCH',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+start.form = startForm
+
 const appointments = {
     complete: Object.assign(complete, complete),
+    start: Object.assign(start, start),
 }
 
 export default appointments

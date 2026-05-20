@@ -17,7 +17,10 @@ import {
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
-import { complete } from '@/actions/App/Http/Controllers/PsychologistAppointmentController';
+import {
+    complete,
+    start,
+} from '@/actions/App/Http/Controllers/PsychologistAppointmentController';
 import { logout } from '@/routes';
 import { supabase } from '../lib/supabase';
 
@@ -37,6 +40,7 @@ type ChatContact = {
     online: boolean;
     can_chat: boolean;
     can_complete: boolean;
+    can_start_session: boolean;
 };
 
 type SessionsProps = {
@@ -262,6 +266,39 @@ export default function Sessions({
         }
     };
 
+    const handleStartSession = () => {
+        if (!selectedUser?.appointment_id || !selectedUser.can_start_session) {
+            return;
+        }
+
+        router.patch(
+            start.url(selectedUser.appointment_id),
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    const startedContact = {
+                        ...selectedUser,
+                        appointment_status: 'ongoing',
+                        status: 'ongoing',
+                        can_chat: true,
+                        can_start_session: false,
+                    };
+
+                    setChatList((current) =>
+                        current.map((contact) =>
+                            contact.appointment_id ===
+                            selectedUser.appointment_id
+                                ? startedContact
+                                : contact,
+                        ),
+                    );
+                    setSelectedUser(startedContact);
+                },
+            },
+        );
+    };
+
     const handleCompleteSession = () => {
         if (!selectedUser?.appointment_id || !selectedUser.can_complete) {
             return;
@@ -387,7 +424,10 @@ export default function Sessions({
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
                                             <InitialsAvatar
                                                 name={userName}
-                                                photoUrl={(auth.user as any)?.photo_url}
+                                                photoUrl={
+                                                    (auth.user as any)
+                                                        ?.photo_url
+                                                }
                                                 className="size-11 text-base"
                                             />
                                             <div className="min-w-0">
@@ -494,7 +534,7 @@ export default function Sessions({
                                             <img
                                                 src={contact.photo_url}
                                                 alt={contact.name}
-                                                className="size-12 rounded-xl object-cover border border-[#e2e4e6]"
+                                                className="size-12 rounded-xl border border-[#e2e4e6] object-cover"
                                             />
                                         ) : (
                                             <div className="flex size-12 items-center justify-center overflow-hidden rounded-xl bg-[#1464BC] text-lg font-bold text-white">
@@ -559,7 +599,7 @@ export default function Sessions({
                                             <img
                                                 src={selectedUser.photo_url}
                                                 alt={selectedUser.name}
-                                                className="size-11 rounded-full object-cover border border-[#e2e4e6]"
+                                                className="size-11 rounded-full border border-[#e2e4e6] object-cover"
                                             />
                                         ) : (
                                             <div className="flex size-11 items-center justify-center overflow-hidden rounded-full bg-slate-200 font-bold text-slate-700">
@@ -647,68 +687,97 @@ export default function Sessions({
 
                             {/* FOOTER: INPUT CHAT */}
                             <footer className="shrink-0 bg-white p-6">
-                                <div
-                                    className={`flex items-end gap-2 rounded-3xl border border-[#e2e4e6]/50 bg-[#f7f9fb] p-2 pr-2.5 ${
-                                        isChatClosed ? 'opacity-80' : ''
-                                    }`}
-                                >
-                                    <button
-                                        type="button"
-                                        aria-label="Tambah lampiran"
-                                        disabled={isChatClosed}
-                                        className="mb-1 flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border-none bg-transparent text-[#717783] transition-colors hover:bg-[#e2e4e6] hover:text-[#191c1e]"
-                                    >
-                                        <Plus className="h-6 w-6" />
-                                    </button>
-
-                                    <input
-                                        type="text"
-                                        value={input}
-                                        onChange={(e) =>
-                                            setInput(e.target.value)
-                                        }
-                                        disabled={isChatClosed}
-                                        onKeyDown={(e) =>
-                                            e.key === 'Enter' &&
-                                            handleSendMessage()
-                                        }
-                                        placeholder={
-                                            isChatClosed
-                                                ? 'Sesi sudah selesai. Riwayat chat tetap bisa dilihat.'
-                                                : 'Ketik pesan Anda dengan aman...'
-                                        }
-                                        className="mb-1 h-10 flex-1 border-none bg-transparent px-3 py-2 text-[15px] text-[#191c1e] outline-none placeholder:text-[#a0a5b1]"
-                                    />
-
-                                    <div className="mb-1 flex shrink-0 items-center gap-2">
+                                {selectedUser.can_start_session ? (
+                                    <div className="flex flex-col items-center justify-center rounded-3xl border border-[#e2e4e6] bg-[#f7f9fb] p-6 text-center">
+                                        <p className="mb-4 text-sm font-medium text-[#717783]">
+                                            Waktu sesi telah tiba. Ketuk tombol
+                                            di bawah untuk memulai percakapan.
+                                        </p>
                                         <button
                                             type="button"
-                                            aria-label="Pilih emoji"
-                                            disabled={isChatClosed}
-                                            className="flex size-10 cursor-pointer items-center justify-center rounded-full border-none bg-transparent text-[#717783] transition-colors hover:bg-[#e2e4e6] hover:text-[#191c1e]"
+                                            onClick={handleStartSession}
+                                            className="rounded-2xl bg-[#1464BC] px-8 py-3 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[#1053A0]"
                                         >
-                                            <Smile className="h-6 w-6" />
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={handleSendMessage}
-                                            disabled={isChatClosed}
-                                            className={`flex size-10 cursor-pointer items-center justify-center rounded-2xl border-none text-white shadow-sm transition-colors ${
-                                                isChatClosed
-                                                    ? 'bg-[#a0a5b1]'
-                                                    : 'bg-[#1464BC] hover:bg-[#1053A0]'
-                                            }`}
-                                        >
-                                            <Send className="ml-0.5 h-5 w-5" />
+                                            Mulai Sesi
                                         </button>
                                     </div>
-                                </div>
-                                <div className="mt-3 flex items-center justify-center gap-1.5 text-[#a0a5b1]">
-                                    <Lock className="h-3.5 w-3.5" />
-                                    <span className="text-[11px] font-medium">
-                                        Semua konsultasi dienkripsi end-to-end.
-                                    </span>
-                                </div>
+                                ) : !selectedUser.can_chat &&
+                                  selectedUser.appointment_status !==
+                                      'completed' ? (
+                                    <div className="flex items-center justify-center rounded-3xl border border-[#e2e4e6] bg-[#f7f9fb] p-6 text-center">
+                                        <p className="m-0 text-sm font-medium text-[#717783]">
+                                            {isPsychologist
+                                                ? 'Sesi ini belum memasuki waktunya.'
+                                                : 'Menunggu psikolog memulai sesi...'}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div
+                                            className={`flex items-end gap-2 rounded-3xl border border-[#e2e4e6]/50 bg-[#f7f9fb] p-2 pr-2.5 ${
+                                                isChatClosed ? 'opacity-80' : ''
+                                            }`}
+                                        >
+                                            <button
+                                                type="button"
+                                                aria-label="Tambah lampiran"
+                                                disabled={isChatClosed}
+                                                className="mb-1 flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border-none bg-transparent text-[#717783] transition-colors hover:bg-[#e2e4e6] hover:text-[#191c1e]"
+                                            >
+                                                <Plus className="h-6 w-6" />
+                                            </button>
+
+                                            <input
+                                                type="text"
+                                                value={input}
+                                                onChange={(e) =>
+                                                    setInput(e.target.value)
+                                                }
+                                                disabled={isChatClosed}
+                                                onKeyDown={(e) =>
+                                                    e.key === 'Enter' &&
+                                                    handleSendMessage()
+                                                }
+                                                placeholder={
+                                                    isChatClosed
+                                                        ? 'Sesi sudah selesai. Riwayat chat tetap bisa dilihat.'
+                                                        : 'Ketik pesan Anda dengan aman...'
+                                                }
+                                                className="mb-1 h-10 flex-1 border-none bg-transparent px-3 py-2 text-[15px] text-[#191c1e] outline-none placeholder:text-[#a0a5b1]"
+                                            />
+
+                                            <div className="mb-1 flex shrink-0 items-center gap-2">
+                                                <button
+                                                    type="button"
+                                                    aria-label="Pilih emoji"
+                                                    disabled={isChatClosed}
+                                                    className="flex size-10 cursor-pointer items-center justify-center rounded-full border-none bg-transparent text-[#717783] transition-colors hover:bg-[#e2e4e6] hover:text-[#191c1e]"
+                                                >
+                                                    <Smile className="h-6 w-6" />
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={handleSendMessage}
+                                                    disabled={isChatClosed}
+                                                    className={`flex size-10 cursor-pointer items-center justify-center rounded-2xl border-none text-white shadow-sm transition-colors ${
+                                                        isChatClosed
+                                                            ? 'bg-[#a0a5b1]'
+                                                            : 'bg-[#1464BC] hover:bg-[#1053A0]'
+                                                    }`}
+                                                >
+                                                    <Send className="ml-0.5 h-5 w-5" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className="mt-3 flex items-center justify-center gap-1.5 text-[#a0a5b1]">
+                                            <Lock className="h-3.5 w-3.5" />
+                                            <span className="text-[11px] font-medium">
+                                                Semua konsultasi dienkripsi
+                                                end-to-end.
+                                            </span>
+                                        </div>
+                                    </>
+                                )}
                             </footer>
                         </>
                     ) : (

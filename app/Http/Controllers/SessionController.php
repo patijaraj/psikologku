@@ -27,17 +27,20 @@ class SessionController extends Controller
                 ->with(['transaction', 'user:id,name,email'])
                 ->whereNotIn('status', ['cancelled', 'failed'])
                 ->whereHas('transaction', fn ($query) => $query->where('status', 'paid'))
-                ->latest('appointment_date')
-                ->latest('start_time')
-                ->get()
-                ->map(fn (Appointment $appointment): ?array => $appointment->user
-                    ? $this->serializeChatContact($appointment, $appointment->user, true)
-                    : null)
-                ->filter()
-                ->values();
+                ->orderBy('appointment_date')
+                ->orderBy('start_time')
+                ->get();
+
+            $grouped = $appointments->groupBy('user_id');
+            $chatContacts = $grouped->map(function ($userAppointments) {
+                $activeAppt = $this->findClosestAppointment($userAppointments);
+                return $activeAppt && $activeAppt->user 
+                    ? $this->serializeChatContact($activeAppt, $activeAppt->user, true) 
+                    : null;
+            })->filter()->values();
 
             return Inertia::render('sessions', [
-                'chatContacts' => $appointments,
+                'chatContacts' => $chatContacts,
                 'isPsychologist' => true,
             ]);
         }
@@ -46,19 +49,44 @@ class SessionController extends Controller
             ->with(['transaction', 'psychologist.user:id,name,email'])
             ->whereNotIn('status', ['cancelled', 'failed'])
             ->whereHas('transaction', fn ($query) => $query->where('status', 'paid'))
-            ->latest('appointment_date')
-            ->latest('start_time')
-            ->get()
-            ->map(fn (Appointment $appointment): ?array => $appointment->psychologist?->user
-                ? $this->serializeChatContact($appointment, $appointment->psychologist->user, false)
-                : null)
-            ->filter()
-            ->values();
+            ->orderBy('appointment_date')
+            ->orderBy('start_time')
+            ->get();
+
+        $grouped = $appointments->groupBy('psychologist_id');
+        $chatContacts = $grouped->map(function ($psyAppointments) {
+            $activeAppt = $this->findClosestAppointment($psyAppointments);
+            return $activeAppt && $activeAppt->psychologist?->user 
+                ? $this->serializeChatContact($activeAppt, $activeAppt->psychologist->user, false) 
+                : null;
+        })->filter()->values();
 
         return Inertia::render('sessions', [
-            'chatContacts' => $appointments,
+            'chatContacts' => $chatContacts,
             'isPsychologist' => false,
         ]);
+    }
+
+    private function findClosestAppointment(\Illuminate\Support\Collection $appointments)
+    {
+        $ongoing = $appointments->firstWhere('status', 'ongoing');
+        if ($ongoing) return $ongoing;
+
+        $due = $appointments->first(function ($appt) {
+            $status = $this->appointmentStatus($appt);
+            return in_array($status, ['due', 'overdue']) && $appt->status !== 'completed';
+        });
+        if ($due) return $due;
+
+        $upcoming = $appointments->firstWhere('status', 'upcoming');
+        if ($upcoming) return $upcoming;
+
+        $completed = $appointments->where('status', 'completed')->sortByDesc(function ($appt) {
+            return $appt->appointment_date . ' ' . $appt->start_time;
+        })->first();
+        if ($completed) return $completed;
+
+        return $appointments->first();
     }
 
     /**
@@ -77,7 +105,8 @@ class SessionController extends Controller
      *     preview:string,
      *     online:bool,
      *     can_chat:bool,
-     *     can_complete:bool
+     *     can_complete:bool,
+     *     can_start_session:bool
      * }
      */
     private function serializeChatContact(Appointment $appointment, User $counterpart, bool $isPsychologist): array
@@ -85,8 +114,18 @@ class SessionController extends Controller
         $time = $appointment->start_time && $appointment->end_time
             ? $appointment->start_time->format('H:i').' - '.$appointment->end_time->format('H:i').' WIB'
             : '--:-- WIB';
+        
         $isCompleted = $appointment->status === 'completed';
+        $isOngoing = $appointment->status === 'ongoing';
         $displayStatus = $this->appointmentStatus($appointment);
+
+        $dateStr = $appointment->appointment_date ? $appointment->appointment_date->translatedFormat('d M Y') : '';
+
+        if ($isCompleted) {
+            $preview = "Sesi pada $dateStr $time sudah selesai.";
+        } else {
+            $preview = "$dateStr $time";
+        }
 
         return [
             'id' => $appointment->id,
@@ -100,12 +139,11 @@ class SessionController extends Controller
             'date' => $appointment->appointment_date?->format('Y-m-d'),
             'time' => $time,
             'photo_url' => ! $isPsychologist ? $appointment->psychologist?->photo_url : null,
-            'preview' => $isCompleted
-                ? 'Sesi selesai, riwayat chat tetap tersedia.'
-                : 'Klik untuk memulai obrolan.',
+            'preview' => $preview,
             'online' => true,
-            'can_chat' => ! $isCompleted,
-            'can_complete' => $isPsychologist && in_array($displayStatus, ['due', 'overdue'], true) && ! $isCompleted,
+            'can_chat' => $isOngoing,
+            'can_complete' => $isPsychologist && in_array($displayStatus, ['due', 'overdue', 'ongoing'], true) && ! $isCompleted,
+            'can_start_session' => $isPsychologist && ! $isOngoing && ! $isCompleted,
         ];
     }
 
