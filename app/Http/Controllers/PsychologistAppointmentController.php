@@ -27,7 +27,7 @@ class PsychologistAppointmentController extends Controller
             ->latest('appointment_date')
             ->get()
             ->map(function (Appointment $appointment): array {
-                $isOverdue = $this->isOverdue($appointment);
+                $status = $this->appointmentStatus($appointment);
 
                 return [
                     'id' => $appointment->id,
@@ -37,13 +37,11 @@ class PsychologistAppointmentController extends Controller
                     'time' => $appointment->start_time && $appointment->end_time
                         ? $appointment->start_time->format('H:i').' - '.$appointment->end_time->format('H:i').' WIB'
                         : '--:-- WIB',
-                    'status' => $appointment->status === 'completed'
-                        ? 'completed'
-                        : ($isOverdue ? 'overdue' : $appointment->status),
+                    'status' => $status,
                     'payment_status' => $appointment->transaction?->status ?? 'unpaid',
                     'amount' => $appointment->transaction ? (float) $appointment->transaction->gross_amount : 0,
                     'can_complete' => $appointment->transaction?->status === 'paid'
-                        && $isOverdue
+                        && in_array($status, ['due', 'overdue'], true)
                         && $appointment->status !== 'completed',
                 ];
             });
@@ -67,7 +65,7 @@ class PsychologistAppointmentController extends Controller
 
         abort_if(in_array($appointment->status, ['cancelled', 'failed'], true), 422);
         abort_unless($appointment->transaction?->status === 'paid', 422);
-        abort_unless($this->isOverdue($appointment), 422);
+        abort_unless(in_array($this->appointmentStatus($appointment), ['due', 'overdue'], true), 422);
 
         $appointment->update([
             'status' => 'completed',
@@ -76,17 +74,38 @@ class PsychologistAppointmentController extends Controller
         return back();
     }
 
-    private function isOverdue(Appointment $appointment): bool
+    private function appointmentStatus(Appointment $appointment): string
     {
-        if (! $appointment->appointment_date || ! $appointment->end_time) {
-            return false;
+        if ($appointment->status === 'completed') {
+            return 'completed';
         }
 
+        if ($appointment->status !== 'upcoming') {
+            return $appointment->status;
+        }
+
+        if (! $appointment->appointment_date || ! $appointment->start_time || ! $appointment->end_time) {
+            return $appointment->status;
+        }
+
+        $appointmentStart = CarbonImmutable::parse(
+            $appointment->appointment_date->format('Y-m-d').' '.$appointment->start_time->format('H:i:s'),
+            'Asia/Jakarta',
+        );
         $appointmentEnd = CarbonImmutable::parse(
             $appointment->appointment_date->format('Y-m-d').' '.$appointment->end_time->format('H:i:s'),
             'Asia/Jakarta',
         );
+        $now = now('Asia/Jakarta');
 
-        return $appointmentEnd->isPast() && $appointment->status === 'upcoming';
+        if ($appointmentEnd->isPast()) {
+            return 'overdue';
+        }
+
+        if ($appointmentStart->lte($now) && $appointmentEnd->gte($now)) {
+            return 'due';
+        }
+
+        return 'upcoming';
     }
 }

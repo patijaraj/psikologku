@@ -3,6 +3,7 @@ import {
     Bell,
     Calendar,
     CheckCircle2,
+    Clock,
     LogOut,
     Menu,
     MessageSquare,
@@ -48,6 +49,22 @@ function formatRupiah(amount: number) {
     }).format(amount);
 }
 
+function statusText(status: string) {
+    if (status === 'completed') {
+        return 'Selesai';
+    }
+
+    if (status === 'due') {
+        return 'Sedang berjalan';
+    }
+
+    if (status === 'overdue') {
+        return 'Overdue';
+    }
+
+    return 'Upcoming';
+}
+
 export default function PsychologistAppointments({
     appointments = [],
 }: PsychologistAppointmentsProps) {
@@ -56,6 +73,15 @@ export default function PsychologistAppointments({
     const { auth } = usePage().props;
     const userName = auth.user?.name ?? 'Psikolog';
     const userEmail = auth.user?.email ?? 'psikolog@example.com';
+    const runningAppointments = appointments.filter((appointment) =>
+        ['due', 'overdue'].includes(appointment.status),
+    );
+    const upcomingAppointments = appointments.filter(
+        (appointment) => appointment.status === 'upcoming',
+    );
+    const completedAppointments = appointments.filter(
+        (appointment) => appointment.status === 'completed',
+    );
 
     const handleLogout = () => {
         router.flushAll();
@@ -260,13 +286,25 @@ export default function PsychologistAppointments({
                     </div>
 
                     {appointments.length > 0 ? (
-                        <div className="flex flex-col gap-3">
-                            {appointments.map((appointment) => (
-                                <AppointmentRow
-                                    key={appointment.id}
-                                    appointment={appointment}
-                                />
-                            ))}
+                        <div className="flex flex-col gap-8">
+                            <AppointmentSection
+                                title="Sedang Berjalan"
+                                description="Sesi yang sudah masuk waktu konsultasi atau melewati jam selesai."
+                                appointments={runningAppointments}
+                                emptyText="Belum ada sesi yang sedang berjalan atau overdue."
+                            />
+                            <AppointmentSection
+                                title="Upcoming"
+                                description="Sesi berbayar yang jadwalnya belum mulai."
+                                appointments={upcomingAppointments}
+                                emptyText="Belum ada sesi upcoming."
+                            />
+                            <AppointmentSection
+                                title="Selesai"
+                                description="Sesi yang sudah ditandai selesai oleh psikolog."
+                                appointments={completedAppointments}
+                                emptyText="Belum ada sesi selesai."
+                            />
                         </div>
                     ) : (
                         <div className="flex min-h-[260px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#d8dde5] bg-[#f7f9fb] p-8 text-center">
@@ -288,10 +326,58 @@ export default function PsychologistAppointments({
 
 PsychologistAppointments.layout = {};
 
+function AppointmentSection({
+    title,
+    description,
+    appointments,
+    emptyText,
+}: {
+    title: string;
+    description: string;
+    appointments: Appointment[];
+    emptyText: string;
+}) {
+    return (
+        <section className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                    <h3 className="m-0 text-lg font-black text-[#191c1e]">
+                        {title}
+                    </h3>
+                    <p className="m-0 text-sm font-medium text-[#717783]">
+                        {description}
+                    </p>
+                </div>
+                <span className="w-fit rounded-full bg-[#f2f4f6] px-3 py-1 text-xs font-bold text-[#717783]">
+                    {appointments.length} sesi
+                </span>
+            </div>
+
+            {appointments.length > 0 ? (
+                <div className="flex flex-col gap-3">
+                    {appointments.map((appointment) => (
+                        <AppointmentRow
+                            key={appointment.id}
+                            appointment={appointment}
+                        />
+                    ))}
+                </div>
+            ) : (
+                <div className="flex min-h-20 items-center gap-3 rounded-2xl border border-dashed border-[#d8dde5] bg-[#f7f9fb] px-4 py-5">
+                    <Clock className="h-5 w-5 shrink-0 text-[#a0a5b1]" />
+                    <p className="m-0 text-sm font-medium text-[#717783]">
+                        {emptyText}
+                    </p>
+                </div>
+            )}
+        </section>
+    );
+}
+
 function AppointmentRow({ appointment }: { appointment: Appointment }) {
     const isPaid = appointment.payment_status === 'paid';
     const canStart =
-        isPaid && ['upcoming', 'overdue'].includes(appointment.status);
+        isPaid && ['upcoming', 'due', 'overdue'].includes(appointment.status);
     const canComplete = appointment.can_complete;
 
     const completeAppointment = () => {
@@ -339,12 +425,14 @@ function AppointmentRow({ appointment }: { appointment: Appointment }) {
                         className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${
                             appointment.status === 'upcoming'
                                 ? 'bg-[#e1eef9] text-[#1464BC]'
-                                : appointment.status === 'overdue'
-                                  ? 'bg-[#feecec] text-[#b02a2a]'
-                                  : 'bg-[#f2f4f6] text-[#717783]'
+                                : appointment.status === 'due'
+                                  ? 'bg-[#dcfce7] text-[#166534]'
+                                  : appointment.status === 'overdue'
+                                    ? 'bg-[#feecec] text-[#b02a2a]'
+                                    : 'bg-[#f2f4f6] text-[#717783]'
                         }`}
                     >
-                        {appointment.status}
+                        {statusText(appointment.status)}
                     </span>
                 </div>
                 <div className="flex flex-wrap gap-2 sm:justify-end">

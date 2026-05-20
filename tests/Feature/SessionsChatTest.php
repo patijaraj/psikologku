@@ -150,6 +150,27 @@ test('psychologist appointments page hides unpaid appointments', function () {
             ->where('appointments.0.payment_status', 'paid'));
 });
 
+test('psychologist appointments page marks appointments that are currently running as due', function () {
+    $patient = User::factory()->create();
+    $psychologist = User::factory()->create();
+    $appointment = createSessionChatAppointment($patient, $psychologist);
+
+    $appointment->update([
+        'appointment_date' => now()->timezone('Asia/Jakarta')->toDateString(),
+        'start_time' => now()->timezone('Asia/Jakarta')->subMinutes(10)->format('H:i:s'),
+        'end_time' => now()->timezone('Asia/Jakarta')->addMinutes(50)->format('H:i:s'),
+    ]);
+
+    $this->actingAs($psychologist)
+        ->get(route('psychologist.appointments'))
+        ->assertSuccessful()
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->component('psychologist-appointments')
+            ->has('appointments', 1)
+            ->where('appointments.0.status', 'due')
+            ->where('appointments.0.can_complete', true));
+});
+
 test('psychologist dashboard hides unpaid appointments', function () {
     $paidPatient = User::factory()->create(['name' => 'Pasien Paid']);
     $pendingPatient = User::factory()->create(['name' => 'Pasien Pending']);

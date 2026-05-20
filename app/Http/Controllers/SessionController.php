@@ -85,10 +85,7 @@ class SessionController extends Controller
             ? $appointment->start_time->format('H:i').' - '.$appointment->end_time->format('H:i').' WIB'
             : '--:-- WIB';
         $isCompleted = $appointment->status === 'completed';
-        $isOverdue = $this->isOverdue($appointment);
-        $displayStatus = $isCompleted
-            ? 'completed'
-            : ($isOverdue ? 'overdue' : $appointment->status);
+        $displayStatus = $this->appointmentStatus($appointment);
 
         return [
             'id' => $appointment->id,
@@ -106,21 +103,42 @@ class SessionController extends Controller
                 : 'Klik untuk memulai obrolan.',
             'online' => true,
             'can_chat' => ! $isCompleted,
-            'can_complete' => $isPsychologist && $isOverdue && ! $isCompleted,
+            'can_complete' => $isPsychologist && in_array($displayStatus, ['due', 'overdue'], true) && ! $isCompleted,
         ];
     }
 
-    private function isOverdue(Appointment $appointment): bool
+    private function appointmentStatus(Appointment $appointment): string
     {
-        if (! $appointment->appointment_date || ! $appointment->end_time) {
-            return false;
+        if ($appointment->status === 'completed') {
+            return 'completed';
         }
 
+        if ($appointment->status !== 'upcoming') {
+            return $appointment->status;
+        }
+
+        if (! $appointment->appointment_date || ! $appointment->start_time || ! $appointment->end_time) {
+            return $appointment->status;
+        }
+
+        $appointmentStart = CarbonImmutable::parse(
+            $appointment->appointment_date->format('Y-m-d').' '.$appointment->start_time->format('H:i:s'),
+            'Asia/Jakarta',
+        );
         $appointmentEnd = CarbonImmutable::parse(
             $appointment->appointment_date->format('Y-m-d').' '.$appointment->end_time->format('H:i:s'),
             'Asia/Jakarta',
         );
+        $now = now('Asia/Jakarta');
 
-        return $appointmentEnd->isPast() && $appointment->status === 'upcoming';
+        if ($appointmentEnd->isPast()) {
+            return 'overdue';
+        }
+
+        if ($appointmentStart->lte($now) && $appointmentEnd->gte($now)) {
+            return 'due';
+        }
+
+        return 'upcoming';
     }
 }
