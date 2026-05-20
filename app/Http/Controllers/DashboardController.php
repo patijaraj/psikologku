@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use App\Models\PsychologistProfile;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -22,12 +24,13 @@ class DashboardController extends Controller
                     'appointments' => fn ($query) => $query
                         ->with(['user:id,name,email', 'transaction'])
                         ->whereNotIn('status', ['cancelled', 'failed'])
+                        ->whereHas('transaction', fn ($query) => $query->where('status', 'paid'))
                         ->where(function ($q) use ($localToday) {
                             $q->whereDate('appointment_date', $localToday)
-                              ->orWhere(function ($q2) use ($localToday) {
-                                  $q2->whereDate('appointment_date', '<', $localToday)
-                                     ->where('status', 'upcoming');
-                              });
+                                ->orWhere(function ($q2) use ($localToday) {
+                                    $q2->whereDate('appointment_date', '<', $localToday)
+                                        ->where('status', 'upcoming');
+                                });
                         })
                         ->orderBy('appointment_date', 'asc')
                         ->orderBy('start_time', 'asc'),
@@ -49,24 +52,24 @@ class DashboardController extends Controller
                     'is_online' => (bool) $profile->is_online,
                 ],
                 'todaySessions' => $profile->appointments->map(function ($appointment) {
-                    $appointmentDateTimeStr = $appointment->appointment_date->format('Y-m-d') . ' ' . $appointment->end_time->format('H:i:s');
-                    $appointmentDateTime = \Carbon\Carbon::parse($appointmentDateTimeStr, 'Asia/Jakarta');
+                    $appointmentDateTimeStr = $appointment->appointment_date->format('Y-m-d').' '.$appointment->end_time->format('H:i:s');
+                    $appointmentDateTime = Carbon::parse($appointmentDateTimeStr, 'Asia/Jakarta');
                     $isOverdue = $appointmentDateTime->isPast() && $appointment->status === 'upcoming';
 
                     return [
                         'id' => $appointment->id,
                         'patient_name' => $appointment->user?->name ?? 'Pasien',
                         'patient_email' => $appointment->user?->email,
-                        'status' => $isOverdue ? 'overdue' : ($appointment->transaction?->status ?? $appointment->status),
+                        'status' => $isOverdue ? 'overdue' : $appointment->status,
                         'amount' => $appointment->transaction ? ((float) $appointment->transaction->gross_amount) : 0,
-                        'time' => $appointment->start_time->format('H:i') . ' - ' . $appointment->end_time->format('H:i'),
+                        'time' => $appointment->start_time->format('H:i').' - '.$appointment->end_time->format('H:i'),
                         'date' => $appointment->appointment_date->format('d M Y'),
                     ];
                 })->values(),
                 'summary' => [
                     'today_sessions' => $profile->appointments->count(),
-                    'paid_sessions' => $profile->appointments->filter(fn($a) => $a->transaction?->status === 'paid')->count(),
-                    'pending_sessions' => $profile->appointments->filter(fn($a) => $a->transaction?->status === 'pending')->count(),
+                    'paid_sessions' => $profile->appointments->count(),
+                    'pending_sessions' => 0,
                     'today_revenue' => (float) ($profile->transactions
                         ->where('status', 'paid')
                         ->sum('gross_amount') ?? 0),
@@ -76,23 +79,24 @@ class DashboardController extends Controller
 
         if (! $user->isPsychologist()) {
             $localToday = now()->timezone('Asia/Jakarta')->toDateString();
-            $appointments = \App\Models\Appointment::query()
+            $appointments = Appointment::query()
                 ->with(['psychologist.user'])
                 ->where('user_id', $user->id)
                 ->whereNotIn('status', ['cancelled', 'failed'])
-                ->where(function($q) use ($localToday) {
+                ->whereHas('transaction', fn ($query) => $query->where('status', 'paid'))
+                ->where(function ($q) use ($localToday) {
                     $q->whereDate('appointment_date', '>=', $localToday)
-                      ->orWhere(function($q2) use ($localToday) {
-                          $q2->whereDate('appointment_date', '<', $localToday)
-                             ->where('status', 'upcoming');
-                      });
+                        ->orWhere(function ($q2) use ($localToday) {
+                            $q2->whereDate('appointment_date', '<', $localToday)
+                                ->where('status', 'upcoming');
+                        });
                 })
                 ->orderBy('appointment_date', 'asc')
                 ->orderBy('start_time', 'asc')
                 ->get()
                 ->map(function ($appointment) {
-                    $appointmentDateTimeStr = $appointment->appointment_date->format('Y-m-d') . ' ' . $appointment->end_time->format('H:i:s');
-                    $appointmentDateTime = \Carbon\Carbon::parse($appointmentDateTimeStr, 'Asia/Jakarta');
+                    $appointmentDateTimeStr = $appointment->appointment_date->format('Y-m-d').' '.$appointment->end_time->format('H:i:s');
+                    $appointmentDateTime = Carbon::parse($appointmentDateTimeStr, 'Asia/Jakarta');
                     $isOverdue = $appointmentDateTime->isPast() && $appointment->status === 'upcoming';
 
                     return [

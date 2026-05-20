@@ -23,6 +23,7 @@ class PsychologistAppointmentController extends Controller
 
         $appointments = $profile->appointments()
             ->with(['user:id,name,email', 'schedule', 'transaction'])
+            ->whereHas('transaction', fn ($query) => $query->where('status', 'paid'))
             ->latest('appointment_date')
             ->get()
             ->map(function (Appointment $appointment): array {

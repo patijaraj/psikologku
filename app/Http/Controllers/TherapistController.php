@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use App\Models\PsychologistProfile;
 use Illuminate\Support\Collection;
 use Inertia\Inertia;
@@ -23,10 +24,11 @@ class TherapistController extends Controller
             $query->where('is_active', true);
         }]);
 
-        $bookedAppointments = \App\Models\Appointment::query()
+        $bookedAppointments = Appointment::query()
             ->where('psychologist_id', $psychologistProfile->id)
             ->whereDate('appointment_date', '>=', now()->toDateString())
             ->whereNotIn('status', ['cancelled', 'failed'])
+            ->whereHas('transaction', fn ($query) => $query->where('status', 'paid'))
             ->get(['schedule_id', 'appointment_date', 'start_time', 'end_time']);
 
         $serializedTherapist = $this->serializeTherapist($psychologistProfile);

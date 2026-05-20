@@ -132,6 +132,66 @@ test('completed appointments remain visible but cannot be chatted', function () 
             ->where('chatContacts.0.can_complete', false));
 });
 
+test('psychologist appointments page hides unpaid appointments', function () {
+    $paidPatient = User::factory()->create(['name' => 'Pasien Paid']);
+    $pendingPatient = User::factory()->create(['name' => 'Pasien Pending']);
+    $psychologist = User::factory()->create();
+
+    createSessionChatAppointment($paidPatient, $psychologist);
+    createSessionChatAppointment($pendingPatient, $psychologist, paymentStatus: 'pending');
+
+    $this->actingAs($psychologist)
+        ->get(route('psychologist.appointments'))
+        ->assertSuccessful()
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->component('psychologist-appointments')
+            ->has('appointments', 1)
+            ->where('appointments.0.patient_name', 'Pasien Paid')
+            ->where('appointments.0.payment_status', 'paid'));
+});
+
+test('psychologist dashboard hides unpaid appointments', function () {
+    $paidPatient = User::factory()->create(['name' => 'Pasien Paid']);
+    $pendingPatient = User::factory()->create(['name' => 'Pasien Pending']);
+    $psychologist = User::factory()->create();
+
+    $paidAppointment = createSessionChatAppointment($paidPatient, $psychologist);
+    $pendingAppointment = createSessionChatAppointment($pendingPatient, $psychologist, paymentStatus: 'pending');
+
+    $paidAppointment->update(['appointment_date' => now()->timezone('Asia/Jakarta')->toDateString()]);
+    $pendingAppointment->update(['appointment_date' => now()->timezone('Asia/Jakarta')->toDateString()]);
+
+    $this->actingAs($psychologist)
+        ->get(route('dashboard'))
+        ->assertSuccessful()
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->component('psychologist-dashboard')
+            ->has('todaySessions', 1)
+            ->where('todaySessions.0.patient_name', 'Pasien Paid')
+            ->where('summary.today_sessions', 1)
+            ->where('summary.pending_sessions', 0));
+});
+
+test('therapist schedule only treats paid appointments as booked slots', function () {
+    $paidPatient = User::factory()->create();
+    $pendingPatient = User::factory()->create();
+    $psychologist = User::factory()->create();
+
+    $paidAppointment = createSessionChatAppointment($paidPatient, $psychologist);
+    $pendingAppointment = createSessionChatAppointment($pendingPatient, $psychologist, paymentStatus: 'pending');
+
+    $this->actingAs($paidPatient)
+        ->get(route('therapists.show', $paidAppointment->psychologist))
+        ->assertSuccessful()
+        ->assertInertia(fn (AssertableInertia $page) => $page
+            ->component('therapists')
+            ->has('selectedTherapist.booked_appointments', 1)
+            ->where('selectedTherapist.booked_appointments.0.schedule_id', $paidAppointment->schedule_id)
+            ->where('selectedTherapist.booked_appointments.0.appointment_date', $paidAppointment->appointment_date->toDateString()));
+
+    expect($pendingAppointment->transaction->status)->toBe('pending');
+});
+
 test('psychologists cannot complete appointments owned by another psychologist', function () {
     $patient = User::factory()->create();
     $psychologist = User::factory()->create();

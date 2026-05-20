@@ -300,7 +300,7 @@ home.form = homeForm
 
 /**
 * @see \App\Http\Controllers\DashboardController::dashboard
-* @see app/Http/Controllers/DashboardController.php:13
+* @see app/Http/Controllers/DashboardController.php:15
 * @route '/dashboard'
 */
 export const dashboard = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -315,7 +315,7 @@ dashboard.definition = {
 
 /**
 * @see \App\Http\Controllers\DashboardController::dashboard
-* @see app/Http/Controllers/DashboardController.php:13
+* @see app/Http/Controllers/DashboardController.php:15
 * @route '/dashboard'
 */
 dashboard.url = (options?: RouteQueryOptions) => {
@@ -324,7 +324,7 @@ dashboard.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\DashboardController::dashboard
-* @see app/Http/Controllers/DashboardController.php:13
+* @see app/Http/Controllers/DashboardController.php:15
 * @route '/dashboard'
 */
 dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -334,7 +334,7 @@ dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\DashboardController::dashboard
-* @see app/Http/Controllers/DashboardController.php:13
+* @see app/Http/Controllers/DashboardController.php:15
 * @route '/dashboard'
 */
 dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -344,7 +344,7 @@ dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\DashboardController::dashboard
-* @see app/Http/Controllers/DashboardController.php:13
+* @see app/Http/Controllers/DashboardController.php:15
 * @route '/dashboard'
 */
 const dashboardForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -354,7 +354,7 @@ const dashboardForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> 
 
 /**
 * @see \App\Http\Controllers\DashboardController::dashboard
-* @see app/Http/Controllers/DashboardController.php:13
+* @see app/Http/Controllers/DashboardController.php:15
 * @route '/dashboard'
 */
 dashboardForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -364,7 +364,7 @@ dashboardForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> =>
 
 /**
 * @see \App\Http\Controllers\DashboardController::dashboard
-* @see app/Http/Controllers/DashboardController.php:13
+* @see app/Http/Controllers/DashboardController.php:15
 * @route '/dashboard'
 */
 dashboardForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -381,7 +381,7 @@ dashboard.form = dashboardForm
 
 /**
 * @see \App\Http\Controllers\TherapistController::therapists
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 export const therapists = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -396,7 +396,7 @@ therapists.definition = {
 
 /**
 * @see \App\Http\Controllers\TherapistController::therapists
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 therapists.url = (options?: RouteQueryOptions) => {
@@ -405,7 +405,7 @@ therapists.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\TherapistController::therapists
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 therapists.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -415,7 +415,7 @@ therapists.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\TherapistController::therapists
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 therapists.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -425,7 +425,7 @@ therapists.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\TherapistController::therapists
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 const therapistsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -435,7 +435,7 @@ const therapistsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'>
 
 /**
 * @see \App\Http\Controllers\TherapistController::therapists
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 therapistsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -445,7 +445,7 @@ therapistsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> =
 
 /**
 * @see \App\Http\Controllers\TherapistController::therapists
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 therapistsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

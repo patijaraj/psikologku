@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\TherapistController::index
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\TherapistController::index
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\TherapistController::index
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\TherapistController::index
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\TherapistController::index
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -55,7 +55,7 @@ const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \App\Http\Controllers\TherapistController::index
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -65,7 +65,7 @@ indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\TherapistController::index
-* @see app/Http/Controllers/TherapistController.php:12
+* @see app/Http/Controllers/TherapistController.php:13
 * @route '/therapists'
 */
 indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -82,7 +82,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 export const show = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -97,7 +97,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 show.url = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -130,7 +130,7 @@ show.url = (args: { psychologistProfile: number | { id: number } } | [psychologi
 
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 show.get = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -140,7 +140,7 @@ show.get = (args: { psychologistProfile: number | { id: number } } | [psychologi
 
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 show.head = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -150,7 +150,7 @@ show.head = (args: { psychologistProfile: number | { id: number } } | [psycholog
 
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 const showForm = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -160,7 +160,7 @@ const showForm = (args: { psychologistProfile: number | { id: number } } | [psyc
 
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 showForm.get = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -170,7 +170,7 @@ showForm.get = (args: { psychologistProfile: number | { id: number } } | [psycho
 
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 showForm.head = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

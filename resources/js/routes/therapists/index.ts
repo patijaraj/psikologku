@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 export const show = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 show.url = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ show.url = (args: { psychologistProfile: number | { id: number } } | [psychologi
 
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 show.get = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -59,7 +59,7 @@ show.get = (args: { psychologistProfile: number | { id: number } } | [psychologi
 
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 show.head = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -69,7 +69,7 @@ show.head = (args: { psychologistProfile: number | { id: number } } | [psycholog
 
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 const showForm = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -79,7 +79,7 @@ const showForm = (args: { psychologistProfile: number | { id: number } } | [psyc
 
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 showForm.get = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -89,7 +89,7 @@ showForm.get = (args: { psychologistProfile: number | { id: number } } | [psycho
 
 /**
 * @see \App\Http\Controllers\TherapistController::show
-* @see app/Http/Controllers/TherapistController.php:20
+* @see app/Http/Controllers/TherapistController.php:21
 * @route '/therapists/{psychologistProfile}'
 */
 showForm.head = (args: { psychologistProfile: number | { id: number } } | [psychologistProfile: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
