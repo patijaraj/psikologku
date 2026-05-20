@@ -161,7 +161,7 @@ export default function PsychologistProfileSetup({
                             </button>
                         </div>
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
-                        <InitialsAvatar name={userName} className="size-9" />
+                        <InitialsAvatar name={userName} photoUrl={(auth.user as any)?.photo_url} className="size-9" />
                         <button
                             type="button"
                             aria-label="Buka menu"

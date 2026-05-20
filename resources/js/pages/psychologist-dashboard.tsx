@@ -184,18 +184,11 @@ export default function PsychologistDashboard({
                                     setIsMobileMenuOpen(false);
                                 }}
                             >
-                                {profile?.photo_url ? (
-                                    <img
-                                        src={profile.photo_url}
-                                        alt={userName}
-                                        className="size-9 rounded-full object-cover border border-[#e2e4e6]"
-                                    />
-                                ) : (
-                                    <InitialsAvatar
-                                        name={userName}
-                                        className="size-9"
-                                    />
-                                )}
+                                <InitialsAvatar
+                                    name={userName}
+                                    photoUrl={profile?.photo_url || (auth.user as any)?.photo_url}
+                                    className="size-9"
+                                />
                             </button>
 
                             {isUserMenuOpen && (
@@ -208,18 +201,11 @@ export default function PsychologistDashboard({
                                     />
                                     <div className="absolute top-[52px] right-0 z-50 w-[260px] overflow-hidden rounded-3xl border border-[#e2e4e6] bg-white p-2 shadow-[0px_20px_48px_-18px_rgba(25,28,30,0.35)]">
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
-                                            {profile?.photo_url ? (
-                                                <img
-                                                    src={profile.photo_url}
-                                                    alt={userName}
-                                                    className="size-11 rounded-full object-cover border border-[#e2e4e6]"
-                                                />
-                                            ) : (
-                                                <InitialsAvatar
-                                                    name={userName}
-                                                    className="size-11 text-base"
-                                                />
-                                            )}
+                                            <InitialsAvatar
+                                                name={userName}
+                                                photoUrl={profile?.photo_url || (auth.user as any)?.photo_url}
+                                                className="size-11 text-base"
+                                            />
                                             <div className="min-w-0">
                                                 <p className="m-0 truncate text-sm font-bold text-[#191c1e]">
                                                     {userName}

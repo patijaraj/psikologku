@@ -73,6 +73,7 @@ class SessionController extends Controller
      *     payment_status:string,
      *     date:?string,
      *     time:string,
+     *     photo_url:?string,
      *     preview:string,
      *     online:bool,
      *     can_chat:bool,
@@ -98,6 +99,7 @@ class SessionController extends Controller
             'payment_status' => $appointment->transaction?->status ?? 'unpaid',
             'date' => $appointment->appointment_date?->format('Y-m-d'),
             'time' => $time,
+            'photo_url' => ! $isPsychologist ? $appointment->psychologist?->photo_url : null,
             'preview' => $isCompleted
                 ? 'Sesi selesai, riwayat chat tetap tersedia.'
                 : 'Klik untuk memulai obrolan.',

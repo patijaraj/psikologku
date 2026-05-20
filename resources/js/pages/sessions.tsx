@@ -32,6 +32,7 @@ type ChatContact = {
     payment_status: string;
     date?: string | null;
     time: string;
+    photo_url?: string | null;
     preview: string;
     online: boolean;
     can_chat: boolean;
@@ -370,6 +371,7 @@ export default function Sessions({
                             >
                                 <InitialsAvatar
                                     name={userName}
+                                    photoUrl={(auth.user as any)?.photo_url}
                                     className="size-9"
                                 />
                             </button>
@@ -385,6 +387,7 @@ export default function Sessions({
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
                                             <InitialsAvatar
                                                 name={userName}
+                                                photoUrl={(auth.user as any)?.photo_url}
                                                 className="size-11 text-base"
                                             />
                                             <div className="min-w-0">
@@ -487,9 +490,17 @@ export default function Sessions({
                                     }`}
                                 >
                                     <div className="relative shrink-0">
-                                        <div className="flex size-12 items-center justify-center overflow-hidden rounded-xl bg-[#1464BC] text-lg font-bold text-white">
-                                            {contact.name.charAt(0)}
-                                        </div>
+                                        {contact.photo_url ? (
+                                            <img
+                                                src={contact.photo_url}
+                                                alt={contact.name}
+                                                className="size-12 rounded-xl object-cover border border-[#e2e4e6]"
+                                            />
+                                        ) : (
+                                            <div className="flex size-12 items-center justify-center overflow-hidden rounded-xl bg-[#1464BC] text-lg font-bold text-white">
+                                                {contact.name.charAt(0)}
+                                            </div>
+                                        )}
                                         {contact.online && (
                                             <div className="absolute -right-1 -bottom-1 size-3.5 rounded-full border-2 border-white bg-[#10b981]" />
                                         )}
@@ -544,9 +555,17 @@ export default function Sessions({
                             <header className="flex h-20 shrink-0 items-center justify-between border-b border-[#f2f4f6] px-8">
                                 <div className="flex items-center gap-4">
                                     <div className="relative shrink-0">
-                                        <div className="flex size-11 items-center justify-center overflow-hidden rounded-full bg-slate-200 font-bold text-slate-700">
-                                            {selectedUser.name.charAt(0)}
-                                        </div>
+                                        {selectedUser.photo_url ? (
+                                            <img
+                                                src={selectedUser.photo_url}
+                                                alt={selectedUser.name}
+                                                className="size-11 rounded-full object-cover border border-[#e2e4e6]"
+                                            />
+                                        ) : (
+                                            <div className="flex size-11 items-center justify-center overflow-hidden rounded-full bg-slate-200 font-bold text-slate-700">
+                                                {selectedUser.name.charAt(0)}
+                                            </div>
+                                        )}
                                         <div className="absolute right-0 bottom-0 size-3 rounded-full border-2 border-white bg-[#10b981]" />
                                     </div>
                                     <div>

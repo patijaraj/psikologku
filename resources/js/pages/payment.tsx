@@ -37,6 +37,7 @@ type TherapistSummary = {
     specialization?: string | null;
     price: number;
     is_online: boolean;
+    photo_url?: string | null;
 };
 
 interface PaymentProps {
@@ -222,6 +223,7 @@ export default function Payment({
                         >
                             <InitialsAvatar
                                 name={userName}
+                                photoUrl={(auth.user as any)?.photo_url}
                                 className="size-9"
                             />
                         </button>
@@ -339,6 +341,7 @@ export default function Payment({
                             <div className="mb-8 flex items-center gap-4 rounded-2xl bg-white p-4 shadow-sm">
                                 <InitialsAvatar
                                     name={therapist?.name ?? 'Psikolog'}
+                                    photoUrl={therapist?.photo_url}
                                     className="size-14 rounded-xl text-lg"
                                 />
                                 <div>

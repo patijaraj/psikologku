@@ -15,11 +15,23 @@ export function getInitials(name?: string | null) {
 
 export function InitialsAvatar({
     name,
+    photoUrl,
     className,
 }: {
     name?: string | null;
+    photoUrl?: string | null;
     className?: string;
 }) {
+    if (photoUrl) {
+        return (
+            <img
+                src={photoUrl}
+                alt={name ?? 'Avatar'}
+                className={cn('shrink-0 object-cover rounded-full border border-[#e2e4e6] bg-white', className)}
+            />
+        );
+    }
+
     return (
         <div
             className={cn(

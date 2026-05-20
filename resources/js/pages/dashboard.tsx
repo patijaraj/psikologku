@@ -178,6 +178,7 @@ export default function Dashboard({ appointments = [] }: { appointments?: any[] 
                             >
                                 <InitialsAvatar
                                     name={userName}
+                                    photoUrl={(auth.user as any)?.photo_url}
                                     className="size-9"
                                 />
                             </button>
@@ -194,6 +195,7 @@ export default function Dashboard({ appointments = [] }: { appointments?: any[] 
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
                                             <InitialsAvatar
                                                 name={userName}
+                                                photoUrl={(auth.user as any)?.photo_url}
                                                 className="size-11 text-base"
                                             />
                                             <div className="min-w-0">

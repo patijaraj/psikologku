@@ -181,6 +181,7 @@ class PaymentController extends Controller
             'specialization' => $profile->specialization,
             'price' => (float) $profile->price,
             'is_online' => (bool) $profile->is_online,
+            'photo_url' => $profile->photo_url,
         ];
     }
 
