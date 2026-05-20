@@ -17,7 +17,10 @@ class DashboardController extends Controller
         $user = $request->user();
 
         if ($user->isPsychologist()) {
-            $localToday = now()->timezone('Asia/Jakarta')->toDateString();
+            $localNow = now()->timezone('Asia/Jakarta');
+            $localToday = $localNow->toDateString();
+            $localMonthStart = $localNow->copy()->startOfMonth();
+            $localMonthEnd = $localNow->copy()->endOfMonth();
 
             $profile = $user->psychologistProfile()
                 ->with([
@@ -35,7 +38,7 @@ class DashboardController extends Controller
                         ->orderBy('appointment_date', 'asc')
                         ->orderBy('start_time', 'asc'),
                     'transactions' => fn ($query) => $query
-                        ->whereDate('created_at', $localToday),
+                        ->whereBetween('created_at', [$localMonthStart, $localMonthEnd]),
                 ])
                 ->first();
 
@@ -70,7 +73,7 @@ class DashboardController extends Controller
                     'today_sessions' => $profile->appointments->count(),
                     'paid_sessions' => $profile->appointments->count(),
                     'pending_sessions' => 0,
-                    'today_revenue' => (float) ($profile->transactions
+                    'monthly_revenue' => (float) ($profile->transactions
                         ->where('status', 'paid')
                         ->sum('gross_amount') ?? 0),
                 ],

@@ -39,7 +39,7 @@ type Summary = {
     today_sessions: number;
     paid_sessions: number;
     pending_sessions: number;
-    today_revenue: number;
+    monthly_revenue: number;
 };
 
 type PsychologistDashboardProps = {
@@ -75,7 +75,7 @@ export default function PsychologistDashboard({
         today_sessions: 0,
         paid_sessions: 0,
         pending_sessions: 0,
-        today_revenue: 0,
+        monthly_revenue: 0,
     },
 }: PsychologistDashboardProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -323,8 +323,8 @@ export default function PsychologistDashboard({
                     />
                     <SummaryCard
                         icon={<Wallet className="h-5 w-5" />}
-                        label="Pendapatan Hari Ini"
-                        value={formatRupiah(summary.today_revenue)}
+                        label="Pendapatan Bulan Ini"
+                        value={formatRupiah(summary.monthly_revenue)}
                         helper="Dari sesi paid"
                     />
                 </section>

@@ -289,7 +289,7 @@ export default function PsychologistAppointments({
                         <div className="flex flex-col gap-8">
                             <AppointmentSection
                                 title="Sedang Berjalan"
-                                description="Sesi yang sudah masuk waktu konsultasi atau melewati jam selesai."
+                                description="Sesi yang sudah masuk waktu konsultasi."
                                 appointments={runningAppointments}
                                 emptyText="Belum ada sesi yang sedang berjalan atau overdue."
                             />

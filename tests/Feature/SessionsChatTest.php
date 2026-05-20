@@ -190,7 +190,8 @@ test('psychologist dashboard hides unpaid appointments', function () {
             ->has('todaySessions', 1)
             ->where('todaySessions.0.patient_name', 'Pasien Paid')
             ->where('summary.today_sessions', 1)
-            ->where('summary.pending_sessions', 0));
+            ->where('summary.pending_sessions', 0)
+            ->where('summary.monthly_revenue', 250000.0));
 });
 
 test('therapist schedule only treats paid appointments as booked slots', function () {
