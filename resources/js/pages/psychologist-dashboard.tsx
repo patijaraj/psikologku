@@ -23,6 +23,7 @@ type PsychologistProfile = {
     specialization?: string | null;
     price: number;
     is_online: boolean;
+    photo_url?: string | null;
 };
 
 type TodaySession = {
@@ -183,10 +184,18 @@ export default function PsychologistDashboard({
                                     setIsMobileMenuOpen(false);
                                 }}
                             >
-                                <InitialsAvatar
-                                    name={userName}
-                                    className="size-9"
-                                />
+                                {profile?.photo_url ? (
+                                    <img
+                                        src={profile.photo_url}
+                                        alt={userName}
+                                        className="size-9 rounded-full object-cover border border-[#e2e4e6]"
+                                    />
+                                ) : (
+                                    <InitialsAvatar
+                                        name={userName}
+                                        className="size-9"
+                                    />
+                                )}
                             </button>
 
                             {isUserMenuOpen && (
@@ -199,10 +208,18 @@ export default function PsychologistDashboard({
                                     />
                                     <div className="absolute top-[52px] right-0 z-50 w-[260px] overflow-hidden rounded-3xl border border-[#e2e4e6] bg-white p-2 shadow-[0px_20px_48px_-18px_rgba(25,28,30,0.35)]">
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
-                                            <InitialsAvatar
-                                                name={userName}
-                                                className="size-11 text-base"
-                                            />
+                                            {profile?.photo_url ? (
+                                                <img
+                                                    src={profile.photo_url}
+                                                    alt={userName}
+                                                    className="size-11 rounded-full object-cover border border-[#e2e4e6]"
+                                                />
+                                            ) : (
+                                                <InitialsAvatar
+                                                    name={userName}
+                                                    className="size-11 text-base"
+                                                />
+                                            )}
                                             <div className="min-w-0">
                                                 <p className="m-0 truncate text-sm font-bold text-[#191c1e]">
                                                     {userName}
@@ -376,13 +393,31 @@ export default function PsychologistDashboard({
 
                     <aside className="flex flex-col gap-5">
                         <section className="rounded-3xl bg-[#1464BC] p-6 text-white shadow-[0_18px_40px_-24px_rgba(0,93,167,0.55)]">
-                            <p className="m-0 mb-2 text-xs font-bold tracking-widest text-blue-100 uppercase">
-                                Profil Praktik
-                            </p>
-                            <h2 className="m-0 text-2xl font-black">
-                                {profile?.specialization ??
-                                    'Spesialisasi belum diisi'}
-                            </h2>
+                            <div className="mb-5 flex items-center gap-4">
+                                {profile?.photo_url ? (
+                                    <img
+                                        src={profile.photo_url}
+                                        alt={userName}
+                                        className="size-16 rounded-full object-cover border-2 border-white/20 shadow-md"
+                                    />
+                                ) : (
+                                    <div className="flex size-16 items-center justify-center rounded-full bg-white/10 text-white border border-white/25">
+                                        <UserRound className="size-8" />
+                                    </div>
+                                )}
+                                <div>
+                                    <p className="m-0 text-xs font-bold tracking-widest text-blue-100 uppercase">
+                                        Profil Praktik
+                                    </p>
+                                    <h2 className="m-0 text-xl font-black truncate max-w-[180px]">
+                                        {userName}
+                                    </h2>
+                                </div>
+                            </div>
+
+                            <h3 className="m-0 text-lg font-bold text-blue-50 mt-4 border-t border-white/10 pt-4">
+                                {profile?.specialization ?? 'Spesialisasi belum diisi'}
+                            </h3>
                             <div className="mt-6 flex flex-col gap-4">
                                 <PracticeMeta
                                     label="Tarif sesi"

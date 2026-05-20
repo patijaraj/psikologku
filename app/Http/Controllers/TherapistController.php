@@ -61,6 +61,7 @@ class TherapistController extends Controller
             'specialization' => $profile->specialization,
             'price' => (float) $profile->price,
             'is_online' => (bool) $profile->is_online,
+            'photo_url' => $profile->photo_url,
             'schedules' => $profile->relationLoaded('schedules') ? $profile->schedules->map(fn ($schedule) => [
                 'id' => $schedule->id,
                 'day_of_week' => $schedule->day_of_week,

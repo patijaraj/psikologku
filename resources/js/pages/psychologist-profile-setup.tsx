@@ -4,11 +4,13 @@ import {
     BadgeCheck,
     Bell,
     BriefcaseMedical,
+    Camera,
     LogOut,
     Menu,
     MessageSquare,
     ShieldCheck,
     Smile,
+    Upload,
     X,
 } from 'lucide-react';
 import { useState } from 'react';
@@ -16,12 +18,14 @@ import InputError from '@/components/input-error';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { Spinner } from '@/components/ui/spinner';
 import { logout } from '@/routes';
+import { supabase } from '@/lib/supabase';
 
 type PsychologistProfileForm = {
     str_number?: string | null;
     specialization?: string | null;
     price?: number | null;
     is_online?: boolean;
+    photo_url?: string | null;
 };
 
 type PsychologistProfileSetupProps = {
@@ -44,8 +48,57 @@ export default function PsychologistProfileSetup({
     profile = null,
 }: PsychologistProfileSetupProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const { auth } = usePage().props;
+    const { auth } = usePage().props as any;
     const userName = auth.user?.name ?? 'Psikolog';
+
+    const [photoUrl, setPhotoUrl] = useState<string | null>(profile?.photo_url ?? null);
+    const [isUploading, setIsUploading] = useState(false);
+    const [uploadError, setUploadError] = useState<string | null>(null);
+
+    const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            setUploadError('File harus berupa gambar.');
+            return;
+        }
+        if (file.size > 2 * 1024 * 1024) {
+            setUploadError('Ukuran gambar maksimal 2MB.');
+            return;
+        }
+
+        setIsUploading(true);
+        setUploadError(null);
+
+        try {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${auth.user?.id}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+            const filePath = `avatars/${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('avatars')
+                .upload(filePath, file, {
+                    cacheControl: '3600',
+                    upsert: true,
+                });
+
+            if (uploadError) {
+                throw uploadError;
+            }
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('avatars')
+                .getPublicUrl(filePath);
+
+            setPhotoUrl(publicUrl);
+        } catch (error: any) {
+            console.error('Error uploading image:', error);
+            setUploadError(error.message || 'Gagal mengunggah foto profil.');
+        } finally {
+            setIsUploading(false);
+        }
+    };
 
     const handleLogout = () => {
         router.flushAll();
@@ -187,6 +240,56 @@ export default function PsychologistProfileSetup({
                     >
                         {({ processing, errors }) => (
                             <>
+                                <input type="hidden" name="photo_url" value={photoUrl ?? ''} />
+
+                                <div className="flex flex-col items-center gap-4 rounded-2xl border border-[#e2e4e6] bg-[#fdfdfd] p-5 shadow-xs">
+                                    <span className="text-[13px] font-semibold text-[#191c1e] self-start ml-1">
+                                        Foto Profil
+                                    </span>
+                                    <div className="relative group">
+                                        {photoUrl ? (
+                                            <img
+                                                src={photoUrl}
+                                                alt="Foto Profil Preview"
+                                                className="size-28 rounded-full object-cover border-2 border-[#1464BC] shadow-md"
+                                            />
+                                        ) : (
+                                            <div className="flex size-28 items-center justify-center rounded-full bg-[#f2f4f6] text-[#717783] border border-[#e2e4e6]">
+                                                <Smile className="size-12" />
+                                            </div>
+                                        )}
+                                        {isUploading && (
+                                            <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 text-white">
+                                                <Spinner className="h-6 w-6" />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="flex flex-col items-center gap-1.5 w-full">
+                                        <label
+                                            htmlFor="photo-upload"
+                                            className="flex h-10 w-fit cursor-pointer items-center justify-center rounded-lg border border-[#1464BC] bg-transparent px-4 text-sm font-semibold text-[#1464BC] transition-colors hover:bg-[#eef5fe]"
+                                        >
+                                            {photoUrl ? 'Ubah Foto' : 'Pilih Foto'}
+                                        </label>
+                                        <input
+                                            id="photo-upload"
+                                            type="file"
+                                            accept="image/*"
+                                            className="hidden"
+                                            onChange={handlePhotoChange}
+                                            disabled={isUploading}
+                                        />
+                                        <span className="text-[11px] text-[#717783]">
+                                            Format: JPG, PNG. Maksimal 2MB.
+                                        </span>
+                                        {uploadError && (
+                                            <span className="text-xs font-semibold text-red-500 mt-1 text-center">
+                                                {uploadError}
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+
                                 <div className="flex flex-col gap-1.5">
                                     <label
                                         htmlFor="specialization"

@@ -53,6 +53,7 @@ class DashboardController extends Controller
                     'specialization' => $profile->specialization,
                     'price' => (float) $profile->price,
                     'is_online' => (bool) $profile->is_online,
+                    'photo_url' => $profile->photo_url,
                 ],
                 'todaySessions' => $profile->appointments->map(function ($appointment) {
                     $appointmentDateTimeStr = $appointment->appointment_date->format('Y-m-d').' '.$appointment->end_time->format('H:i:s');
@@ -136,6 +137,7 @@ class DashboardController extends Controller
                 'specialization' => $profile->specialization,
                 'price' => (float) $profile->price,
                 'is_online' => (bool) $profile->is_online,
+                'photo_url' => $profile->photo_url,
             ] : null,
         ]);
     }
@@ -150,6 +152,7 @@ class DashboardController extends Controller
             'str_number' => ['nullable', 'string', 'max:100'],
             'specialization' => ['required', 'string', 'max:120'],
             'price' => ['required', 'numeric', 'min:0', 'max:9999999999'],
+            'photo_url' => ['nullable', 'string'],
         ]);
 
         PsychologistProfile::query()->updateOrCreate(
@@ -159,6 +162,7 @@ class DashboardController extends Controller
                 'specialization' => $validated['specialization'],
                 'price' => $validated['price'],
                 'is_online' => $user->psychologistProfile?->is_online ?? false,
+                'photo_url' => $validated['photo_url'] ?? null,
             ],
         );
 

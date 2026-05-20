@@ -36,6 +36,7 @@ type Therapist = {
     specialization?: string | null;
     price: number;
     is_online: boolean;
+    photo_url?: string | null;
     schedules?: Schedule[];
     booked_appointments?: {
         schedule_id: number;
@@ -510,7 +511,7 @@ function TherapistCard({
         <article className="flex min-h-[466px] flex-col rounded-2xl bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:shadow-[0_18px_40px_-24px_rgba(25,28,30,0.45)]">
             <div className="relative mb-6 aspect-[4/3] overflow-hidden rounded-xl bg-[#e1eef9]">
                 <ImageWithFallback
-                    src={image}
+                    src={therapist.photo_url ?? image}
                     alt={therapist.name}
                     className="h-full w-full object-cover"
                 />
@@ -972,10 +973,18 @@ function TherapistSummaryCard({ therapist }: { therapist: Therapist }) {
         <section className="rounded-3xl border border-[#e2e4e6]/50 bg-white p-5 shadow-[0px_4px_24px_rgba(0,0,0,0.02)]">
             <div className="mb-5 flex items-center gap-4 border-b border-[#f2f4f6] pb-5">
                 <div className="relative">
-                    <InitialsAvatar
-                        name={therapist.name}
-                        className="size-16 rounded-2xl text-lg"
-                    />
+                    {therapist.photo_url ? (
+                        <img
+                            src={therapist.photo_url}
+                            alt={therapist.name}
+                            className="size-16 rounded-2xl object-cover border border-[#e2e4e6] shadow-xs"
+                        />
+                    ) : (
+                        <InitialsAvatar
+                            name={therapist.name}
+                            className="size-16 rounded-2xl text-lg"
+                        />
+                    )}
                     <div
                         className={`absolute -right-1 -bottom-1 size-4 rounded-full border-2 border-white ${
                             therapist.is_online
