@@ -25,6 +25,7 @@ type Appointment = {
     status: string;
     payment_status: string;
     amount: number;
+    can_complete: boolean;
 };
 
 type PsychologistAppointmentsProps = {
@@ -289,8 +290,9 @@ PsychologistAppointments.layout = {};
 
 function AppointmentRow({ appointment }: { appointment: Appointment }) {
     const isPaid = appointment.payment_status === 'paid';
-    const canStart = isPaid && appointment.status === 'upcoming';
-    const canComplete = isPaid && appointment.status !== 'completed';
+    const canStart =
+        isPaid && ['upcoming', 'overdue'].includes(appointment.status);
+    const canComplete = appointment.can_complete;
 
     const completeAppointment = () => {
         if (!canComplete) {
@@ -337,7 +339,9 @@ function AppointmentRow({ appointment }: { appointment: Appointment }) {
                         className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${
                             appointment.status === 'upcoming'
                                 ? 'bg-[#e1eef9] text-[#1464BC]'
-                                : 'bg-[#f2f4f6] text-[#717783]'
+                                : appointment.status === 'overdue'
+                                  ? 'bg-[#feecec] text-[#b02a2a]'
+                                  : 'bg-[#f2f4f6] text-[#717783]'
                         }`}
                     >
                         {appointment.status}

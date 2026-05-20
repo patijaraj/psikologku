@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -74,6 +75,7 @@ class SessionController extends Controller
      *     time:string,
      *     preview:string,
      *     online:bool,
+     *     can_chat:bool,
      *     can_complete:bool
      * }
      */
@@ -82,6 +84,11 @@ class SessionController extends Controller
         $time = $appointment->start_time && $appointment->end_time
             ? $appointment->start_time->format('H:i').' - '.$appointment->end_time->format('H:i').' WIB'
             : '--:-- WIB';
+        $isCompleted = $appointment->status === 'completed';
+        $isOverdue = $this->isOverdue($appointment);
+        $displayStatus = $isCompleted
+            ? 'completed'
+            : ($isOverdue ? 'overdue' : $appointment->status);
 
         return [
             'id' => $appointment->id,
@@ -89,16 +96,31 @@ class SessionController extends Controller
             'user_id' => $counterpart->id,
             'name' => $counterpart->name ?? 'User',
             'email' => $counterpart->email,
-            'status' => $appointment->status,
+            'status' => $displayStatus,
             'appointment_status' => $appointment->status,
             'payment_status' => $appointment->transaction?->status ?? 'unpaid',
             'date' => $appointment->appointment_date?->format('Y-m-d'),
             'time' => $time,
-            'preview' => $appointment->status === 'completed'
-                ? 'Sesi selesai, chat tetap tersedia.'
+            'preview' => $isCompleted
+                ? 'Sesi selesai, riwayat chat tetap tersedia.'
                 : 'Klik untuk memulai obrolan.',
             'online' => true,
-            'can_complete' => $isPsychologist && $appointment->status !== 'completed',
+            'can_chat' => ! $isCompleted,
+            'can_complete' => $isPsychologist && $isOverdue && ! $isCompleted,
         ];
+    }
+
+    private function isOverdue(Appointment $appointment): bool
+    {
+        if (! $appointment->appointment_date || ! $appointment->end_time) {
+            return false;
+        }
+
+        $appointmentEnd = CarbonImmutable::parse(
+            $appointment->appointment_date->format('Y-m-d').' '.$appointment->end_time->format('H:i:s'),
+            'Asia/Jakarta',
+        );
+
+        return $appointmentEnd->isPast() && $appointment->status === 'upcoming';
     }
 }

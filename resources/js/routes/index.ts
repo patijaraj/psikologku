@@ -462,7 +462,7 @@ therapists.form = therapistsForm
 
 /**
 * @see \App\Http\Controllers\SessionController::sessions
-* @see app/Http/Controllers/SessionController.php:14
+* @see app/Http/Controllers/SessionController.php:15
 * @route '/sessions'
 */
 export const sessions = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -477,7 +477,7 @@ sessions.definition = {
 
 /**
 * @see \App\Http\Controllers\SessionController::sessions
-* @see app/Http/Controllers/SessionController.php:14
+* @see app/Http/Controllers/SessionController.php:15
 * @route '/sessions'
 */
 sessions.url = (options?: RouteQueryOptions) => {
@@ -486,7 +486,7 @@ sessions.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\SessionController::sessions
-* @see app/Http/Controllers/SessionController.php:14
+* @see app/Http/Controllers/SessionController.php:15
 * @route '/sessions'
 */
 sessions.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -496,7 +496,7 @@ sessions.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\SessionController::sessions
-* @see app/Http/Controllers/SessionController.php:14
+* @see app/Http/Controllers/SessionController.php:15
 * @route '/sessions'
 */
 sessions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -506,7 +506,7 @@ sessions.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\SessionController::sessions
-* @see app/Http/Controllers/SessionController.php:14
+* @see app/Http/Controllers/SessionController.php:15
 * @route '/sessions'
 */
 const sessionsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -516,7 +516,7 @@ const sessionsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> =
 
 /**
 * @see \App\Http\Controllers\SessionController::sessions
-* @see app/Http/Controllers/SessionController.php:14
+* @see app/Http/Controllers/SessionController.php:15
 * @route '/sessions'
 */
 sessionsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -526,7 +526,7 @@ sessionsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => 
 
 /**
 * @see \App\Http\Controllers\SessionController::sessions
-* @see app/Http/Controllers/SessionController.php:14
+* @see app/Http/Controllers/SessionController.php:15
 * @route '/sessions'
 */
 sessionsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

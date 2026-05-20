@@ -4,7 +4,7 @@ import appointments40eafc from './appointments'
 import schedules from './schedules'
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:13
+* @see app/Http/Controllers/PsychologistAppointmentController.php:14
 * @route '/psychologist/appointments'
 */
 export const appointments = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -19,7 +19,7 @@ appointments.definition = {
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:13
+* @see app/Http/Controllers/PsychologistAppointmentController.php:14
 * @route '/psychologist/appointments'
 */
 appointments.url = (options?: RouteQueryOptions) => {
@@ -28,7 +28,7 @@ appointments.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:13
+* @see app/Http/Controllers/PsychologistAppointmentController.php:14
 * @route '/psychologist/appointments'
 */
 appointments.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -38,7 +38,7 @@ appointments.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:13
+* @see app/Http/Controllers/PsychologistAppointmentController.php:14
 * @route '/psychologist/appointments'
 */
 appointments.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -48,7 +48,7 @@ appointments.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:13
+* @see app/Http/Controllers/PsychologistAppointmentController.php:14
 * @route '/psychologist/appointments'
 */
 const appointmentsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -58,7 +58,7 @@ const appointmentsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:13
+* @see app/Http/Controllers/PsychologistAppointmentController.php:14
 * @route '/psychologist/appointments'
 */
 appointmentsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -68,7 +68,7 @@ appointmentsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'>
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::appointments
-* @see app/Http/Controllers/PsychologistAppointmentController.php:13
+* @see app/Http/Controllers/PsychologistAppointmentController.php:14
 * @route '/psychologist/appointments'
 */
 appointmentsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

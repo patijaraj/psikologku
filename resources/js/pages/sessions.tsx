@@ -34,6 +34,7 @@ type ChatContact = {
     time: string;
     preview: string;
     online: boolean;
+    can_chat: boolean;
     can_complete: boolean;
 };
 
@@ -70,6 +71,10 @@ function statusLabel(status: string) {
         return 'Booked';
     }
 
+    if (status === 'overdue') {
+        return 'Overdue';
+    }
+
     return status;
 }
 
@@ -92,6 +97,7 @@ export default function Sessions({
     const [messages, setMessages] = useState<any[]>([]);
     const [input, setInput] = useState('');
     const scrollRef = useRef<HTMLDivElement>(null);
+    const isChatClosed = selectedUser ? !selectedUser.can_chat : false;
 
     const handleLogout = () => {
         router.flushAll();
@@ -102,7 +108,7 @@ export default function Sessions({
         const fetchChatList = async () => {
             const formattedContacts = chatContacts.map((contact) => ({
                 ...contact,
-                status: statusLabel(contact.appointment_status),
+                status: statusLabel(contact.status),
             }));
 
             setChatList(formattedContacts);
@@ -230,7 +236,13 @@ export default function Sessions({
 
     // 3. Fungsi kirim pesan ke Supabase
     const handleSendMessage = async () => {
-        if (!input.trim() || !auth.user?.id || !selectedUser?.user_id) return;
+        if (
+            isChatClosed ||
+            !input.trim() ||
+            !auth.user?.id ||
+            !selectedUser?.user_id
+        )
+            return;
 
         const currentInput = input;
         setInput(''); // Kosongkan input field langsung demi kenyamanan user (optimistic UI)
@@ -264,7 +276,8 @@ export default function Sessions({
                         ...selectedUser,
                         appointment_status: 'completed',
                         status: 'Selesai',
-                        preview: 'Sesi selesai, chat tetap tersedia.',
+                        preview: 'Sesi selesai, riwayat chat tetap tersedia.',
+                        can_chat: false,
                         can_complete: false,
                     };
 
@@ -537,24 +550,9 @@ export default function Sessions({
                                         <div className="absolute right-0 bottom-0 size-3 rounded-full border-2 border-white bg-[#10b981]" />
                                     </div>
                                     <div>
-                                        <div className="mb-0.5 flex items-center gap-2">
-                                            <h2 className="m-0 text-lg font-bold text-[#191c1e]">
-                                                {selectedUser.name}
-                                            </h2>
-                                            {isPsychologist &&
-                                                selectedUser.can_complete && (
-                                                    <button
-                                                        type="button"
-                                                        onClick={
-                                                            handleCompleteSession
-                                                        }
-                                                        className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-lg border border-[#fee2e2] bg-[#fff5f5] px-3 text-xs font-bold text-[#b02a2a] transition-colors hover:bg-[#feecec]"
-                                                    >
-                                                        <CheckCircle2 className="h-3.5 w-3.5" />
-                                                        Stop
-                                                    </button>
-                                                )}
-                                        </div>
+                                        <h2 className="m-0 mb-0.5 text-lg font-bold text-[#191c1e]">
+                                            {selectedUser.name}
+                                        </h2>
                                         <div className="flex items-center gap-1.5">
                                             <span className="text-[13px] font-medium text-[#10b981]">
                                                 {selectedUser.status}
@@ -570,6 +568,17 @@ export default function Sessions({
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2">
+                                    {isPsychologist &&
+                                        selectedUser.can_complete && (
+                                            <button
+                                                type="button"
+                                                onClick={handleCompleteSession}
+                                                className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-xl border border-[#bbf7d0] bg-[#dcfce7] px-4 text-sm font-bold text-[#166534] transition-colors hover:bg-[#bbf7d0]"
+                                            >
+                                                <CheckCircle2 className="h-4 w-4" />
+                                                Selesai
+                                            </button>
+                                        )}
                                     <button
                                         type="button"
                                         aria-label="Mulai panggilan"
@@ -619,10 +628,15 @@ export default function Sessions({
 
                             {/* FOOTER: INPUT CHAT */}
                             <footer className="shrink-0 bg-white p-6">
-                                <div className="flex items-end gap-2 rounded-3xl border border-[#e2e4e6]/50 bg-[#f7f9fb] p-2 pr-2.5">
+                                <div
+                                    className={`flex items-end gap-2 rounded-3xl border border-[#e2e4e6]/50 bg-[#f7f9fb] p-2 pr-2.5 ${
+                                        isChatClosed ? 'opacity-80' : ''
+                                    }`}
+                                >
                                     <button
                                         type="button"
                                         aria-label="Tambah lampiran"
+                                        disabled={isChatClosed}
                                         className="mb-1 flex size-10 shrink-0 cursor-pointer items-center justify-center rounded-full border-none bg-transparent text-[#717783] transition-colors hover:bg-[#e2e4e6] hover:text-[#191c1e]"
                                     >
                                         <Plus className="h-6 w-6" />
@@ -634,11 +648,16 @@ export default function Sessions({
                                         onChange={(e) =>
                                             setInput(e.target.value)
                                         }
+                                        disabled={isChatClosed}
                                         onKeyDown={(e) =>
                                             e.key === 'Enter' &&
                                             handleSendMessage()
                                         }
-                                        placeholder="Ketik pesan Anda dengan aman..."
+                                        placeholder={
+                                            isChatClosed
+                                                ? 'Sesi sudah selesai. Riwayat chat tetap bisa dilihat.'
+                                                : 'Ketik pesan Anda dengan aman...'
+                                        }
                                         className="mb-1 h-10 flex-1 border-none bg-transparent px-3 py-2 text-[15px] text-[#191c1e] outline-none placeholder:text-[#a0a5b1]"
                                     />
 
@@ -646,6 +665,7 @@ export default function Sessions({
                                         <button
                                             type="button"
                                             aria-label="Pilih emoji"
+                                            disabled={isChatClosed}
                                             className="flex size-10 cursor-pointer items-center justify-center rounded-full border-none bg-transparent text-[#717783] transition-colors hover:bg-[#e2e4e6] hover:text-[#191c1e]"
                                         >
                                             <Smile className="h-6 w-6" />
@@ -653,7 +673,12 @@ export default function Sessions({
                                         <button
                                             type="button"
                                             onClick={handleSendMessage}
-                                            className="flex size-10 cursor-pointer items-center justify-center rounded-2xl border-none bg-[#1464BC] text-white shadow-sm transition-colors hover:bg-[#1053A0]"
+                                            disabled={isChatClosed}
+                                            className={`flex size-10 cursor-pointer items-center justify-center rounded-2xl border-none text-white shadow-sm transition-colors ${
+                                                isChatClosed
+                                                    ? 'bg-[#a0a5b1]'
+                                                    : 'bg-[#1464BC] hover:bg-[#1053A0]'
+                                            }`}
                                         >
                                             <Send className="ml-0.5 h-5 w-5" />
                                         </button>
