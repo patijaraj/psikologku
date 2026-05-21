@@ -65,7 +65,7 @@ class PsychologistAppointmentController extends Controller
 
         abort_if(in_array($appointment->status, ['cancelled', 'failed'], true), 422);
         abort_unless($appointment->transaction?->status === 'paid', 422);
-        abort_unless(in_array($this->appointmentStatus($appointment), ['due', 'overdue'], true), 422);
+        abort_unless(in_array($this->appointmentStatus($appointment), ['due', 'overdue', 'ongoing'], true), 422);
 
         $appointment->update([
             'status' => 'completed',
