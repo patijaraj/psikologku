@@ -64,7 +64,7 @@ const psychologistNavItems = [
         active: false,
     },
     { label: 'Sessions', path: '/sessions', active: true },
-    { label: 'Records', path: '#', active: false },
+    { label: 'Records', path: '/psychologist/records', active: false },
 ];
 
 function statusLabel(status: string) {

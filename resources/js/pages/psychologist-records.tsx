@@ -4,6 +4,7 @@ import {
     Calendar,
     CheckCircle2,
     Clock,
+    FileText,
     LogOut,
     Menu,
     MessageSquare,
@@ -14,74 +15,37 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
-import { complete } from '@/actions/App/Http/Controllers/PsychologistAppointmentController';
 import { logout } from '@/routes';
 
-type Appointment = {
+type Record = {
     id: number;
     patient_name: string;
     patient_email?: string | null;
-    date: string;
-    time: string;
-    status: string;
-    payment_status: string;
-    amount: number;
-    can_complete: boolean;
+    last_session_date: string;
+    diagnosis?: string;
+    notes_count: number;
 };
 
-type PsychologistAppointmentsProps = {
-    appointments: Appointment[];
+type PsychologistRecordsProps = {
+    records?: Record[];
 };
 
 const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: false },
     { label: 'Schedules', path: '/psychologist/schedules', active: false },
-    { label: 'Appointments', path: '/psychologist/appointments', active: true },
+    { label: 'Appointments', path: '/psychologist/appointments', active: false },
     { label: 'Sessions', path: '/sessions', active: false },
-    { label: 'Records', path: '/psychologist/records', active: false },
+    { label: 'Records', path: '/psychologist/records', active: true },
 ];
 
-function formatRupiah(amount: number) {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        maximumFractionDigits: 0,
-    }).format(amount);
-}
-
-function statusText(status: string) {
-    if (status === 'completed') {
-        return 'Selesai';
-    }
-
-    if (status === 'due') {
-        return 'Sedang berjalan';
-    }
-
-    if (status === 'overdue') {
-        return 'Overdue';
-    }
-
-    return 'Upcoming';
-}
-
-export default function PsychologistAppointments({
-    appointments = [],
-}: PsychologistAppointmentsProps) {
+export default function PsychologistRecords({
+    records = [],
+}: PsychologistRecordsProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const { auth } = usePage().props;
     const userName = auth.user?.name ?? 'Psikolog';
     const userEmail = auth.user?.email ?? 'psikolog@example.com';
-    const runningAppointments = appointments.filter((appointment) =>
-        ['due', 'overdue'].includes(appointment.status),
-    );
-    const upcomingAppointments = appointments.filter(
-        (appointment) => appointment.status === 'upcoming',
-    );
-    const completedAppointments = appointments.filter(
-        (appointment) => appointment.status === 'completed',
-    );
 
     const handleLogout = () => {
         router.flushAll();
@@ -89,7 +53,7 @@ export default function PsychologistAppointments({
 
     return (
         <div className="min-h-screen bg-[#f7f9fb] font-sans">
-            <Head title="Appointments Psikolog" />
+            <Head title="Records Psikolog" />
 
             <nav className="sticky top-0 z-50 border-b border-[#e2e4e6] bg-white">
                 <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between px-4 sm:px-8">
@@ -266,14 +230,13 @@ export default function PsychologistAppointments({
                 <section className="flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-sm md:flex-row md:items-center md:justify-between md:p-8">
                     <div>
                         <p className="m-0 mb-2 text-sm font-bold tracking-widest text-[#1464BC] uppercase">
-                            Semua Appointment
+                            Semua Rekam Medis
                         </p>
                         <h1 className="m-0 text-[34px] leading-tight font-black tracking-tight text-[#191c1e] md:text-[44px]">
-                            Daftar Appointment.
+                            Daftar Record Pasien.
                         </h1>
                         <p className="m-0 mt-3 max-w-[660px] text-base leading-relaxed font-medium text-[#717783]">
-                            Kelola jadwal pertemuan dan sesi terapi Anda dengan
-                            pasien di sini.
+                            Kelola rekam medis dan catatan perkembangan pasien Anda di sini.
                         </p>
                     </div>
                 </section>
@@ -282,44 +245,31 @@ export default function PsychologistAppointments({
                     <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                         <div>
                             <h2 className="m-0 text-2xl font-black text-[#191c1e]">
-                                Semua Jadwal
+                                Daftar Pasien
                             </h2>
                             <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
-                                Pasien yang telah menjadwalkan sesi dengan Anda.
+                                Pasien yang memiliki riwayat sesi terapi dengan Anda.
                             </p>
                         </div>
                     </div>
 
-                    {appointments.length > 0 ? (
-                        <div className="flex flex-col gap-8">
-                            <AppointmentSection
-                                title="Sedang Berjalan"
-                                description="Sesi yang sudah masuk waktu konsultasi."
-                                appointments={runningAppointments}
-                                emptyText="Belum ada sesi yang sedang berjalan atau overdue."
-                            />
-                            <AppointmentSection
-                                title="Upcoming"
-                                description="Sesi berbayar yang jadwalnya belum mulai."
-                                appointments={upcomingAppointments}
-                                emptyText="Belum ada sesi upcoming."
-                            />
-                            <AppointmentSection
-                                title="Selesai"
-                                description="Sesi yang sudah ditandai selesai oleh psikolog."
-                                appointments={completedAppointments}
-                                emptyText="Belum ada sesi selesai."
-                            />
+                    {records.length > 0 ? (
+                        <div className="flex flex-col gap-3">
+                            {records.map((record) => (
+                                <RecordRow
+                                    key={record.id}
+                                    record={record}
+                                />
+                            ))}
                         </div>
                     ) : (
                         <div className="flex min-h-[260px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#d8dde5] bg-[#f7f9fb] p-8 text-center">
-                            <Calendar className="mb-4 h-10 w-10 text-[#a0a5b1]" />
+                            <FileText className="mb-4 h-10 w-10 text-[#a0a5b1]" />
                             <h3 className="m-0 text-lg font-black text-[#191c1e]">
-                                Belum ada appointment
+                                Belum ada record
                             </h3>
                             <p className="m-0 mt-2 max-w-[420px] text-sm font-medium text-[#717783]">
-                                Sesi akan muncul di sini setelah pasien
-                                melakukan pemesanan untuk Anda.
+                                Record akan muncul di sini setelah Anda menyelesaikan sesi dengan pasien.
                             </p>
                         </div>
                     )}
@@ -329,153 +279,44 @@ export default function PsychologistAppointments({
     );
 }
 
-PsychologistAppointments.layout = {};
+PsychologistRecords.layout = {};
 
-function AppointmentSection({
-    title,
-    description,
-    appointments,
-    emptyText,
-}: {
-    title: string;
-    description: string;
-    appointments: Appointment[];
-    emptyText: string;
-}) {
+function RecordRow({ record }: { record: Record }) {
     return (
-        <section className="flex flex-col gap-3">
-            <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                    <h3 className="m-0 text-lg font-black text-[#191c1e]">
-                        {title}
-                    </h3>
-                    <p className="m-0 text-sm font-medium text-[#717783]">
-                        {description}
-                    </p>
-                </div>
-                <span className="w-fit rounded-full bg-[#f2f4f6] px-3 py-1 text-xs font-bold text-[#717783]">
-                    {appointments.length} sesi
-                </span>
-            </div>
-
-            {appointments.length > 0 ? (
-                <div className="flex flex-col gap-3">
-                    {appointments.map((appointment) => (
-                        <AppointmentRow
-                            key={appointment.id}
-                            appointment={appointment}
-                        />
-                    ))}
-                </div>
-            ) : (
-                <div className="flex min-h-20 items-center gap-3 rounded-2xl border border-dashed border-[#d8dde5] bg-[#f7f9fb] px-4 py-5">
-                    <Clock className="h-5 w-5 shrink-0 text-[#a0a5b1]" />
-                    <p className="m-0 text-sm font-medium text-[#717783]">
-                        {emptyText}
-                    </p>
-                </div>
-            )}
-        </section>
-    );
-}
-
-function AppointmentRow({ appointment }: { appointment: Appointment }) {
-    const isPaid = appointment.payment_status === 'paid';
-    const canComplete = appointment.can_complete;
-
-    let chatButtonText = 'Mulai Sesi';
-    let chatButtonLink = '#';
-    let chatButtonStyle = 'bg-[#f2f4f6] text-[#717783]';
-
-    if (isPaid) {
-        chatButtonLink = '/sessions';
-        if (appointment.status === 'completed') {
-            chatButtonText = 'Riwayat Chat';
-            chatButtonStyle = 'bg-[#eef5fe] text-[#1464BC] hover:bg-[#d9e8fc]';
-        } else if (appointment.status === 'ongoing') {
-            chatButtonText = 'Lanjut Sesi';
-            chatButtonStyle = 'bg-[#1464BC] text-white hover:bg-[#1053A0]';
-        } else {
-            chatButtonText = 'Buka Sesi';
-            chatButtonStyle = 'bg-[#1464BC] text-white hover:bg-[#1053A0]';
-        }
-    }
-
-    const completeAppointment = () => {
-        if (!canComplete) {
-            return;
-        }
-
-        router.patch(
-            complete.url(appointment.id),
-            {},
-            { preserveScroll: true },
-        );
-    };
-
-    return (
-        <article className="flex flex-col gap-4 rounded-2xl border border-[#f2f4f6] bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
+        <article className="flex flex-col gap-4 rounded-2xl border border-[#f2f4f6] bg-white p-4 sm:flex-row sm:items-center sm:justify-between transition-colors hover:border-[#e2e4e6]">
             <div className="flex items-center gap-4">
                 <InitialsAvatar
-                    name={appointment.patient_name}
+                    name={record.patient_name}
                     className="size-12 rounded-2xl"
                 />
                 <div>
                     <h3 className="m-0 text-base font-black text-[#191c1e]">
-                        {appointment.patient_name}
+                        {record.patient_name}
                     </h3>
                     <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
-                        {appointment.date} · {appointment.time} ·{' '}
-                        {formatRupiah(appointment.amount)}
+                        Sesi Terakhir: {record.last_session_date}
                     </p>
                 </div>
             </div>
 
             <div className="flex flex-col gap-3 sm:items-end">
                 <div className="flex gap-2">
-                    <span
-                        className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${
-                            isPaid
-                                ? 'bg-[#dcfce7] text-[#166534]'
-                                : 'bg-[#fef3c7] text-[#92400e]'
-                        }`}
-                    >
-                        {appointment.payment_status}
+                    <span className="w-fit rounded-full px-3 py-1 text-xs font-bold bg-[#eef5fe] text-[#1464BC]">
+                        {record.notes_count} Catatan
                     </span>
-                    <span
-                        className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${
-                            appointment.status === 'upcoming'
-                                ? 'bg-[#e1eef9] text-[#1464BC]'
-                                : appointment.status === 'due'
-                                  ? 'bg-[#dcfce7] text-[#166534]'
-                                  : appointment.status === 'overdue'
-                                    ? 'bg-[#feecec] text-[#b02a2a]'
-                                    : 'bg-[#f2f4f6] text-[#717783]'
-                        }`}
-                    >
-                        {statusText(appointment.status)}
-                    </span>
+                    {record.diagnosis && (
+                        <span className="w-fit rounded-full px-3 py-1 text-xs font-bold bg-[#f2f4f6] text-[#717783]">
+                            {record.diagnosis}
+                        </span>
+                    )}
                 </div>
                 <div className="flex flex-wrap gap-2 sm:justify-end">
                     <Link
-                        href={chatButtonLink}
-                        className={`flex h-11 items-center justify-center rounded-xl px-5 text-sm font-bold transition-colors ${chatButtonStyle}`}
+                        href={`/psychologist/records/${record.id}`}
+                        className="flex h-11 items-center justify-center rounded-xl px-5 text-sm font-bold transition-colors bg-[#1464BC] text-white hover:bg-[#1053A0]"
                     >
-                        {chatButtonText}
+                        Lihat Detail
                     </Link>
-                    <button
-                        type="button"
-                        onClick={completeAppointment}
-                        disabled={!canComplete}
-                        className={`flex h-11 cursor-pointer items-center justify-center gap-2 rounded-xl px-5 text-sm font-bold transition-colors disabled:cursor-not-allowed ${
-                            canComplete
-                                ? 'bg-[#dcfce7] text-[#166534] hover:bg-[#bbf7d0]'
-                                : 'bg-[#f2f4f6] text-[#717783]'
-                        }`}
-                    >
-                        <CheckCircle2 className="h-4 w-4" />
-                        Selesai
-                    </button>
                 </div>
             </div>
         </article>

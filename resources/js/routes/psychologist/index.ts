@@ -84,6 +84,87 @@ appointmentsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'
 appointments.form = appointmentsForm
 
 /**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/psychologist/records'
+*/
+export const records = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: records.url(options),
+    method: 'get',
+})
+
+records.definition = {
+    methods: ["get","head"],
+    url: '/psychologist/records',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/psychologist/records'
+*/
+records.url = (options?: RouteQueryOptions) => {
+    return records.definition.url + queryParams(options)
+}
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/psychologist/records'
+*/
+records.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: records.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/psychologist/records'
+*/
+records.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: records.url(options),
+    method: 'head',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/psychologist/records'
+*/
+const recordsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: records.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/psychologist/records'
+*/
+recordsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: records.url(options),
+    method: 'get',
+})
+
+/**
+* @see \Inertia\Controller::__invoke
+* @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+* @route '/psychologist/records'
+*/
+recordsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: records.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+records.form = recordsForm
+
+/**
 * @see \App\Http\Controllers\DashboardController::availability
 * @see app/Http/Controllers/DashboardController.php:172
 * @route '/psychologist/availability'
@@ -152,6 +233,7 @@ availability.form = availabilityForm
 const psychologist = {
     profile: Object.assign(profile, profile),
     appointments: Object.assign(appointments, appointments40eafc),
+    records: Object.assign(records, records),
     schedules: Object.assign(schedules, schedules),
     availability: Object.assign(availability, availability),
 }

@@ -41,6 +41,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('psychologist/appointments/{appointment}/start', [PsychologistAppointmentController::class, 'start'])
         ->name('psychologist.appointments.start');
 
+    // Psychologist Records (UI Only)
+    Route::inertia('psychologist/records', 'psychologist-records')
+        ->name('psychologist.records');
+
     // Psychologist Schedules
     Route::get('psychologist/schedules', [PsychologistScheduleController::class, 'index'])
         ->name('psychologist.schedules.index');
