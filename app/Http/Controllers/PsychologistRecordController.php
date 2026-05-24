@@ -34,7 +34,8 @@ class PsychologistRecordController extends Controller
                     'record_recommendation' => $appointment->record_recommendation,
                     'status' => $appointment->record_summary ? 'Selesai' : 'Pending',
                 ];
-            });
+            })
+            ->values();
 
         return Inertia::render('psychologist-records', [
             'records' => $appointments,

@@ -17,6 +17,7 @@ class UserRecordController extends Controller
             ->with(['psychologist.user:id,name', 'psychologist:id,user_id,specialization'])
             ->where('status', 'completed')
             ->whereNotNull('record_summary')
+            ->where('record_summary', '!=', '')
             ->latest('appointment_date')
             ->get()
             ->map(function (Appointment $appointment) {
@@ -27,7 +28,8 @@ class UserRecordController extends Controller
                     'session_date' => $appointment->appointment_date?->format('Y-m-d') ?? '-',
                     'record_summary' => $appointment->record_summary,
                 ];
-            });
+            })
+            ->values();
 
         return Inertia::render('records', [
             'records' => $appointments,
