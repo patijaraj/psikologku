@@ -24,7 +24,7 @@ const navItems = [
     { label: 'Dashboard', path: dashboard.url(), active: false },
     { label: 'Therapist', path: therapists.url(), active: false },
     { label: 'Sessions', path: sessions.url(), active: false },
-    { label: 'Record', path: '#', active: false },
+    { label: 'Record', path: '/records', active: false },
 ];
 
 type SnapPaymentResult = Record<string, unknown>;

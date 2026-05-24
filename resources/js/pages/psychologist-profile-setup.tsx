@@ -41,7 +41,7 @@ const navItems = [
         active: false,
     },
     { label: 'Sessions', path: '/sessions', active: false },
-    { label: 'Records', path: '#', active: false },
+    { label: 'Records', path: '/psychologist/records', active: false },
 ];
 
 export default function PsychologistProfileSetup({

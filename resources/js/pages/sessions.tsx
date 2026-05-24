@@ -53,7 +53,7 @@ const patientNavItems = [
     { label: 'Dashboard', path: '/dashboard', active: false },
     { label: 'Therapist', path: '/therapists', active: false },
     { label: 'Sessions', path: '/sessions', active: true },
-    { label: 'Record', path: '#', active: false },
+    { label: 'Record', path: '/records', active: false },
 ];
 
 const psychologistNavItems = [

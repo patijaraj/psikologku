@@ -37,7 +37,7 @@ const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: true },
     { label: 'Therapist', path: '/therapists', active: false },
     { label: 'Sessions', path: '/sessions', active: false },
-    { label: 'Record', path: '#', active: false },
+    { label: 'Record', path: '/records', active: false },
 ];
 
 function ImageWithFallback({
