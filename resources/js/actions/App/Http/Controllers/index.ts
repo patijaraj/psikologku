@@ -2,9 +2,11 @@ import Auth from './Auth'
 import PaymentController from './PaymentController'
 import DashboardController from './DashboardController'
 import PsychologistAppointmentController from './PsychologistAppointmentController'
+import PsychologistRecordController from './PsychologistRecordController'
 import PsychologistScheduleController from './PsychologistScheduleController'
 import TherapistController from './TherapistController'
 import SessionController from './SessionController'
+import UserRecordController from './UserRecordController'
 import Settings from './Settings'
 
 const Controllers = {
@@ -12,9 +14,11 @@ const Controllers = {
     PaymentController: Object.assign(PaymentController, PaymentController),
     DashboardController: Object.assign(DashboardController, DashboardController),
     PsychologistAppointmentController: Object.assign(PsychologistAppointmentController, PsychologistAppointmentController),
+    PsychologistRecordController: Object.assign(PsychologistRecordController, PsychologistRecordController),
     PsychologistScheduleController: Object.assign(PsychologistScheduleController, PsychologistScheduleController),
     TherapistController: Object.assign(TherapistController, TherapistController),
     SessionController: Object.assign(SessionController, SessionController),
+    UserRecordController: Object.assign(UserRecordController, UserRecordController),
     Settings: Object.assign(Settings, Settings),
 }
 

@@ -260,6 +260,96 @@ startForm.patch = (args: { appointment: number | { id: number } } | [appointment
 
 start.form = startForm
 
-const PsychologistAppointmentController = { index, complete, start }
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::updateRecord
+* @see app/Http/Controllers/PsychologistAppointmentController.php:135
+* @route '/psychologist/appointments/{appointment}/record'
+*/
+export const updateRecord = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: updateRecord.url(args, options),
+    method: 'patch',
+})
+
+updateRecord.definition = {
+    methods: ["patch"],
+    url: '/psychologist/appointments/{appointment}/record',
+} satisfies RouteDefinition<["patch"]>
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::updateRecord
+* @see app/Http/Controllers/PsychologistAppointmentController.php:135
+* @route '/psychologist/appointments/{appointment}/record'
+*/
+updateRecord.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { appointment: args }
+    }
+
+    if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+        args = { appointment: args.id }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            appointment: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        appointment: typeof args.appointment === 'object'
+        ? args.appointment.id
+        : args.appointment,
+    }
+
+    return updateRecord.definition.url
+            .replace('{appointment}', parsedArgs.appointment.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::updateRecord
+* @see app/Http/Controllers/PsychologistAppointmentController.php:135
+* @route '/psychologist/appointments/{appointment}/record'
+*/
+updateRecord.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+    url: updateRecord.url(args, options),
+    method: 'patch',
+})
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::updateRecord
+* @see app/Http/Controllers/PsychologistAppointmentController.php:135
+* @route '/psychologist/appointments/{appointment}/record'
+*/
+const updateRecordForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: updateRecord.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'PATCH',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+/**
+* @see \App\Http\Controllers\PsychologistAppointmentController::updateRecord
+* @see app/Http/Controllers/PsychologistAppointmentController.php:135
+* @route '/psychologist/appointments/{appointment}/record'
+*/
+updateRecordForm.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: updateRecord.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'PATCH',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+updateRecord.form = updateRecordForm
+
+const PsychologistAppointmentController = { index, complete, start, updateRecord }
 
 export default PsychologistAppointmentController

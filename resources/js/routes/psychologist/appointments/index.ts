@@ -1,4 +1,5 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
+import record from './record'
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::complete
 * @see app/Http/Controllers/PsychologistAppointmentController.php:54
@@ -182,6 +183,7 @@ start.form = startForm
 const appointments = {
     complete: Object.assign(complete, complete),
     start: Object.assign(start, start),
+    record: Object.assign(record, record),
 }
 
 export default appointments

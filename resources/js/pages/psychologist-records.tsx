@@ -1,7 +1,6 @@
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import { Head, Link, usePage, useForm } from '@inertiajs/react';
 import {
     Bell,
-    Calendar,
     CheckCircle2,
     Clock,
     FileText,
@@ -10,24 +9,26 @@ import {
     MessageSquare,
     Settings,
     Smile,
-    UserRound,
     X,
+    Edit3
 } from 'lucide-react';
 import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
+import { updateRecord } from '@/actions/App/Http/Controllers/PsychologistAppointmentController';
 
-type Record = {
+type RecordType = {
     id: number;
     patient_name: string;
     patient_email?: string | null;
-    last_session_date: string;
-    diagnosis?: string;
-    notes_count: number;
+    session_date: string;
+    record_summary?: string | null;
+    record_recommendation?: string | null;
+    status: string;
 };
 
 type PsychologistRecordsProps = {
-    records?: Record[];
+    records: RecordType[];
 };
 
 const navItems = [
@@ -43,18 +44,49 @@ export default function PsychologistRecords({
 }: PsychologistRecordsProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-    const { auth } = usePage().props;
+    const { auth } = usePage().props as any;
     const userName = auth.user?.name ?? 'Psikolog';
     const userEmail = auth.user?.email ?? 'psikolog@example.com';
 
-    const handleLogout = () => {
-        router.flushAll();
+    const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
+    const [selectedRecord, setSelectedRecord] = useState<RecordType | null>(null);
+
+    const { data: recordData, setData: setRecordData, patch: patchRecord, processing: recordProcessing, reset: resetRecord } = useForm({
+        record_summary: '',
+        record_recommendation: '',
+    });
+
+    const pendingRecords = records.filter(r => r.status === 'Pending');
+    const completedRecords = records.filter(r => r.status === 'Selesai');
+
+    const openRecordModal = (record: RecordType) => {
+        setSelectedRecord(record);
+        setRecordData({
+            record_summary: record.record_summary ?? '',
+            record_recommendation: record.record_recommendation ?? '',
+        });
+        setIsRecordModalOpen(true);
+    };
+
+    const handleRecordSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!selectedRecord) return;
+
+        patchRecord(updateRecord.url(selectedRecord.id), {
+            onSuccess: () => {
+                setIsRecordModalOpen(false);
+                setSelectedRecord(null);
+                resetRecord();
+            },
+            preserveScroll: true,
+        });
     };
 
     return (
         <div className="min-h-screen bg-[#f7f9fb] font-sans">
             <Head title="Records Psikolog" />
 
+            {/* Navbar (Same as before) */}
             <nav className="sticky top-0 z-50 border-b border-[#e2e4e6] bg-white">
                 <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between px-4 sm:px-8">
                     <div className="flex items-center gap-8 lg:gap-16">
@@ -92,27 +124,17 @@ export default function PsychologistRecords({
 
                     <div className="flex items-center gap-4 sm:gap-6">
                         <div className="hidden items-center gap-2 sm:flex">
-                            <button
-                                type="button"
-                                aria-label="Notifikasi"
-                                className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]"
-                            >
+                            <button className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]">
                                 <Bell className="h-[22px] w-[22px]" />
                                 <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#e65c5c] ring-2 ring-white" />
                             </button>
-                            <button
-                                type="button"
-                                aria-label="Pesan"
-                                className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]"
-                            >
+                            <button className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]">
                                 <MessageSquare className="h-[22px] w-[22px]" />
                             </button>
                         </div>
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
                         <div className="relative">
                             <button
-                                type="button"
-                                aria-label="Profil"
                                 aria-expanded={isUserMenuOpen}
                                 className={`flex shrink-0 cursor-pointer items-center rounded-full border-none bg-transparent p-1 transition-all ${
                                     isUserMenuOpen
@@ -134,8 +156,6 @@ export default function PsychologistRecords({
                             {isUserMenuOpen && (
                                 <>
                                     <button
-                                        type="button"
-                                        aria-label="Tutup menu profil"
                                         className="fixed inset-0 z-40 cursor-default border-none bg-transparent"
                                         onClick={() => setIsUserMenuOpen(false)}
                                     />
@@ -143,10 +163,7 @@ export default function PsychologistRecords({
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
                                             <InitialsAvatar
                                                 name={userName}
-                                                photoUrl={
-                                                    (auth.user as any)
-                                                        ?.photo_url
-                                                }
+                                                photoUrl={(auth.user as any)?.photo_url}
                                                 className="size-11 text-base"
                                             />
                                             <div className="min-w-0">
@@ -158,28 +175,20 @@ export default function PsychologistRecords({
                                                 </p>
                                             </div>
                                         </div>
-
                                         <div className="my-2 h-px bg-[#f2f4f6]" />
-
                                         <Link
                                             href="/psychologist-profile"
                                             className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#191c1e] transition-colors hover:bg-[#f7f9fb]"
-                                            onClick={() =>
-                                                setIsUserMenuOpen(false)
-                                            }
                                         >
                                             <span className="flex size-9 items-center justify-center rounded-xl bg-[#eef5fe] text-[#1464BC]">
                                                 <Settings className="h-5 w-5" />
                                             </span>
                                             Profile
                                         </Link>
-
                                         <Link
                                             href={logout()}
                                             as="button"
                                             className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#b02a2a] transition-colors hover:bg-[#feecec]"
-                                            onClick={handleLogout}
-                                            data-test="logout-button"
                                         >
                                             <span className="flex size-9 items-center justify-center rounded-xl bg-[#feecec] text-[#b02a2a]">
                                                 <LogOut className="h-5 w-5" />
@@ -191,39 +200,13 @@ export default function PsychologistRecords({
                             )}
                         </div>
                         <button
-                            type="button"
-                            aria-label="Buka menu"
                             className="cursor-pointer border-none bg-transparent p-1 text-[#717783] md:hidden"
-                            onClick={() =>
-                                setIsMobileMenuOpen(!isMobileMenuOpen)
-                            }
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         >
-                            {isMobileMenuOpen ? (
-                                <X className="h-6 w-6" />
-                            ) : (
-                                <Menu className="h-6 w-6" />
-                            )}
+                            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                         </button>
                     </div>
                 </div>
-
-                {isMobileMenuOpen && (
-                    <div className="absolute top-[72px] right-0 left-0 flex flex-col gap-2 border-b border-[#e2e4e6] bg-white p-4 shadow-lg md:hidden">
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.label}
-                                href={item.path}
-                                className={`rounded-xl p-3 text-[15px] font-semibold ${
-                                    item.active
-                                        ? 'bg-[#f0f6fc] text-[#1464BC]'
-                                        : 'text-[#717783] hover:bg-[#f7f9fb]'
-                                }`}
-                            >
-                                {item.label}
-                            </Link>
-                        ))}
-                    </div>
-                )}
             </nav>
 
             <main className="mx-auto flex max-w-[1280px] flex-col gap-8 px-4 py-8 sm:px-8 md:py-12">
@@ -241,84 +224,170 @@ export default function PsychologistRecords({
                     </div>
                 </section>
 
-                <section className="rounded-3xl bg-white p-6 shadow-sm md:p-8">
-                    <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                <div className="grid gap-8 lg:grid-cols-2">
+                    {/* Pending Section */}
+                    <section className="flex flex-col gap-4 rounded-3xl bg-white p-6 shadow-sm sm:p-8">
                         <div>
-                            <h2 className="m-0 text-2xl font-black text-[#191c1e]">
-                                Daftar Pasien
+                            <h2 className="m-0 text-xl font-black text-[#191c1e] flex items-center gap-2">
+                                Menunggu Diisi
+                                <span className="flex h-6 items-center justify-center rounded-full bg-[#feecec] px-2 text-xs font-bold text-[#b02a2a]">
+                                    {pendingRecords.length}
+                                </span>
                             </h2>
                             <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
-                                Pasien yang memiliki riwayat sesi terapi dengan Anda.
+                                Sesi yang sudah selesai namun belum ada record konsultasi.
                             </p>
                         </div>
-                    </div>
 
-                    {records.length > 0 ? (
-                        <div className="flex flex-col gap-3">
-                            {records.map((record) => (
-                                <RecordRow
-                                    key={record.id}
-                                    record={record}
-                                />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="flex min-h-[260px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#d8dde5] bg-[#f7f9fb] p-8 text-center">
-                            <FileText className="mb-4 h-10 w-10 text-[#a0a5b1]" />
-                            <h3 className="m-0 text-lg font-black text-[#191c1e]">
-                                Belum ada record
-                            </h3>
-                            <p className="m-0 mt-2 max-w-[420px] text-sm font-medium text-[#717783]">
-                                Record akan muncul di sini setelah Anda menyelesaikan sesi dengan pasien.
+                        {pendingRecords.length > 0 ? (
+                            <div className="flex flex-col gap-3">
+                                {pendingRecords.map((record) => (
+                                    <div key={record.id} className="flex flex-col gap-3 rounded-2xl border border-[#fef3c7] bg-[#fffbeb] p-4 sm:flex-row sm:items-center sm:justify-between transition-colors">
+                                        <div className="flex items-center gap-4">
+                                            <InitialsAvatar name={record.patient_name} className="size-10 rounded-xl" />
+                                            <div>
+                                                <h3 className="m-0 text-base font-bold text-[#92400e]">
+                                                    {record.patient_name}
+                                                </h3>
+                                                <p className="m-0 text-xs font-medium text-[#b45309]">
+                                                    Sesi: {record.session_date}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={() => openRecordModal(record)}
+                                            className="flex h-9 items-center justify-center gap-2 rounded-xl bg-[#d97706] px-4 text-xs font-bold text-white transition-colors hover:bg-[#b45309]"
+                                        >
+                                            <Edit3 className="h-3.5 w-3.5" />
+                                            Isi Record
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-[#e2e4e6] bg-[#f7f9fb] p-6 text-center">
+                                <CheckCircle2 className="mb-2 h-8 w-8 text-[#10b981]" />
+                                <p className="m-0 text-sm font-bold text-[#191c1e]">Semua record sudah diisi</p>
+                            </div>
+                        )}
+                    </section>
+
+                    {/* Completed Section */}
+                    <section className="flex flex-col gap-4 rounded-3xl bg-white p-6 shadow-sm sm:p-8">
+                        <div>
+                            <h2 className="m-0 text-xl font-black text-[#191c1e]">
+                                Record Selesai
+                            </h2>
+                            <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
+                                Riwayat record konsultasi yang telah Anda lengkapi.
                             </p>
                         </div>
-                    )}
-                </section>
+
+                        {completedRecords.length > 0 ? (
+                            <div className="flex flex-col gap-3">
+                                {completedRecords.map((record) => (
+                                    <div key={record.id} className="flex flex-col gap-3 rounded-2xl border border-[#f2f4f6] bg-white p-4 sm:flex-row sm:items-center sm:justify-between transition-colors hover:border-[#e2e4e6]">
+                                        <div className="flex items-center gap-4">
+                                            <InitialsAvatar name={record.patient_name} className="size-10 rounded-xl" />
+                                            <div>
+                                                <h3 className="m-0 text-base font-bold text-[#191c1e]">
+                                                    {record.patient_name}
+                                                </h3>
+                                                <p className="m-0 text-xs font-medium text-[#717783]">
+                                                    Sesi: {record.session_date}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={() => openRecordModal(record)}
+                                            className="flex h-9 items-center justify-center rounded-xl bg-[#f2f4f6] px-4 text-xs font-bold text-[#191c1e] transition-colors hover:bg-[#e2e4e6]"
+                                        >
+                                            Edit / Lihat
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="flex flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-[#e2e4e6] bg-[#f7f9fb] p-6 text-center">
+                                <FileText className="mb-2 h-8 w-8 text-[#a0a5b1]" />
+                                <p className="m-0 text-sm font-bold text-[#717783]">Belum ada record selesai</p>
+                            </div>
+                        )}
+                    </section>
+                </div>
             </main>
+
+            {isRecordModalOpen && selectedRecord && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#191c1e]/60 p-4 backdrop-blur-sm">
+                    <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl sm:p-8">
+                        <div className="mb-6 flex items-start justify-between gap-4">
+                            <div>
+                                <h3 className="m-0 text-xl font-black text-[#191c1e]">
+                                    Record: {selectedRecord.patient_name}
+                                </h3>
+                                <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
+                                    Sesi {selectedRecord.session_date}
+                                </p>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => { setIsRecordModalOpen(false); setSelectedRecord(null); }}
+                                className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full border-none bg-[#f2f4f6] text-[#717783] transition-colors hover:bg-[#e2e4e6] hover:text-[#191c1e]"
+                            >
+                                <X className="h-5 w-5" />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleRecordSubmit} className="flex flex-col gap-5">
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="record_summary" className="text-sm font-bold text-[#191c1e]">
+                                    Rekap Konsul
+                                </label>
+                                <textarea
+                                    id="record_summary"
+                                    value={recordData.record_summary}
+                                    onChange={(e) => setRecordData('record_summary', e.target.value)}
+                                    placeholder="Tuliskan ringkasan konsultasi pasien di sini..."
+                                    className="min-h-[120px] rounded-xl border border-[#e2e4e6] bg-[#f7f9fb] p-3 text-sm text-[#191c1e] outline-none transition-all placeholder:text-[#a0a5b1] focus:border-[#1464BC] focus:bg-white focus:ring-4 focus:ring-[#1464BC]/10 resize-none"
+                                    required
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="record_recommendation" className="text-sm font-bold text-[#191c1e]">
+                                    Rekomendasi
+                                </label>
+                                <textarea
+                                    id="record_recommendation"
+                                    value={recordData.record_recommendation}
+                                    onChange={(e) => setRecordData('record_recommendation', e.target.value)}
+                                    placeholder="Tuliskan rekomendasi penanganan atau tugas untuk pasien..."
+                                    className="min-h-[120px] rounded-xl border border-[#e2e4e6] bg-[#f7f9fb] p-3 text-sm text-[#191c1e] outline-none transition-all placeholder:text-[#a0a5b1] focus:border-[#1464BC] focus:bg-white focus:ring-4 focus:ring-[#1464BC]/10 resize-none"
+                                    required
+                                />
+                            </div>
+
+                            <div className="mt-2 flex justify-end gap-3">
+                                <button
+                                    type="button"
+                                    onClick={() => { setIsRecordModalOpen(false); setSelectedRecord(null); }}
+                                    className="rounded-xl bg-[#f2f4f6] px-5 py-2.5 text-sm font-bold text-[#717783] transition-colors hover:bg-[#e2e4e6] hover:text-[#191c1e]"
+                                >
+                                    Batal
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={recordProcessing}
+                                    className="rounded-xl bg-[#1464BC] px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#1053A0] disabled:opacity-70 disabled:cursor-not-allowed"
+                                >
+                                    {recordProcessing ? 'Menyimpan...' : 'Simpan Record'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
 
 PsychologistRecords.layout = {};
-
-function RecordRow({ record }: { record: Record }) {
-    return (
-        <article className="flex flex-col gap-4 rounded-2xl border border-[#f2f4f6] bg-white p-4 sm:flex-row sm:items-center sm:justify-between transition-colors hover:border-[#e2e4e6]">
-            <div className="flex items-center gap-4">
-                <InitialsAvatar
-                    name={record.patient_name}
-                    className="size-12 rounded-2xl"
-                />
-                <div>
-                    <h3 className="m-0 text-base font-black text-[#191c1e]">
-                        {record.patient_name}
-                    </h3>
-                    <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
-                        Sesi Terakhir: {record.last_session_date}
-                    </p>
-                </div>
-            </div>
-
-            <div className="flex flex-col gap-3 sm:items-end">
-                <div className="flex gap-2">
-                    <span className="w-fit rounded-full px-3 py-1 text-xs font-bold bg-[#eef5fe] text-[#1464BC]">
-                        {record.notes_count} Catatan
-                    </span>
-                    {record.diagnosis && (
-                        <span className="w-fit rounded-full px-3 py-1 text-xs font-bold bg-[#f2f4f6] text-[#717783]">
-                            {record.diagnosis}
-                        </span>
-                    )}
-                </div>
-                <div className="flex flex-wrap gap-2 sm:justify-end">
-                    <Link
-                        href={`/psychologist/records/${record.id}`}
-                        className="flex h-11 items-center justify-center rounded-xl px-5 text-sm font-bold transition-colors bg-[#1464BC] text-white hover:bg-[#1053A0]"
-                    >
-                        Lihat Detail
-                    </Link>
-                </div>
-            </div>
-        </article>
-    );
-}

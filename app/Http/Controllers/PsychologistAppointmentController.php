@@ -131,4 +131,25 @@ class PsychologistAppointmentController extends Controller
 
         return 'upcoming';
     }
+
+    public function updateRecord(Request $request, Appointment $appointment): RedirectResponse
+    {
+        $user = $request->user();
+
+        abort_unless($user->isPsychologist(), 403);
+
+        $profile = $user->psychologistProfile;
+
+        abort_unless($profile && $appointment->psychologist_id === $profile->id, 403);
+        abort_unless($appointment->status === 'completed', 422);
+
+        $validated = $request->validate([
+            'record_summary' => ['required', 'string'],
+            'record_recommendation' => ['required', 'string'],
+        ]);
+
+        $appointment->update($validated);
+
+        return back();
+    }
 }

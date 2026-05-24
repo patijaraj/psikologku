@@ -5,9 +5,11 @@ use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PsychologistAppointmentController;
+use App\Http\Controllers\PsychologistRecordController;
 use App\Http\Controllers\PsychologistScheduleController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TherapistController;
+use App\Http\Controllers\UserRecordController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -41,9 +43,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('psychologist/appointments/{appointment}/start', [PsychologistAppointmentController::class, 'start'])
         ->name('psychologist.appointments.start');
 
-    // Psychologist Records (UI Only)
-    Route::inertia('psychologist/records', 'psychologist-records')
-        ->name('psychologist.records');
+    Route::patch('psychologist/appointments/{appointment}/record', [PsychologistAppointmentController::class, 'updateRecord'])
+        ->name('psychologist.appointments.record.update');
+
+    // Psychologist Records
+    Route::get('psychologist/records', [PsychologistRecordController::class, 'index'])
+        ->name('psychologist.records.index');
 
     // Psychologist Schedules
     Route::get('psychologist/schedules', [PsychologistScheduleController::class, 'index'])
@@ -61,6 +66,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('therapists/{psychologistProfile}', [TherapistController::class, 'show'])->name('therapists.show');
     Route::get('sessions', [SessionController::class, 'index'])->name('sessions');
     Route::get('payment', [PaymentController::class, 'show'])->name('payment');
+
+    // User Records
+    Route::get('records', [UserRecordController::class, 'index'])->name('user.records.index');
+    Route::get('records/{appointment}', [UserRecordController::class, 'show'])->name('user.records.show');
 });
 
 require __DIR__.'/settings.php';
