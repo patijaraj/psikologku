@@ -13,6 +13,9 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Actions\EditAction;
 
 class TransactionResource extends Resource
 {
@@ -59,27 +62,27 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
-                \Filament\Tables\Columns\TextColumn::make('order_id')
+                TextColumn::make('order_id')
                     ->label('ID Order')
                     ->searchable()
                     ->copyable() // Admin bisa langsung copy ID order jika dibutuhkan untuk cek ke dashboard Midtrans
                     ->sortable(),
 
-                \Filament\Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->label('Nama Pasien')
                     ->searchable()
                     ->sortable(),
 
-                \Filament\Tables\Columns\TextColumn::make('psychologistUser.name')
+                TextColumn::make('psychologistUser.name')
                     ->label('Psikolog Tujuan')
                     ->searchable(),
 
-                \Filament\Tables\Columns\TextColumn::make('gross_amount')
+                TextColumn::make('gross_amount')
                     ->label('Total Bayar')
                     ->money('IDR', locale: 'id')
                     ->sortable(),
 
-                \Filament\Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->label('Status')
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
@@ -89,14 +92,14 @@ class TransactionResource extends Resource
                         default => 'gray',
                     }),
 
-                \Filament\Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label('Tanggal Transaksi')
                     ->dateTime('d M Y H:i')
                     ->sortable(),
             ])
             ->filters([
                 // Filter cepat berdasarkan status transaksi
-                \Filament\Tables\Filters\SelectFilter::make('status')
+                SelectFilter::make('status')
                     ->label('Filter Status')
                     ->options([
                         'paid' => 'Paid',
@@ -105,11 +108,8 @@ class TransactionResource extends Resource
                     ]),
             ])
             ->actions([
-                \Filament\Actions\EditAction::make()
+                EditAction::make()
                     ->label('Ubah Status'),
-            ])
-            ->bulkActions([
-                // Demi keamanan finansial, bulk delete dimatikan agar log transaksi tidak bisa dihapus massal
             ]);
     }
 

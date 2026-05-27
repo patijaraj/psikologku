@@ -13,7 +13,7 @@ class Transaction extends Model
 
     protected $fillable = [
         'user_id',
-        'psychologist_id', // <-- Ini yang baru ditambahkan
+        'psychologist_id', 
         'order_id',
         'gross_amount',
         'status',
@@ -49,12 +49,12 @@ class Transaction extends Model
     public function psychologistUser(): HasOneThrough
     {
         return $this->hasOneThrough(
-            User::class,                  // Target akhir (kita ingin mengambil data dari tabel users)
-            PsychologistProfile::class,   // Model perantara (tabel psychologist_profiles)
-            'id',                         // Foreign key di tabel perantara (psychologist_profiles.id)
-            'id',                         // Foreign key di tabel target (users.id)
-            'psychologist_id',            // Local key di tabel transactions
-            'user_id'                     // Local key di tabel perantara (psychologist_profiles.user_id)
+            User::class,                  
+            PsychologistProfile::class,   
+            'id',                        
+            'id',                         
+            'psychologist_id',           
+            'user_id'                     
         );
     }
 }

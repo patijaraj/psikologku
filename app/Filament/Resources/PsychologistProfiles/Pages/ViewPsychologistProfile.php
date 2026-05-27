@@ -5,6 +5,7 @@ namespace App\Filament\Resources\PsychologistProfiles\Pages;
 use App\Filament\Resources\PsychologistProfiles\PsychologistProfileResource;
 use App\Filament\Resources\PsychologistProfiles\Widgets\PsychologistIncomeChart;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Actions\EditAction;
 
 class ViewPsychologistProfile extends ViewRecord
 {
@@ -14,11 +15,10 @@ class ViewPsychologistProfile extends ViewRecord
     {
         return [
             // Menyediakan tombol edit di pojok kanan atas halaman detail jika admin ingin beralih ke mode edit
-            \Filament\Actions\EditAction::make(), 
+            EditAction::make(), 
         ];
     }
 
-    // 🟢 PINDAHKAN ATAU TAMBAHKAN WIDGET GRAFIK DI SINI
     protected function getHeaderWidgets(): array
     {
         return [

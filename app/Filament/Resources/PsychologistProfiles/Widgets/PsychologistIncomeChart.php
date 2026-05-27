@@ -10,7 +10,6 @@ class PsychologistIncomeChart extends ChartWidget
 {
     protected ?string $heading = 'Grafik Pendapatan Bulanan';
     
-    // 🟢 Ganti nama properti dari $record menjadi $psychologistId dengan tipe int
     #[Locked]
     public ?int $psychologistId = null; 
 
@@ -26,7 +25,6 @@ class PsychologistIncomeChart extends ChartWidget
 
         $monthlyData = array_fill(1, 12, 0);
 
-        // 🟢 Query langsung menggunakan $this->psychologistId
         $transactions = Transaction::where('psychologist_id', $this->psychologistId)
             ->where('status', 'paid')
             ->whereYear('created_at', now()->year)
