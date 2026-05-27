@@ -9,6 +9,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use App\Observers\UserObserver;
 use App\Models\User;
+use App\Models\Transaction;
+use App\Observers\TransactionObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         User::observe(UserObserver::class);
+        Transaction::observe(TransactionObserver::class);
     }
 
     /**

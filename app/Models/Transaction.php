@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Transaction extends Model
 {
@@ -43,5 +44,17 @@ class Transaction extends Model
     {
         // Parameter kedua ('psychologist_id') memastikan Laravel mencari di kolom yang tepat
         return $this->belongsTo(PsychologistProfile::class, 'psychologist_id');
+    }
+
+    public function psychologistUser(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            User::class,                  // Target akhir (kita ingin mengambil data dari tabel users)
+            PsychologistProfile::class,   // Model perantara (tabel psychologist_profiles)
+            'id',                         // Foreign key di tabel perantara (psychologist_profiles.id)
+            'id',                         // Foreign key di tabel target (users.id)
+            'psychologist_id',            // Local key di tabel transactions
+            'user_id'                     // Local key di tabel perantara (psychologist_profiles.user_id)
+        );
     }
 }
