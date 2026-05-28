@@ -16,6 +16,7 @@ import {
     Smile,
     Wallet,
     X,
+    Star
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
@@ -44,6 +45,8 @@ type Therapist = {
         start_time: string;
         end_time: string;
     }[];
+    average_rating?: number | null;
+    review_count?: number;
 };
 
 type TherapistsProps = {
@@ -553,7 +556,15 @@ function TherapistCard({
 
             <div className="mb-6 flex flex-col gap-2 text-sm font-medium text-[#717783]">
                 <span>{therapist.str_number ?? 'STR belum diisi'}</span>
-                <span>Ulasan belum tersedia</span>
+                {therapist.average_rating ? (
+                    <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 fill-[#f59e0b] text-[#f59e0b]" />
+                        <span className="font-bold text-[#191c1e]">{therapist.average_rating}</span>
+                        <span className="text-xs text-[#717783]">({therapist.review_count} ulasan)</span>
+                    </div>
+                ) : (
+                    <span>Belum ada ulasan</span>
+                )}
             </div>
 
             <Link
@@ -1007,9 +1018,17 @@ function TherapistSummaryCard({ therapist }: { therapist: Therapist }) {
                             ? therapist.specialization.join(', ')
                             : 'Spesialisasi belum diisi'}
                     </p>
-                    <p className="m-0 text-xs font-medium text-[#717783]">
-                        Ulasan belum tersedia
-                    </p>
+                    {therapist.average_rating ? (
+                        <div className="flex items-center gap-1 mt-1">
+                            <Star className="h-3.5 w-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                            <span className="text-xs font-bold text-[#191c1e]">{therapist.average_rating}</span>
+                            <span className="text-xs font-medium text-[#717783]">({therapist.review_count} ulasan)</span>
+                        </div>
+                    ) : (
+                        <p className="m-0 text-xs font-medium text-[#717783]">
+                            Ulasan belum tersedia
+                        </p>
+                    )}
                 </div>
             </div>
             <div className="flex items-center justify-between gap-4 text-[13px]">

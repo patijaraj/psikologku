@@ -13,6 +13,7 @@ import {
     Smile,
     Wallet,
     X,
+    Star
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -38,6 +39,8 @@ type TherapistSummary = {
     price: number;
     is_online: boolean;
     photo_url?: string | null;
+    average_rating?: number | null;
+    review_count?: number;
 };
 
 interface PaymentProps {
@@ -352,9 +355,17 @@ export default function Payment({
                                     <p className="m-0 mb-1 text-[13px] font-medium text-[#717783]">
                                         {therapist?.specialization && therapist.specialization.length > 0 ? therapist.specialization.join(', ') : 'Spesialisasi belum diisi'}
                                     </p>
-                                    <p className="m-0 text-xs font-medium text-[#717783]">
-                                        Ulasan belum tersedia
-                                    </p>
+                                    {therapist?.average_rating ? (
+                                        <div className="flex items-center gap-1 mt-1">
+                                            <Star className="h-3.5 w-3.5 fill-[#f59e0b] text-[#f59e0b]" />
+                                            <span className="text-xs font-bold text-[#191c1e]">{therapist.average_rating}</span>
+                                            <span className="text-xs font-medium text-[#717783]">({therapist.review_count} ulasan)</span>
+                                        </div>
+                                    ) : (
+                                        <p className="m-0 text-xs font-medium text-[#717783]">
+                                            Ulasan belum tersedia
+                                        </p>
+                                    )}
                                 </div>
                             </div>
 

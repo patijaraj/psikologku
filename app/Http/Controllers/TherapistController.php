@@ -46,6 +46,10 @@ class TherapistController extends Controller
             ->with(['user:id,name,email', 'schedules' => function ($query) {
                 $query->where('is_active', true);
             }])
+            ->withAvg('appointments as average_rating', 'rating')
+            ->withCount(['appointments as review_count' => function ($query) {
+                $query->whereNotNull('rating');
+            }])
             ->latest()
             ->get()
             ->map(fn (PsychologistProfile $profile): array => $this->serializeTherapist($profile));
@@ -62,6 +66,8 @@ class TherapistController extends Controller
             'price' => (float) $profile->price,
             'is_online' => (bool) $profile->is_online,
             'photo_url' => $profile->photo_url,
+            'average_rating' => $profile->average_rating ? round((float) $profile->average_rating, 1) : null,
+            'review_count' => $profile->review_count ?? 0,
             'schedules' => $profile->relationLoaded('schedules') ? $profile->schedules->map(fn ($schedule) => [
                 'id' => $schedule->id,
                 'day_of_week' => $schedule->day_of_week,

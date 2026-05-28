@@ -543,7 +543,7 @@ sessions.form = sessionsForm
 
 /**
 * @see \App\Http\Controllers\PaymentController::payment
-* @see app/Http/Controllers/PaymentController.php:19
+* @see app/Http/Controllers/PaymentController.php:21
 * @route '/payment'
 */
 export const payment = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -558,7 +558,7 @@ payment.definition = {
 
 /**
 * @see \App\Http\Controllers\PaymentController::payment
-* @see app/Http/Controllers/PaymentController.php:19
+* @see app/Http/Controllers/PaymentController.php:21
 * @route '/payment'
 */
 payment.url = (options?: RouteQueryOptions) => {
@@ -567,7 +567,7 @@ payment.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PaymentController::payment
-* @see app/Http/Controllers/PaymentController.php:19
+* @see app/Http/Controllers/PaymentController.php:21
 * @route '/payment'
 */
 payment.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -577,7 +577,7 @@ payment.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\PaymentController::payment
-* @see app/Http/Controllers/PaymentController.php:19
+* @see app/Http/Controllers/PaymentController.php:21
 * @route '/payment'
 */
 payment.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -587,7 +587,7 @@ payment.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\PaymentController::payment
-* @see app/Http/Controllers/PaymentController.php:19
+* @see app/Http/Controllers/PaymentController.php:21
 * @route '/payment'
 */
 const paymentForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -597,7 +597,7 @@ const paymentForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> =>
 
 /**
 * @see \App\Http\Controllers\PaymentController::payment
-* @see app/Http/Controllers/PaymentController.php:19
+* @see app/Http/Controllers/PaymentController.php:21
 * @route '/payment'
 */
 paymentForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -607,7 +607,7 @@ paymentForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \App\Http\Controllers\PaymentController::payment
-* @see app/Http/Controllers/PaymentController.php:19
+* @see app/Http/Controllers/PaymentController.php:21
 * @route '/payment'
 */
 paymentForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

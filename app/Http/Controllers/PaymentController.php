@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use App\Models\PsychologistProfile;
 use App\Models\Transaction;
 use App\Services\MidtransSnap;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -93,13 +95,17 @@ class PaymentController extends Controller
 
         return PsychologistProfile::query()
             ->with('user:id,name,email')
+            ->withAvg('appointments as average_rating', 'rating')
+            ->withCount(['appointments as review_count' => function ($query) {
+                $query->whereNotNull('rating');
+            }])
             ->findOrFail($psychologistId);
     }
 
     private function pendingTransactionFor(Request $request, ?PsychologistProfile $psychologist, int $scheduleId = 0, ?string $appointmentDate = null, array $times = []): Transaction
     {
         $user = $request->user();
-        
+
         $sessionCount = count($times) ?: 1;
         $totalPrice = ($psychologist?->price ?? 250000) * $sessionCount;
 
@@ -116,7 +122,7 @@ class PaymentController extends Controller
 
         if ($pendingTransaction && $pendingTransaction->created_at->diffInHours(now()) >= 23) {
             $pendingTransaction->update(['status' => 'expired']);
-            \App\Models\Appointment::query()->where('transaction_id', $pendingTransaction->id)->delete();
+            Appointment::query()->where('transaction_id', $pendingTransaction->id)->delete();
             $pendingTransaction = null;
         }
 
@@ -132,8 +138,8 @@ class PaymentController extends Controller
             // Update gross amount if it changed. A new amount requires a new order_id for Midtrans.
             if ($pendingTransaction->gross_amount != $totalPrice) {
                 $pendingTransaction->update(['status' => 'cancelled']);
-                \App\Models\Appointment::query()->where('transaction_id', $pendingTransaction->id)->delete();
-                
+                Appointment::query()->where('transaction_id', $pendingTransaction->id)->delete();
+
                 $pendingTransaction = Transaction::query()->create([
                     'user_id' => $user->id,
                     'psychologist_id' => $psychologist?->id,
@@ -144,18 +150,18 @@ class PaymentController extends Controller
             }
         }
 
-        if ($psychologist && $scheduleId && $appointmentDate && !empty($times)) {
+        if ($psychologist && $scheduleId && $appointmentDate && ! empty($times)) {
             // Delete old pending appointments for this transaction
-            \App\Models\Appointment::query()
+            Appointment::query()
                 ->where('transaction_id', $pendingTransaction->id)
                 ->delete();
 
             // Create new appointments for each selected time
             foreach ($times as $time) {
-                $startDateTime = \Carbon\Carbon::parse($time);
+                $startDateTime = Carbon::parse($time);
                 $endDateTime = $startDateTime->copy()->addHour();
 
-                \App\Models\Appointment::query()->create([
+                Appointment::query()->create([
                     'user_id' => $user->id,
                     'transaction_id' => $pendingTransaction->id,
                     'psychologist_id' => $psychologist->id,
@@ -182,6 +188,8 @@ class PaymentController extends Controller
             'price' => (float) $profile->price,
             'is_online' => (bool) $profile->is_online,
             'photo_url' => $profile->photo_url,
+            'average_rating' => $profile->average_rating ? round((float) $profile->average_rating, 1) : null,
+            'review_count' => $profile->review_count ?? 0,
         ];
     }
 
