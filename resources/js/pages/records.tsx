@@ -9,7 +9,8 @@ import {
     Settings,
     Smile,
     X,
-    UserRound
+    UserRound,
+    Star
 } from 'lucide-react';
 import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
@@ -21,6 +22,7 @@ type PatientRecord = {
     specialization: string[] | null;
     session_date: string;
     record_summary: string;
+    rating?: number | null;
 };
 
 type RecordsProps = {
@@ -222,7 +224,19 @@ export default function Records({ records = [] }: RecordsProps) {
                                     <div>
                                         <div className="mb-2 flex items-center justify-between">
                                             <span className="text-xs font-bold text-[#717783]">Sesi Terakhir</span>
-                                            <span className="text-xs font-bold text-[#1464BC]">{record.session_date}</span>
+                                            <div className="flex items-center gap-2">
+                                                {record.rating ? (
+                                                    <span className="flex items-center gap-1 rounded-md bg-[#fff8e6] px-2 py-0.5 text-[11px] font-bold text-[#b45309]">
+                                                        <Star className="h-3 w-3 fill-[#f59e0b] text-[#f59e0b]" />
+                                                        {record.rating}/5
+                                                    </span>
+                                                ) : (
+                                                    <span className="rounded-md bg-[#feecec] px-2 py-0.5 text-[11px] font-bold text-[#b02a2a]">
+                                                        Belum Diulas
+                                                    </span>
+                                                )}
+                                                <span className="text-xs font-bold text-[#1464BC]">{record.session_date}</span>
+                                            </div>
                                         </div>
                                         <p className="m-0 line-clamp-2 text-sm leading-relaxed text-[#717783]">
                                             {record.record_summary}

@@ -296,9 +296,18 @@ export default function PsychologistRecords({
                                                 <h3 className="m-0 text-base font-bold text-[#191c1e]">
                                                     {record.patient_name}
                                                 </h3>
-                                                <p className="m-0 text-xs font-medium text-[#717783]">
-                                                    Sesi: {record.session_date}
-                                                </p>
+                                                <div className="m-0 flex items-center gap-2 text-xs font-medium text-[#717783]">
+                                                    <span>Sesi: {record.session_date}</span>
+                                                    <span>•</span>
+                                                    {record.rating ? (
+                                                        <span className="flex items-center gap-1 font-bold text-[#b45309]">
+                                                            <Star className="h-3 w-3 fill-[#f59e0b] text-[#f59e0b]" />
+                                                            {record.rating}/5
+                                                        </span>
+                                                    ) : (
+                                                        <span className="font-bold text-[#717783]">Menunggu Ulasan</span>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                         <button
