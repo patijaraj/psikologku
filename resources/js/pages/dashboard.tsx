@@ -55,7 +55,7 @@ function ImageWithFallback({
     );
 }
 
-export default function Dashboard({ appointments = [], topPsychologists = [] }: { appointments?: any[], topPsychologists?: any[] }) {
+export default function Dashboard({ appointments = [], topPsychologists = [], recentRecords = [] }: { appointments?: any[], topPsychologists?: any[], recentRecords?: any[] }) {
     const upcomingAppointments = appointments?.filter(a => {
         const appointmentDateTime = new Date(`${a.appointment_date}T${a.start_time}`);
         return appointmentDateTime >= new Date();
@@ -291,31 +291,6 @@ export default function Dashboard({ appointments = [], topPsychologists = [] }: 
                         <h1 className="m-0 text-[36px] leading-tight font-black tracking-tight text-[#191c1e] md:text-[48px]">
                             Selamat pagi, {firstName}.
                         </h1>
-                        <p className="m-0 text-lg font-medium text-[#717783] md:text-xl">
-                            Bagaimana perasaanmu hari ini?
-                        </p>
-                    </div>
-
-                    <div className="flex flex-wrap items-center gap-3">
-                        <MoodButton
-                            active
-                            icon={<SmilePlus className="h-5 w-5" />}
-                            label="Tenang"
-                            className="bg-[#99f2c1] text-[#08714a] hover:bg-[#85e1b0]"
-                        />
-                        <MoodButton
-                            icon={<Brain className="h-5 w-5" />}
-                            label="Reflektif"
-                        />
-                        <MoodButton
-                            icon={<Frown className="h-5 w-5" />}
-                            label="Cemas"
-                        />
-                        <MoodButton
-                            icon={<Moon className="h-5 w-5" />}
-                            label="Lelah"
-                            className="bg-[#7069c7] text-white shadow-sm hover:bg-[#5f59ab]"
-                        />
                     </div>
                 </section>
 
@@ -452,31 +427,31 @@ export default function Dashboard({ appointments = [], topPsychologists = [] }: 
                                 Riwayat Terbaru
                             </h3>
                             <div className="flex flex-col gap-4">
-                                <RecordItem
-                                    icon={<FileText className="h-6 w-6" />}
-                                    title="Ringkasan Sesi - 12 Mei"
-                                    meta="Dokumen PDF - 1.2 MB"
-                                    className="bg-[#feecec] text-[#e65c5c]"
-                                />
-                                <RecordItem
-                                    icon={<Headphones className="h-6 w-6" />}
-                                    title="Meditasi Terpandu #4"
-                                    meta="Audio MP3 - 15:20 mnt"
-                                    className="bg-[#eef5fe] text-[#1464BC]"
-                                />
-                                <RecordItem
-                                    icon={<BookOpen className="h-6 w-6" />}
-                                    title="Strategi Mengatasi Kecemasan"
-                                    meta="Bacaan - 5 mnt baca"
-                                    className="bg-[#e5f5ef] text-[#08714a]"
-                                />
+                                {recentRecords && recentRecords.length > 0 ? (
+                                    recentRecords.map((record) => (
+                                        <Link
+                                            href={`/records/${record.id}`}
+                                            key={record.id}
+                                            className="block no-underline"
+                                        >
+                                            <RecordItem
+                                                icon={<FileText className="h-6 w-6" />}
+                                                title={`Sesi dengan ${record.psychologist_name}`}
+                                                meta={record.session_date}
+                                                className="bg-[#eef5fe] text-[#1464BC] transition-colors hover:bg-[#e1eef9]"
+                                            />
+                                        </Link>
+                                    ))
+                                ) : (
+                                    <div className="text-sm font-medium text-[#717783] text-center py-4">Belum ada riwayat konsultasi.</div>
+                                )}
 
-                                <button
-                                    type="button"
-                                    className="mt-2 w-full cursor-pointer rounded-xl border border-[#e2e4e6] bg-white py-3 text-sm font-semibold text-[#191c1e] transition-colors hover:bg-[#f7f9fb]"
+                                <Link
+                                    href="/records"
+                                    className="mt-2 flex w-full cursor-pointer items-center justify-center rounded-xl border border-[#e2e4e6] bg-white py-3 text-sm font-semibold text-[#191c1e] no-underline transition-colors hover:bg-[#f7f9fb]"
                                 >
                                     Lihat Semua Riwayat
-                                </button>
+                                </Link>
                             </div>
                         </section>
                     </aside>

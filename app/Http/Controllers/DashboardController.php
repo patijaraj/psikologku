@@ -138,9 +138,27 @@ class DashboardController extends Controller
                 })
                 ->values();
 
+            $recentRecords = $user->appointments()
+                ->with(['psychologist.user:id,name', 'psychologist:id,user_id,specialization'])
+                ->where('status', 'completed')
+                ->whereNotNull('record_summary')
+                ->where('record_summary', '!=', '')
+                ->latest('appointment_date')
+                ->take(3)
+                ->get()
+                ->map(function ($appointment) {
+                    return [
+                        'id' => $appointment->id,
+                        'psychologist_name' => $appointment->psychologist->user?->name ?? 'Psikolog',
+                        'session_date' => $appointment->appointment_date?->format('d M Y') ?? '-',
+                    ];
+                })
+                ->values();
+
             return Inertia::render('dashboard', [
                 'appointments' => $appointments,
                 'topPsychologists' => $topPsychologists,
+                'recentRecords' => $recentRecords,
             ]);
         }
 
