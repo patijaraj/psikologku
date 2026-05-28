@@ -1,9 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -22,9 +20,7 @@ return new class extends Migration
             }
         });
 
-        Schema::table('psychologist_profiles', function (Blueprint $table) {
-            $table->json('specialization')->change();
-        });
+        DB::statement('ALTER TABLE psychologist_profiles ALTER COLUMN specialization TYPE json USING specialization::json');
     }
 
     /**
@@ -32,9 +28,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('psychologist_profiles', function (Blueprint $table) {
-            $table->string('specialization')->change();
-        });
+        DB::statement('ALTER TABLE psychologist_profiles ALTER COLUMN specialization TYPE varchar USING specialization::text');
 
         // Convert json array back to string
         DB::table('psychologist_profiles')->get()->each(function ($profile) {

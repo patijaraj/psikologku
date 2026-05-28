@@ -70,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // User Records
     Route::get('records', [UserRecordController::class, 'index'])->name('user.records.index');
     Route::get('records/{appointment}', [UserRecordController::class, 'show'])->name('user.records.show');
+    Route::patch('records/{appointment}/review', [UserRecordController::class, 'updateReview'])->name('user.records.review.update');
 });
 
 require __DIR__.'/settings.php';

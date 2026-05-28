@@ -10,7 +10,8 @@ import {
     Settings,
     Smile,
     X,
-    Edit3
+    Edit3,
+    Star
 } from 'lucide-react';
 import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
@@ -24,6 +25,8 @@ type RecordType = {
     session_date: string;
     record_summary?: string | null;
     record_recommendation?: string | null;
+    rating?: number | null;
+    review?: string | null;
     status: string;
 };
 
@@ -365,6 +368,27 @@ export default function PsychologistRecords({
                                     required
                                 />
                             </div>
+
+                            {selectedRecord.rating && (
+                                <div className="mt-2 rounded-xl bg-[#fff8e6] p-4 border border-[#fef3c7]">
+                                    <div className="mb-2 flex items-center justify-between">
+                                        <h4 className="m-0 text-sm font-bold text-[#b45309]">Ulasan Pasien</h4>
+                                        <div className="flex items-center gap-1">
+                                            {[1, 2, 3, 4, 5].map((star) => (
+                                                <Star
+                                                    key={star}
+                                                    className={`h-4 w-4 ${star <= selectedRecord.rating! ? 'fill-[#f59e0b] text-[#f59e0b]' : 'fill-[#fcd34d] text-[#fcd34d]'}`}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    {selectedRecord.review && (
+                                        <p className="m-0 text-[13px] text-[#92400e] italic">
+                                            "{selectedRecord.review}"
+                                        </p>
+                                    )}
+                                </div>
+                            )}
 
                             <div className="mt-2 flex justify-end gap-3">
                                 <button

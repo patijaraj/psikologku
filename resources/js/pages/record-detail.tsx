@@ -1,4 +1,4 @@
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link, usePage, useForm } from '@inertiajs/react';
 import {
     ArrowLeft,
     Bell,
@@ -13,7 +13,8 @@ import {
     X,
     UserRound,
     Stethoscope,
-    FileHeart
+    FileHeart,
+    Star
 } from 'lucide-react';
 import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
@@ -27,6 +28,8 @@ type RecordDetail = {
     session_duration: string;
     record_summary: string;
     record_recommendation: string;
+    rating: number | null;
+    review: string | null;
 };
 
 type RecordDetailProps = {
@@ -46,6 +49,18 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
     const { auth } = usePage().props as any;
     const userName = auth.user?.name ?? 'User';
     const userEmail = auth.user?.email ?? 'user@example.com';
+
+    const { data, setData, patch, processing, errors } = useForm({
+        rating: record.rating || 0,
+        review: record.review || '',
+    });
+
+    const submitReview = (e: React.FormEvent) => {
+        e.preventDefault();
+        patch(`/records/${record.id}/review`, {
+            preserveScroll: true,
+        });
+    };
 
     return (
         <div className="min-h-screen bg-[#f7f9fb] font-sans">
@@ -255,6 +270,81 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                                     {record.record_recommendation}
                                 </p>
                             </div>
+                        </div>
+
+                        {/* Review Section */}
+                        <div className="mt-4 border-t border-[#f2f4f6] pt-8">
+                            <div className="mb-4 flex items-center gap-3">
+                                <div className="flex size-8 items-center justify-center rounded-lg bg-[#fff8e6] text-[#f59e0b]">
+                                    <Star className="h-4 w-4" />
+                                </div>
+                                <h2 className="m-0 text-lg font-black text-[#191c1e]">Ulasan Sesi</h2>
+                            </div>
+                            
+                            {record.rating ? (
+                                <div className="rounded-2xl border border-[#e2e4e6] bg-[#fdfefe] p-5">
+                                    <div className="mb-3 flex items-center gap-1">
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <Star
+                                                key={star}
+                                                className={`h-5 w-5 ${star <= record.rating! ? 'fill-[#f59e0b] text-[#f59e0b]' : 'fill-[#e2e4e6] text-[#e2e4e6]'}`}
+                                            />
+                                        ))}
+                                    </div>
+                                    {record.review && (
+                                        <p className="m-0 text-[15px] leading-relaxed text-[#4a5568]">
+                                            "{record.review}"
+                                        </p>
+                                    )}
+                                </div>
+                            ) : (
+                                <form onSubmit={submitReview} className="rounded-2xl border border-[#e2e4e6] bg-[#fdfefe] p-5">
+                                    <p className="mb-4 text-sm font-medium text-[#717783]">
+                                        Bagaimana pengalaman Anda pada sesi konsultasi ini?
+                                    </p>
+                                    
+                                    <div className="mb-6 flex items-center gap-2">
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <button
+                                                key={star}
+                                                type="button"
+                                                onClick={() => setData('rating', star)}
+                                                className="cursor-pointer border-none bg-transparent p-1 transition-transform hover:scale-110"
+                                            >
+                                                <Star
+                                                    className={`h-8 w-8 ${star <= data.rating ? 'fill-[#f59e0b] text-[#f59e0b]' : 'fill-[#e2e4e6] text-[#e2e4e6]'}`}
+                                                />
+                                            </button>
+                                        ))}
+                                    </div>
+                                    {errors.rating && <p className="mb-4 text-xs font-bold text-[#e65c5c]">{errors.rating}</p>}
+
+                                    <div className="mb-6">
+                                        <label htmlFor="review" className="mb-2 block text-sm font-bold text-[#191c1e]">
+                                            Tulis Ulasan (Opsional)
+                                        </label>
+                                        <textarea
+                                            id="review"
+                                            rows={4}
+                                            value={data.review}
+                                            onChange={(e) => setData('review', e.target.value)}
+                                            className="w-full resize-none rounded-xl border border-[#e2e4e6] bg-[#f7f9fb] p-3 text-sm text-[#191c1e] focus:border-[#1464BC] focus:ring-1 focus:ring-[#1464BC] focus:outline-none"
+                                            placeholder="Ceritakan pengalaman Anda bersama psikolog ini..."
+                                        />
+                                        {errors.review && <p className="mt-2 text-xs font-bold text-[#e65c5c]">{errors.review}</p>}
+                                    </div>
+
+                                    <div className="flex justify-end">
+                                        <button
+                                            type="submit"
+                                            disabled={processing || data.rating === 0}
+                                            className="cursor-pointer rounded-xl border-none bg-[#1464BC] px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#10529a] disabled:opacity-50"
+                                        >
+                                            {processing ? 'Menyimpan...' : 'Kirim Ulasan'}
+                                        </button>
+                                    </div>
+                                </form>
+                            )}
                         </div>
                     </div>
                 </div>

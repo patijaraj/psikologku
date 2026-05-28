@@ -1,7 +1,8 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
+import review from './review'
 /**
 * @see \App\Http\Controllers\UserRecordController::index
-* @see app/Http/Controllers/UserRecordController.php:12
+* @see app/Http/Controllers/UserRecordController.php:13
 * @route '/records'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +17,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\UserRecordController::index
-* @see app/Http/Controllers/UserRecordController.php:12
+* @see app/Http/Controllers/UserRecordController.php:13
 * @route '/records'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +26,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\UserRecordController::index
-* @see app/Http/Controllers/UserRecordController.php:12
+* @see app/Http/Controllers/UserRecordController.php:13
 * @route '/records'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +36,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\UserRecordController::index
-* @see app/Http/Controllers/UserRecordController.php:12
+* @see app/Http/Controllers/UserRecordController.php:13
 * @route '/records'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +46,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\UserRecordController::index
-* @see app/Http/Controllers/UserRecordController.php:12
+* @see app/Http/Controllers/UserRecordController.php:13
 * @route '/records'
 */
 const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -55,7 +56,7 @@ const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \App\Http\Controllers\UserRecordController::index
-* @see app/Http/Controllers/UserRecordController.php:12
+* @see app/Http/Controllers/UserRecordController.php:13
 * @route '/records'
 */
 indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -65,7 +66,7 @@ indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\UserRecordController::index
-* @see app/Http/Controllers/UserRecordController.php:12
+* @see app/Http/Controllers/UserRecordController.php:13
 * @route '/records'
 */
 indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -82,7 +83,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:39
+* @see app/Http/Controllers/UserRecordController.php:42
 * @route '/records/{appointment}'
 */
 export const show = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -97,7 +98,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:39
+* @see app/Http/Controllers/UserRecordController.php:42
 * @route '/records/{appointment}'
 */
 show.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -130,7 +131,7 @@ show.url = (args: { appointment: number | { id: number } } | [appointment: numbe
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:39
+* @see app/Http/Controllers/UserRecordController.php:42
 * @route '/records/{appointment}'
 */
 show.get = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -140,7 +141,7 @@ show.get = (args: { appointment: number | { id: number } } | [appointment: numbe
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:39
+* @see app/Http/Controllers/UserRecordController.php:42
 * @route '/records/{appointment}'
 */
 show.head = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -150,7 +151,7 @@ show.head = (args: { appointment: number | { id: number } } | [appointment: numb
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:39
+* @see app/Http/Controllers/UserRecordController.php:42
 * @route '/records/{appointment}'
 */
 const showForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -160,7 +161,7 @@ const showForm = (args: { appointment: number | { id: number } } | [appointment:
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:39
+* @see app/Http/Controllers/UserRecordController.php:42
 * @route '/records/{appointment}'
 */
 showForm.get = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -170,7 +171,7 @@ showForm.get = (args: { appointment: number | { id: number } } | [appointment: n
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:39
+* @see app/Http/Controllers/UserRecordController.php:42
 * @route '/records/{appointment}'
 */
 showForm.head = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -188,6 +189,7 @@ show.form = showForm
 const records = {
     index: Object.assign(index, index),
     show: Object.assign(show, show),
+    review: Object.assign(review, review),
 }
 
 export default records

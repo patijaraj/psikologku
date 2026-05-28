@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -27,6 +28,8 @@ class UserRecordController extends Controller
                     'specialization' => $appointment->psychologist->specialization ?? ['Psikologi'],
                     'session_date' => $appointment->appointment_date?->format('Y-m-d') ?? '-',
                     'record_summary' => $appointment->record_summary,
+                    'rating' => $appointment->rating,
+                    'review' => $appointment->review,
                 ];
             })
             ->values();
@@ -55,7 +58,29 @@ class UserRecordController extends Controller
                 'session_duration' => '60 Minutes', // Assuming standard duration
                 'record_summary' => $appointment->record_summary,
                 'record_recommendation' => $appointment->record_recommendation,
+                'rating' => $appointment->rating,
+                'review' => $appointment->review,
             ],
         ]);
+    }
+
+    public function updateReview(Request $request, Appointment $appointment): RedirectResponse
+    {
+        $user = $request->user();
+
+        abort_unless($appointment->user_id === $user->id, 403);
+        abort_unless($appointment->status === 'completed', 404);
+
+        $validated = $request->validate([
+            'rating' => ['required', 'integer', 'min:1', 'max:5'],
+            'review' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        $appointment->update([
+            'rating' => $validated['rating'],
+            'review' => $validated['review'],
+        ]);
+
+        return back();
     }
 }

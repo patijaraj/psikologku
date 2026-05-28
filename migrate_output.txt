@@ -1,0 +1,31 @@
+
+
+ INFO Running migrations. 
+
+ 2026_05_28_135816_change_specialization_to_json_on_psychologist_profiles_table  241.29ms FAIL
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[42804]: Datatype mismatch: 7 ERROR:  column "specialization" cannot be cast automatically to type json
+HINT:  You might need to specify "USING specialization::json". (Connection: pgsql, Host: aws-1-ap-southeast-1.pooler.supabase.com, Port: 5432, Database: postgres, SQL: alter table "psychologist_profiles" alter column "specialization" type json, alter column "specialization" set not null, alter column "specialization" drop default, alter column "specialization" drop identity if exists)
+
+  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:841
+    837▕             $exceptionType = ($isUniqueConstraintError = $this->isUniqueConstraintError($e))
+    838▕                 ? UniqueConstraintViolationException::class
+    839▕                 : QueryException::class;
+    840▕ 
+  ➜ 841▕             $exception = new $exceptionType(
+    842▕                 $this->getNameWithReadWriteType(),
+    843▕                 $query,
+    844▕                 $this->prepareBindings($bindings),
+    845▕                 $e,
+
+      [2m+9 vendor frames [22m
+
+  10  database/migrations/2026_05_28_135816_change_specialization_to_json_on_psychologist_profiles_table.php:25
+      Illuminate\Support\Facades\Facade::__callStatic()
+      [2m+27 vendor frames [22m
+
+  38  artisan:16
+      Illuminate\Foundation\Application::handleCommand()
+
