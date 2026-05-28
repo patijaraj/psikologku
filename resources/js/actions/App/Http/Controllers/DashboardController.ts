@@ -82,7 +82,7 @@ show.form = showForm
 
 /**
 * @see \App\Http\Controllers\DashboardController::editPsychologistProfile
-* @see app/Http/Controllers/DashboardController.php:127
+* @see app/Http/Controllers/DashboardController.php:150
 * @route '/psychologist-profile'
 */
 export const editPsychologistProfile = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -97,7 +97,7 @@ editPsychologistProfile.definition = {
 
 /**
 * @see \App\Http\Controllers\DashboardController::editPsychologistProfile
-* @see app/Http/Controllers/DashboardController.php:127
+* @see app/Http/Controllers/DashboardController.php:150
 * @route '/psychologist-profile'
 */
 editPsychologistProfile.url = (options?: RouteQueryOptions) => {
@@ -106,7 +106,7 @@ editPsychologistProfile.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\DashboardController::editPsychologistProfile
-* @see app/Http/Controllers/DashboardController.php:127
+* @see app/Http/Controllers/DashboardController.php:150
 * @route '/psychologist-profile'
 */
 editPsychologistProfile.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -116,7 +116,7 @@ editPsychologistProfile.get = (options?: RouteQueryOptions): RouteDefinition<'ge
 
 /**
 * @see \App\Http\Controllers\DashboardController::editPsychologistProfile
-* @see app/Http/Controllers/DashboardController.php:127
+* @see app/Http/Controllers/DashboardController.php:150
 * @route '/psychologist-profile'
 */
 editPsychologistProfile.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -126,7 +126,7 @@ editPsychologistProfile.head = (options?: RouteQueryOptions): RouteDefinition<'h
 
 /**
 * @see \App\Http\Controllers\DashboardController::editPsychologistProfile
-* @see app/Http/Controllers/DashboardController.php:127
+* @see app/Http/Controllers/DashboardController.php:150
 * @route '/psychologist-profile'
 */
 const editPsychologistProfileForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -136,7 +136,7 @@ const editPsychologistProfileForm = (options?: RouteQueryOptions): RouteFormDefi
 
 /**
 * @see \App\Http\Controllers\DashboardController::editPsychologistProfile
-* @see app/Http/Controllers/DashboardController.php:127
+* @see app/Http/Controllers/DashboardController.php:150
 * @route '/psychologist-profile'
 */
 editPsychologistProfileForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -146,7 +146,7 @@ editPsychologistProfileForm.get = (options?: RouteQueryOptions): RouteFormDefini
 
 /**
 * @see \App\Http\Controllers\DashboardController::editPsychologistProfile
-* @see app/Http/Controllers/DashboardController.php:127
+* @see app/Http/Controllers/DashboardController.php:150
 * @route '/psychologist-profile'
 */
 editPsychologistProfileForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -163,7 +163,7 @@ editPsychologistProfile.form = editPsychologistProfileForm
 
 /**
 * @see \App\Http\Controllers\DashboardController::storePsychologistProfile
-* @see app/Http/Controllers/DashboardController.php:146
+* @see app/Http/Controllers/DashboardController.php:169
 * @route '/psychologist-profile'
 */
 export const storePsychologistProfile = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -178,7 +178,7 @@ storePsychologistProfile.definition = {
 
 /**
 * @see \App\Http\Controllers\DashboardController::storePsychologistProfile
-* @see app/Http/Controllers/DashboardController.php:146
+* @see app/Http/Controllers/DashboardController.php:169
 * @route '/psychologist-profile'
 */
 storePsychologistProfile.url = (options?: RouteQueryOptions) => {
@@ -187,7 +187,7 @@ storePsychologistProfile.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\DashboardController::storePsychologistProfile
-* @see app/Http/Controllers/DashboardController.php:146
+* @see app/Http/Controllers/DashboardController.php:169
 * @route '/psychologist-profile'
 */
 storePsychologistProfile.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -197,7 +197,7 @@ storePsychologistProfile.post = (options?: RouteQueryOptions): RouteDefinition<'
 
 /**
 * @see \App\Http\Controllers\DashboardController::storePsychologistProfile
-* @see app/Http/Controllers/DashboardController.php:146
+* @see app/Http/Controllers/DashboardController.php:169
 * @route '/psychologist-profile'
 */
 const storePsychologistProfileForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -207,7 +207,7 @@ const storePsychologistProfileForm = (options?: RouteQueryOptions): RouteFormDef
 
 /**
 * @see \App\Http\Controllers\DashboardController::storePsychologistProfile
-* @see app/Http/Controllers/DashboardController.php:146
+* @see app/Http/Controllers/DashboardController.php:169
 * @route '/psychologist-profile'
 */
 storePsychologistProfileForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -219,7 +219,7 @@ storePsychologistProfile.form = storePsychologistProfileForm
 
 /**
 * @see \App\Http\Controllers\DashboardController::updateAvailability
-* @see app/Http/Controllers/DashboardController.php:178
+* @see app/Http/Controllers/DashboardController.php:201
 * @route '/psychologist/availability'
 */
 export const updateAvailability = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -234,7 +234,7 @@ updateAvailability.definition = {
 
 /**
 * @see \App\Http\Controllers\DashboardController::updateAvailability
-* @see app/Http/Controllers/DashboardController.php:178
+* @see app/Http/Controllers/DashboardController.php:201
 * @route '/psychologist/availability'
 */
 updateAvailability.url = (options?: RouteQueryOptions) => {
@@ -243,7 +243,7 @@ updateAvailability.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\DashboardController::updateAvailability
-* @see app/Http/Controllers/DashboardController.php:178
+* @see app/Http/Controllers/DashboardController.php:201
 * @route '/psychologist/availability'
 */
 updateAvailability.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -253,7 +253,7 @@ updateAvailability.patch = (options?: RouteQueryOptions): RouteDefinition<'patch
 
 /**
 * @see \App\Http\Controllers\DashboardController::updateAvailability
-* @see app/Http/Controllers/DashboardController.php:178
+* @see app/Http/Controllers/DashboardController.php:201
 * @route '/psychologist/availability'
 */
 const updateAvailabilityForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -268,7 +268,7 @@ const updateAvailabilityForm = (options?: RouteQueryOptions): RouteFormDefinitio
 
 /**
 * @see \App\Http\Controllers\DashboardController::updateAvailability
-* @see app/Http/Controllers/DashboardController.php:178
+* @see app/Http/Controllers/DashboardController.php:201
 * @route '/psychologist/availability'
 */
 updateAvailabilityForm.patch = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

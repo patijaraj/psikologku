@@ -63,7 +63,7 @@ function ImageWithFallback({
     );
 }
 
-export default function Dashboard({ appointments = [] }: { appointments?: any[] }) {
+export default function Dashboard({ appointments = [], topPsychologists = [] }: { appointments?: any[], topPsychologists?: any[] }) {
     const upcomingAppointments = appointments?.filter(a => {
         const appointmentDateTime = new Date(`${a.appointment_date}T${a.start_time}`);
         return appointmentDateTime >= new Date();
@@ -369,6 +369,39 @@ export default function Dashboard({ appointments = [] }: { appointments?: any[] 
                                 Masuk Obrolan
                             </Link>
                         </section>
+
+                        {topPsychologists && topPsychologists.length > 0 && (
+                            <section>
+                                <div className="mb-6 flex items-center justify-between">
+                                    <h3 className="m-0 text-xl font-bold text-[#191c1e]">
+                                        Rekomendasi Psikolog Terbaik
+                                    </h3>
+                                    <Link href="/therapists" className="text-sm font-semibold text-[#1464BC] hover:underline">
+                                        Lihat Semua
+                                    </Link>
+                                </div>
+                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-6">
+                                    {topPsychologists.map((therapist) => (
+                                        <TherapistCard
+                                            key={therapist.id}
+                                            therapistId={therapist.id}
+                                            image={therapist.photo_url ?? drElenaImg}
+                                            name={therapist.name}
+                                            specialty={therapist.specialization && therapist.specialization.length > 0 ? therapist.specialization.join(', ') : 'Spesialisasi Umum'}
+                                            rating={therapist.average_rating ? therapist.average_rating.toString() : '-'}
+                                            reviews={therapist.review_count ? therapist.review_count.toString() : '0'}
+                                            match="Sangat Cocok"
+                                            price={new Intl.NumberFormat('id-ID', {
+                                                style: 'currency',
+                                                currency: 'IDR',
+                                                maximumFractionDigits: 0,
+                                            }).format(therapist.price)}
+                                            imageBg="bg-[#e1eef9]"
+                                        />
+                                    ))}
+                                </div>
+                            </section>
+                        )}
                         
                         <section className="relative overflow-hidden rounded-3xl border border-[#e2e4e6] bg-white p-8 shadow-sm">
                             <div className="absolute -top-10 -right-10 size-32 rounded-full bg-[#eef5fe]/50 blur-3xl" />
@@ -517,6 +550,7 @@ function TherapistCard({
     match,
     price,
     imageBg,
+    therapistId,
 }: {
     image: string;
     name: string;
@@ -526,6 +560,7 @@ function TherapistCard({
     match: string;
     price: string;
     imageBg: string;
+    therapistId: number;
 }) {
     return (
         <div className="flex flex-col gap-4 rounded-3xl border border-[#e2e4e6] bg-white p-5 transition-shadow hover:shadow-md">
@@ -572,7 +607,7 @@ function TherapistCard({
                     </span>
                 </div>
                 <Link
-                    href="/therapists"
+                    href={`/therapists/${therapistId}`}
                     className="cursor-pointer rounded-[10px] border-none bg-[#f2f4f6] px-5 py-2.5 text-sm font-semibold text-[#191c1e] transition-colors hover:bg-[#e2e4e6]"
                 >
                     Pesan

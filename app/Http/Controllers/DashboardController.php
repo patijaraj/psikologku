@@ -116,8 +116,31 @@ class DashboardController extends Controller
                     ];
                 });
 
+            $topPsychologists = PsychologistProfile::query()
+                ->with('user:id,name')
+                ->withAvg('appointments as average_rating', 'rating')
+                ->withCount(['appointments as review_count' => function ($query) {
+                    $query->whereNotNull('rating');
+                }])
+                ->get()
+                ->sortByDesc('average_rating')
+                ->take(2) // Get top 2 to fit side-by-side well in the main column
+                ->map(function ($profile) {
+                    return [
+                        'id' => $profile->id,
+                        'name' => $profile->user?->name ?? 'Psikolog',
+                        'specialization' => $profile->specialization,
+                        'photo_url' => $profile->photo_url,
+                        'average_rating' => $profile->average_rating ? round((float) $profile->average_rating, 1) : null,
+                        'review_count' => $profile->review_count,
+                        'price' => (float) $profile->price,
+                    ];
+                })
+                ->values();
+
             return Inertia::render('dashboard', [
                 'appointments' => $appointments,
+                'topPsychologists' => $topPsychologists,
             ]);
         }
 
