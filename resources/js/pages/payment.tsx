@@ -34,7 +34,7 @@ type TherapistSummary = {
     name: string;
     email?: string | null;
     str_number?: string | null;
-    specialization?: string | null;
+    specialization?: string[] | null;
     price: number;
     is_online: boolean;
     photo_url?: string | null;
@@ -350,8 +350,7 @@ export default function Payment({
                                             'Konsultasi Psikolog'}
                                     </h3>
                                     <p className="m-0 mb-1 text-[13px] font-medium text-[#717783]">
-                                        {therapist?.specialization ??
-                                            'Spesialisasi belum diisi'}
+                                        {therapist?.specialization && therapist.specialization.length > 0 ? therapist.specialization.join(', ') : 'Spesialisasi belum diisi'}
                                     </p>
                                     <p className="m-0 text-xs font-medium text-[#717783]">
                                         Ulasan belum tersedia

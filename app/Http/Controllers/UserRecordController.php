@@ -24,7 +24,7 @@ class UserRecordController extends Controller
                 return [
                     'id' => $appointment->id,
                     'psychologist_name' => $appointment->psychologist->user?->name ?? 'Psikolog',
-                    'specialization' => $appointment->psychologist->specialization ?? 'Psikologi',
+                    'specialization' => $appointment->psychologist->specialization ?? ['Psikologi'],
                     'session_date' => $appointment->appointment_date?->format('Y-m-d') ?? '-',
                     'record_summary' => $appointment->record_summary,
                 ];
@@ -50,7 +50,7 @@ class UserRecordController extends Controller
             'record' => [
                 'id' => $appointment->id,
                 'psychologist_name' => $appointment->psychologist->user?->name ?? 'Psikolog',
-                'specialization' => $appointment->psychologist->specialization ?? 'Psikologi',
+                'specialization' => $appointment->psychologist->specialization ?? ['Psikologi'],
                 'session_date' => $appointment->appointment_date?->format('M d, Y') ?? '-',
                 'session_duration' => '60 Minutes', // Assuming standard duration
                 'record_summary' => $appointment->record_summary,

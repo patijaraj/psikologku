@@ -20,7 +20,7 @@ import { logout } from '@/routes';
 type PsychologistProfile = {
     id: number;
     str_number?: string | null;
-    specialization?: string | null;
+    specialization?: string[] | null;
     price: number;
     is_online: boolean;
     photo_url?: string | null;
@@ -402,7 +402,9 @@ export default function PsychologistDashboard({
                             </div>
 
                             <h3 className="m-0 text-lg font-bold text-blue-50 mt-4 border-t border-white/10 pt-4">
-                                {profile?.specialization ?? 'Spesialisasi belum diisi'}
+                                {profile?.specialization && profile.specialization.length > 0
+                                    ? profile.specialization.join(', ')
+                                    : 'Spesialisasi belum diisi'}
                             </h3>
                             <div className="mt-6 flex flex-col gap-4">
                                 <PracticeMeta

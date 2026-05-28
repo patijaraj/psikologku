@@ -22,7 +22,7 @@ import { logout } from '@/routes';
 type RecordDetail = {
     id: number;
     psychologist_name: string;
-    specialization: string;
+    specialization: string[] | null;
     session_date: string;
     session_duration: string;
     record_summary: string;
@@ -210,7 +210,7 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                                 <div>
                                     <p className="m-0 text-xs font-bold text-[#717783] uppercase tracking-wider">Psikolog</p>
                                     <p className="m-0 mt-0.5 text-base font-bold text-[#191c1e]">{record.psychologist_name}</p>
-                                    <p className="m-0 text-xs font-medium text-[#1464BC]">{record.specialization}</p>
+                                    <p className="m-0 text-xs font-medium text-[#1464BC]">{record.specialization && record.specialization.length > 0 ? record.specialization.join(', ') : 'Psikologi'}</p>
                                 </div>
                             </div>
                             

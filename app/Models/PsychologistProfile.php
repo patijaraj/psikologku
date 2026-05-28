@@ -15,6 +15,10 @@ class PsychologistProfile extends Model
         'photo_url',
     ];
 
+    protected $casts = [
+        'specialization' => 'array',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

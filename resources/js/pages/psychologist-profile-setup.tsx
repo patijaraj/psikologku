@@ -22,7 +22,7 @@ import { supabase } from '@/lib/supabase';
 
 type PsychologistProfileForm = {
     str_number?: string | null;
-    specialization?: string | null;
+    specialization?: string[] | null;
     price?: number | null;
     is_online?: boolean;
     photo_url?: string | null;
@@ -42,6 +42,21 @@ const navItems = [
     },
     { label: 'Sessions', path: '/sessions', active: false },
     { label: 'Records', path: '/psychologist/records', active: false },
+];
+
+const SPECIALIZATIONS = [
+    'Stress',
+    'Gangguan Kecemasan',
+    'Depresi',
+    'Keluarga dan Hubungan',
+    'Trauma',
+    'Gangguan Mood',
+    'Pekerjaan dan Karir',
+    'Kecanduan',
+    'Pengembangan Diri',
+    'Parenting dan Anak',
+    'Gangguan Kepribadian',
+    'Identitas Seksual',
 ];
 
 export default function PsychologistProfileSetup({
@@ -292,23 +307,29 @@ export default function PsychologistProfileSetup({
 
                                 <div className="flex flex-col gap-1.5">
                                     <label
-                                        htmlFor="specialization"
                                         className="ml-1 text-[13px] font-semibold text-[#191c1e]"
                                     >
                                         Spesialisasi
                                     </label>
-                                    <input
-                                        id="specialization"
-                                        name="specialization"
-                                        type="text"
-                                        required
-                                        autoFocus
-                                        defaultValue={
-                                            profile?.specialization ?? ''
-                                        }
-                                        placeholder="Contoh: CBT, Trauma, Konseling Relasi"
-                                        className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
-                                    />
+                                    <div className="mt-1 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                        {SPECIALIZATIONS.map((spec) => (
+                                            <label
+                                                key={spec}
+                                                className="flex cursor-pointer items-start gap-2"
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    name="specialization[]"
+                                                    value={spec}
+                                                    defaultChecked={profile?.specialization?.includes(spec)}
+                                                    className="mt-0.5 size-4 rounded border-[#e2e4e6] text-[#1464BC] focus:ring-[#1464BC]"
+                                                />
+                                                <span className="text-[14px] text-[#191c1e]">
+                                                    {spec}
+                                                </span>
+                                            </label>
+                                        ))}
+                                    </div>
                                     <InputError
                                         message={errors.specialization}
                                     />

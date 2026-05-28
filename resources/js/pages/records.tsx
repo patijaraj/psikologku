@@ -18,7 +18,7 @@ import { logout } from '@/routes';
 type PatientRecord = {
     id: number;
     psychologist_name: string;
-    specialization: string;
+    specialization: string[] | null;
     session_date: string;
     record_summary: string;
 };
@@ -214,7 +214,7 @@ export default function Records({ records = [] }: RecordsProps) {
                                                 {record.psychologist_name}
                                             </h3>
                                             <p className="m-0 text-xs font-medium text-[#717783]">
-                                                {record.specialization}
+                                                {record.specialization && record.specialization.length > 0 ? record.specialization.join(', ') : 'Psikologi'}
                                             </p>
                                         </div>
                                     </div>

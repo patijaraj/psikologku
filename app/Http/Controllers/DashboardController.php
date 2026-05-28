@@ -7,6 +7,7 @@ use App\Models\PsychologistProfile;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -106,7 +107,7 @@ class DashboardController extends Controller
                     return [
                         'id' => $appointment->id,
                         'psychologist_name' => $appointment->psychologist->user->name ?? 'Psikolog',
-                        'specialization' => $appointment->psychologist->specialization ?? 'Umum',
+                        'specialization' => $appointment->psychologist->specialization ?? ['Umum'],
                         'appointment_date' => $appointment->appointment_date->format('Y-m-d'),
                         'start_time' => $appointment->start_time->format('H:i'),
                         'end_time' => $appointment->end_time->format('H:i'),
@@ -150,7 +151,12 @@ class DashboardController extends Controller
 
         $validated = $request->validate([
             'str_number' => ['nullable', 'string', 'max:100'],
-            'specialization' => ['required', 'string', 'max:120'],
+            'specialization' => ['required', 'array', 'min:1'],
+            'specialization.*' => ['string', Rule::in([
+                'Stress', 'Gangguan Kecemasan', 'Depresi', 'Keluarga dan Hubungan',
+                'Trauma', 'Gangguan Mood', 'Pekerjaan dan Karir', 'Kecanduan',
+                'Pengembangan Diri', 'Parenting dan Anak', 'Gangguan Kepribadian', 'Identitas Seksual',
+            ])],
             'price' => ['required', 'numeric', 'min:0', 'max:9999999999'],
             'photo_url' => ['nullable', 'string'],
         ]);

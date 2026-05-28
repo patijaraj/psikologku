@@ -33,7 +33,7 @@ type Therapist = {
     name: string;
     email?: string | null;
     str_number?: string | null;
-    specialization?: string | null;
+    specialization?: string[] | null;
     price: number;
     is_online: boolean;
     photo_url?: string | null;
@@ -115,10 +115,9 @@ export default function Therapists({
             Array.from(
                 new Set(
                     therapists
-                        .map((therapist) => therapist.specialization?.trim())
-                        .filter((specialization): specialization is string =>
-                            Boolean(specialization),
-                        ),
+                        .flatMap((therapist) => therapist.specialization || [])
+                        .map((s) => s.trim())
+                        .filter(Boolean),
                 ),
             ),
         [therapists],
@@ -131,10 +130,10 @@ export default function Therapists({
             const matchesSearch =
                 !query ||
                 therapist.name.toLowerCase().includes(query) ||
-                (therapist.specialization ?? '').toLowerCase().includes(query);
+                (therapist.specialization?.some(s => s.toLowerCase().includes(query)) ?? false);
             const matchesSpecialization =
                 selectedSpecialization === 'all' ||
-                therapist.specialization === selectedSpecialization;
+                (therapist.specialization?.includes(selectedSpecialization) ?? false);
 
             return matchesSearch && matchesSpecialization;
         });
@@ -542,10 +541,14 @@ function TherapistCard({
                 </div>
             </div>
 
-            {therapist.specialization && (
-                <span className="mb-4 w-fit rounded-full bg-[#eef5fe] px-3 py-1 text-xs font-bold text-[#0b4f8f]">
-                    {therapist.specialization}
-                </span>
+            {therapist.specialization && therapist.specialization.length > 0 && (
+                <div className="mb-4 flex flex-wrap gap-2">
+                    {therapist.specialization.map(spec => (
+                        <span key={spec} className="w-fit rounded-full bg-[#eef5fe] px-3 py-1 text-xs font-bold text-[#0b4f8f]">
+                            {spec}
+                        </span>
+                    ))}
+                </div>
             )}
 
             <div className="mb-6 flex flex-col gap-2 text-sm font-medium text-[#717783]">
@@ -1000,7 +1003,9 @@ function TherapistSummaryCard({ therapist }: { therapist: Therapist }) {
                         {therapist.name}
                     </h3>
                     <p className="m-0 mb-1 text-[13px] font-semibold text-[#1464BC]">
-                        {therapist.specialization ?? 'Spesialisasi belum diisi'}
+                        {therapist.specialization && therapist.specialization.length > 0
+                            ? therapist.specialization.join(', ')
+                            : 'Spesialisasi belum diisi'}
                     </p>
                     <p className="m-0 text-xs font-medium text-[#717783]">
                         Ulasan belum tersedia
