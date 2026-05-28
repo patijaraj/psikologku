@@ -479,26 +479,6 @@ export default function Dashboard({ appointments = [], topPsychologists = [] }: 
                                 </button>
                             </div>
                         </section>
-
-                        <section className="rounded-3xl bg-[#feecec] p-6 shadow-sm">
-                            <div className="mb-3 flex items-center gap-2 text-[#b02a2a]">
-                                <AlertCircle className="h-5 w-5" />
-                                <h3 className="m-0 text-base font-bold">
-                                    Butuh bantuan darurat?
-                                </h3>
-                            </div>
-                            <p className="m-0 mb-5 text-sm leading-relaxed text-[#b02a2a]">
-                                Tim dukungan krisis kami tersedia 24/7 jika Anda
-                                membutuhkan bantuan segera.
-                            </p>
-                            <button
-                                type="button"
-                                className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl border-none bg-[#b02a2a] py-3.5 text-[15px] font-bold text-white shadow-sm transition-colors hover:bg-[#902222]"
-                            >
-                                <Phone className="h-5 w-5" />
-                                Hubungi Bantuan
-                            </button>
-                        </section>
                     </aside>
                 </div>
             </main>
