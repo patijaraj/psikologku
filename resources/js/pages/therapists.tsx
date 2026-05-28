@@ -62,11 +62,7 @@ const navItems = [
 ];
 
 
-const portraitImages = [
-    'https://images.unsplash.com/photo-1659353887012-680771c1b497?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080',
-    'https://images.unsplash.com/photo-1721674098745-7d1b76e0fc02?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080',
-    'https://images.unsplash.com/photo-1642975967602-653d378f3b5b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080',
-];
+const defaultAvatar = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
 
 function formatRupiah(amount: number) {
     return new Intl.NumberFormat('id-ID', {
@@ -92,8 +88,7 @@ function ImageWithFallback({
             className={className}
             loading="lazy"
             onError={(event) => {
-                event.currentTarget.src =
-                    'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1080&auto=format&fit=crop';
+                event.currentTarget.src = defaultAvatar;
             }}
         />
     );
@@ -440,15 +435,11 @@ function ListingView({
 
                 {therapists.length > 0 ? (
                     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-                        {therapists.map((therapist, index) => (
+                        {therapists.map((therapist) => (
                             <TherapistCard
                                 key={therapist.id}
                                 therapist={therapist}
-                                image={
-                                    portraitImages[
-                                        index % portraitImages.length
-                                    ]
-                                }
+                                image={defaultAvatar}
                             />
                         ))}
                         <ReferralCard />

@@ -24,14 +24,7 @@ import { useEffect, useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
 
-const drJulianneImg =
-    'https://images.unsplash.com/photo-1721674098745-7d1b76e0fc02?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBkb2N0b3IlMjBtYXR1cmUlMjB3b21hbiUyMHBvcnRyYWl0JTIwd2hpdGUlMjBiYWNrZ3JvdW5kfGVufDF8fHx8MTc3ODUxMzUwM3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral';
-
-const drElenaImg =
-    'https://images.unsplash.com/photo-1659353887012-680771c1b497?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHhpc3BhbmljJTIwZmVtYWxlJTIwZG9jdG9yJTIwcG9ydHJhaXR8ZW58MXx8fHwxNzc4NTEzNTA3fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral';
-
-const drMarcusImg =
-    'https://images.unsplash.com/photo-1642975967602-653d378f3b5b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMGFzaWFuJTIwbWFsZSUyMGRvY3RvciUyMHBvcnRyYWl0fGVufDF8fHx8MTc3ODUxMzUwOXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral';
+const defaultAvatar = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
 
 const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: true },
@@ -56,8 +49,7 @@ function ImageWithFallback({
             className={className}
             loading="lazy"
             onError={(event) => {
-                event.currentTarget.src =
-                    'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1080&auto=format&fit=crop';
+                event.currentTarget.src = defaultAvatar;
             }}
         />
     );
@@ -333,12 +325,8 @@ export default function Dashboard({ appointments = [], topPsychologists = [] }: 
                             <div className="pointer-events-none absolute top-0 right-0 h-64 w-64 translate-x-1/4 -translate-y-1/2 rounded-full bg-white opacity-5 blur-3xl" />
 
                             <div className="relative z-10 flex w-full items-center gap-5 md:w-auto">
-                                <div className="size-20 shrink-0 overflow-hidden rounded-2xl border-2 border-white/20 shadow-inner md:size-[100px]">
-                                    <ImageWithFallback
-                                        src={drJulianneImg}
-                                        alt={closestAppointment ? closestAppointment.psychologist_name : "Tidak ada jadwal"}
-                                        className="h-full w-full object-cover bg-white"
-                                    />
+                                <div className="flex size-20 shrink-0 items-center justify-center rounded-2xl border-2 border-white/20 bg-white/10 shadow-inner md:size-[100px]">
+                                    <Calendar className="h-10 w-10 text-white opacity-90" />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <span className="w-fit rounded-full bg-white/20 px-3 py-1 text-[11px] font-bold tracking-wider text-white uppercase backdrop-blur-md">
@@ -385,7 +373,7 @@ export default function Dashboard({ appointments = [], topPsychologists = [] }: 
                                         <TherapistCard
                                             key={therapist.id}
                                             therapistId={therapist.id}
-                                            image={therapist.photo_url ?? drElenaImg}
+                                            image={therapist.photo_url ?? defaultAvatar}
                                             name={therapist.name}
                                             specialty={therapist.specialization && therapist.specialization.length > 0 ? therapist.specialization.join(', ') : 'Spesialisasi Umum'}
                                             rating={therapist.average_rating ? therapist.average_rating.toString() : '-'}
