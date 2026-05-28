@@ -390,20 +390,6 @@ function ListingView({
                     </div>
                 </section>
 
-                <section className="mt-auto rounded-2xl bg-[#dbeafe] p-6">
-                    <h3 className="m-0 mb-2 text-base font-black text-[#0b4f8f]">
-                        Butuh bantuan cepat?
-                    </h3>
-                    <p className="m-0 mb-5 text-sm leading-relaxed font-medium text-[#0b4f8f]">
-                        Hubungi konselor darurat untuk bantuan awal.
-                    </p>
-                    <button
-                        type="button"
-                        className="h-12 w-full cursor-pointer rounded-xl border-none bg-[#0b4f8f] text-sm font-bold text-white transition-colors hover:bg-[#083d70]"
-                    >
-                        Contact Hotline
-                    </button>
-                </section>
             </aside>
 
             <section className="flex flex-col gap-8">
