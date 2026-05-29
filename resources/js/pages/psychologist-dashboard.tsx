@@ -160,13 +160,6 @@ export default function PsychologistDashboard({
                                 <Bell className="h-[22px] w-[22px]" />
                                 <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#e65c5c] ring-2 ring-white" />
                             </button>
-                            <button
-                                type="button"
-                                aria-label="Pesan"
-                                className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]"
-                            >
-                                <MessageSquare className="h-[22px] w-[22px]" />
-                            </button>
                         </div>
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
                         <div className="relative">
@@ -186,7 +179,10 @@ export default function PsychologistDashboard({
                             >
                                 <InitialsAvatar
                                     name={userName}
-                                    photoUrl={profile?.photo_url || (auth.user as any)?.photo_url}
+                                    photoUrl={
+                                        profile?.photo_url ||
+                                        (auth.user as any)?.photo_url
+                                    }
                                     className="size-9"
                                 />
                             </button>
@@ -203,7 +199,11 @@ export default function PsychologistDashboard({
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
                                             <InitialsAvatar
                                                 name={userName}
-                                                photoUrl={profile?.photo_url || (auth.user as any)?.photo_url}
+                                                photoUrl={
+                                                    profile?.photo_url ||
+                                                    (auth.user as any)
+                                                        ?.photo_url
+                                                }
                                                 className="size-11 text-base"
                                             />
                                             <div className="min-w-0">
@@ -384,10 +384,10 @@ export default function PsychologistDashboard({
                                     <img
                                         src={profile.photo_url}
                                         alt={userName}
-                                        className="size-16 rounded-full object-cover border-2 border-white/20 shadow-md"
+                                        className="size-16 rounded-full border-2 border-white/20 object-cover shadow-md"
                                     />
                                 ) : (
-                                    <div className="flex size-16 items-center justify-center rounded-full bg-white/10 text-white border border-white/25">
+                                    <div className="flex size-16 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white">
                                         <UserRound className="size-8" />
                                     </div>
                                 )}
@@ -395,14 +395,15 @@ export default function PsychologistDashboard({
                                     <p className="m-0 text-xs font-bold tracking-widest text-blue-100 uppercase">
                                         Profil Praktik
                                     </p>
-                                    <h2 className="m-0 text-xl font-black truncate max-w-[180px]">
+                                    <h2 className="m-0 max-w-[180px] truncate text-xl font-black">
                                         {userName}
                                     </h2>
                                 </div>
                             </div>
 
-                            <h3 className="m-0 text-lg font-bold text-blue-50 mt-4 border-t border-white/10 pt-4">
-                                {profile?.specialization && profile.specialization.length > 0
+                            <h3 className="m-0 mt-4 border-t border-white/10 pt-4 text-lg font-bold text-blue-50">
+                                {profile?.specialization &&
+                                profile.specialization.length > 0
                                     ? profile.specialization.join(', ')
                                     : 'Spesialisasi belum diisi'}
                             </h3>

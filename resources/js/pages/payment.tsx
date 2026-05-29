@@ -13,7 +13,7 @@ import {
     Smile,
     Wallet,
     X,
-    Star
+    Star,
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -210,13 +210,6 @@ export default function Payment({
                                 <Bell className="h-[22px] w-[22px]" />
                                 <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#e65c5c] ring-2 ring-white" />
                             </button>
-                            <button
-                                type="button"
-                                aria-label="Pesan"
-                                className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]"
-                            >
-                                <MessageSquare className="h-[22px] w-[22px]" />
-                            </button>
                         </div>
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
                         <button
@@ -353,13 +346,23 @@ export default function Payment({
                                             'Konsultasi Psikolog'}
                                     </h3>
                                     <p className="m-0 mb-1 text-[13px] font-medium text-[#717783]">
-                                        {therapist?.specialization && therapist.specialization.length > 0 ? therapist.specialization.join(', ') : 'Spesialisasi belum diisi'}
+                                        {therapist?.specialization &&
+                                        therapist.specialization.length > 0
+                                            ? therapist.specialization.join(
+                                                  ', ',
+                                              )
+                                            : 'Spesialisasi belum diisi'}
                                     </p>
                                     {therapist?.average_rating ? (
-                                        <div className="flex items-center gap-1 mt-1">
+                                        <div className="mt-1 flex items-center gap-1">
                                             <Star className="h-3.5 w-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                                            <span className="text-xs font-bold text-[#191c1e]">{therapist.average_rating}</span>
-                                            <span className="text-xs font-medium text-[#717783]">({therapist.review_count} ulasan)</span>
+                                            <span className="text-xs font-bold text-[#191c1e]">
+                                                {therapist.average_rating}
+                                            </span>
+                                            <span className="text-xs font-medium text-[#717783]">
+                                                ({therapist.review_count}{' '}
+                                                ulasan)
+                                            </span>
                                         </div>
                                     ) : (
                                         <p className="m-0 text-xs font-medium text-[#717783]">

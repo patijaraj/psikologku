@@ -11,7 +11,7 @@ import {
     Smile,
     X,
     Edit3,
-    Star
+    Star,
 } from 'lucide-react';
 import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
@@ -37,7 +37,11 @@ type PsychologistRecordsProps = {
 const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: false },
     { label: 'Schedules', path: '/psychologist/schedules', active: false },
-    { label: 'Appointments', path: '/psychologist/appointments', active: false },
+    {
+        label: 'Appointments',
+        path: '/psychologist/appointments',
+        active: false,
+    },
     { label: 'Sessions', path: '/sessions', active: false },
     { label: 'Records', path: '/psychologist/records', active: true },
 ];
@@ -52,15 +56,23 @@ export default function PsychologistRecords({
     const userEmail = auth.user?.email ?? 'psikolog@example.com';
 
     const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
-    const [selectedRecord, setSelectedRecord] = useState<RecordType | null>(null);
+    const [selectedRecord, setSelectedRecord] = useState<RecordType | null>(
+        null,
+    );
 
-    const { data: recordData, setData: setRecordData, patch: patchRecord, processing: recordProcessing, reset: resetRecord } = useForm({
+    const {
+        data: recordData,
+        setData: setRecordData,
+        patch: patchRecord,
+        processing: recordProcessing,
+        reset: resetRecord,
+    } = useForm({
         record_summary: '',
         record_recommendation: '',
     });
 
-    const pendingRecords = records.filter(r => r.status === 'Pending');
-    const completedRecords = records.filter(r => r.status === 'Selesai');
+    const pendingRecords = records.filter((r) => r.status === 'Pending');
+    const completedRecords = records.filter((r) => r.status === 'Selesai');
 
     const openRecordModal = (record: RecordType) => {
         setSelectedRecord(record);
@@ -131,9 +143,6 @@ export default function PsychologistRecords({
                                 <Bell className="h-[22px] w-[22px]" />
                                 <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#e65c5c] ring-2 ring-white" />
                             </button>
-                            <button className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]">
-                                <MessageSquare className="h-[22px] w-[22px]" />
-                            </button>
                         </div>
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
                         <div className="relative">
@@ -166,7 +175,10 @@ export default function PsychologistRecords({
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
                                             <InitialsAvatar
                                                 name={userName}
-                                                photoUrl={(auth.user as any)?.photo_url}
+                                                photoUrl={
+                                                    (auth.user as any)
+                                                        ?.photo_url
+                                                }
                                                 className="size-11 text-base"
                                             />
                                             <div className="min-w-0">
@@ -204,9 +216,15 @@ export default function PsychologistRecords({
                         </div>
                         <button
                             className="cursor-pointer border-none bg-transparent p-1 text-[#717783] md:hidden"
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            onClick={() =>
+                                setIsMobileMenuOpen(!isMobileMenuOpen)
+                            }
                         >
-                            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                            {isMobileMenuOpen ? (
+                                <X className="h-6 w-6" />
+                            ) : (
+                                <Menu className="h-6 w-6" />
+                            )}
                         </button>
                     </div>
                 </div>
@@ -222,7 +240,8 @@ export default function PsychologistRecords({
                             Daftar Record Pasien.
                         </h1>
                         <p className="m-0 mt-3 max-w-[660px] text-base leading-relaxed font-medium text-[#717783]">
-                            Kelola rekam medis dan catatan perkembangan pasien Anda di sini.
+                            Kelola rekam medis dan catatan perkembangan pasien
+                            Anda di sini.
                         </p>
                     </div>
                 </section>
@@ -231,23 +250,30 @@ export default function PsychologistRecords({
                     {/* Pending Section */}
                     <section className="flex flex-col gap-4 rounded-3xl bg-white p-6 shadow-sm sm:p-8">
                         <div>
-                            <h2 className="m-0 text-xl font-black text-[#191c1e] flex items-center gap-2">
+                            <h2 className="m-0 flex items-center gap-2 text-xl font-black text-[#191c1e]">
                                 Menunggu Diisi
                                 <span className="flex h-6 items-center justify-center rounded-full bg-[#feecec] px-2 text-xs font-bold text-[#b02a2a]">
                                     {pendingRecords.length}
                                 </span>
                             </h2>
                             <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
-                                Sesi yang sudah selesai namun belum ada record konsultasi.
+                                Sesi yang sudah selesai namun belum ada record
+                                konsultasi.
                             </p>
                         </div>
 
                         {pendingRecords.length > 0 ? (
                             <div className="flex flex-col gap-3">
                                 {pendingRecords.map((record) => (
-                                    <div key={record.id} className="flex flex-col gap-3 rounded-2xl border border-[#fef3c7] bg-[#fffbeb] p-4 sm:flex-row sm:items-center sm:justify-between transition-colors">
+                                    <div
+                                        key={record.id}
+                                        className="flex flex-col gap-3 rounded-2xl border border-[#fef3c7] bg-[#fffbeb] p-4 transition-colors sm:flex-row sm:items-center sm:justify-between"
+                                    >
                                         <div className="flex items-center gap-4">
-                                            <InitialsAvatar name={record.patient_name} className="size-10 rounded-xl" />
+                                            <InitialsAvatar
+                                                name={record.patient_name}
+                                                className="size-10 rounded-xl"
+                                            />
                                             <div>
                                                 <h3 className="m-0 text-base font-bold text-[#92400e]">
                                                     {record.patient_name}
@@ -258,7 +284,9 @@ export default function PsychologistRecords({
                                             </div>
                                         </div>
                                         <button
-                                            onClick={() => openRecordModal(record)}
+                                            onClick={() =>
+                                                openRecordModal(record)
+                                            }
                                             className="flex h-9 items-center justify-center gap-2 rounded-xl bg-[#d97706] px-4 text-xs font-bold text-white transition-colors hover:bg-[#b45309]"
                                         >
                                             <Edit3 className="h-3.5 w-3.5" />
@@ -270,7 +298,9 @@ export default function PsychologistRecords({
                         ) : (
                             <div className="flex flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-[#e2e4e6] bg-[#f7f9fb] p-6 text-center">
                                 <CheckCircle2 className="mb-2 h-8 w-8 text-[#10b981]" />
-                                <p className="m-0 text-sm font-bold text-[#191c1e]">Semua record sudah diisi</p>
+                                <p className="m-0 text-sm font-bold text-[#191c1e]">
+                                    Semua record sudah diisi
+                                </p>
                             </div>
                         )}
                     </section>
@@ -282,22 +312,32 @@ export default function PsychologistRecords({
                                 Record Selesai
                             </h2>
                             <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
-                                Riwayat record konsultasi yang telah Anda lengkapi.
+                                Riwayat record konsultasi yang telah Anda
+                                lengkapi.
                             </p>
                         </div>
 
                         {completedRecords.length > 0 ? (
                             <div className="flex flex-col gap-3">
                                 {completedRecords.map((record) => (
-                                    <div key={record.id} className="flex flex-col gap-3 rounded-2xl border border-[#f2f4f6] bg-white p-4 sm:flex-row sm:items-center sm:justify-between transition-colors hover:border-[#e2e4e6]">
+                                    <div
+                                        key={record.id}
+                                        className="flex flex-col gap-3 rounded-2xl border border-[#f2f4f6] bg-white p-4 transition-colors hover:border-[#e2e4e6] sm:flex-row sm:items-center sm:justify-between"
+                                    >
                                         <div className="flex items-center gap-4">
-                                            <InitialsAvatar name={record.patient_name} className="size-10 rounded-xl" />
+                                            <InitialsAvatar
+                                                name={record.patient_name}
+                                                className="size-10 rounded-xl"
+                                            />
                                             <div>
                                                 <h3 className="m-0 text-base font-bold text-[#191c1e]">
                                                     {record.patient_name}
                                                 </h3>
                                                 <div className="m-0 flex items-center gap-2 text-xs font-medium text-[#717783]">
-                                                    <span>Sesi: {record.session_date}</span>
+                                                    <span>
+                                                        Sesi:{' '}
+                                                        {record.session_date}
+                                                    </span>
                                                     <span>•</span>
                                                     {record.rating ? (
                                                         <span className="flex items-center gap-1 font-bold text-[#b45309]">
@@ -305,13 +345,17 @@ export default function PsychologistRecords({
                                                             {record.rating}/5
                                                         </span>
                                                     ) : (
-                                                        <span className="font-bold text-[#717783]">Menunggu Ulasan</span>
+                                                        <span className="font-bold text-[#717783]">
+                                                            Menunggu Ulasan
+                                                        </span>
                                                     )}
                                                 </div>
                                             </div>
                                         </div>
                                         <button
-                                            onClick={() => openRecordModal(record)}
+                                            onClick={() =>
+                                                openRecordModal(record)
+                                            }
                                             className="flex h-9 items-center justify-center rounded-xl bg-[#f2f4f6] px-4 text-xs font-bold text-[#191c1e] transition-colors hover:bg-[#e2e4e6]"
                                         >
                                             Edit / Lihat
@@ -322,7 +366,9 @@ export default function PsychologistRecords({
                         ) : (
                             <div className="flex flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-[#e2e4e6] bg-[#f7f9fb] p-6 text-center">
                                 <FileText className="mb-2 h-8 w-8 text-[#a0a5b1]" />
-                                <p className="m-0 text-sm font-bold text-[#717783]">Belum ada record selesai</p>
+                                <p className="m-0 text-sm font-bold text-[#717783]">
+                                    Belum ada record selesai
+                                </p>
                             </div>
                         )}
                     </section>
@@ -343,45 +389,69 @@ export default function PsychologistRecords({
                             </div>
                             <button
                                 type="button"
-                                onClick={() => { setIsRecordModalOpen(false); setSelectedRecord(null); }}
+                                onClick={() => {
+                                    setIsRecordModalOpen(false);
+                                    setSelectedRecord(null);
+                                }}
                                 className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full border-none bg-[#f2f4f6] text-[#717783] transition-colors hover:bg-[#e2e4e6] hover:text-[#191c1e]"
                             >
                                 <X className="h-5 w-5" />
                             </button>
                         </div>
 
-                        <form onSubmit={handleRecordSubmit} className="flex flex-col gap-5">
+                        <form
+                            onSubmit={handleRecordSubmit}
+                            className="flex flex-col gap-5"
+                        >
                             <div className="flex flex-col gap-2">
-                                <label htmlFor="record_summary" className="text-sm font-bold text-[#191c1e]">
+                                <label
+                                    htmlFor="record_summary"
+                                    className="text-sm font-bold text-[#191c1e]"
+                                >
                                     Rekap Konsul
                                 </label>
                                 <textarea
                                     id="record_summary"
                                     value={recordData.record_summary}
-                                    onChange={(e) => setRecordData('record_summary', e.target.value)}
+                                    onChange={(e) =>
+                                        setRecordData(
+                                            'record_summary',
+                                            e.target.value,
+                                        )
+                                    }
                                     placeholder="Tuliskan ringkasan konsultasi pasien di sini..."
-                                    className="min-h-[120px] rounded-xl border border-[#e2e4e6] bg-[#f7f9fb] p-3 text-sm text-[#191c1e] outline-none transition-all placeholder:text-[#a0a5b1] focus:border-[#1464BC] focus:bg-white focus:ring-4 focus:ring-[#1464BC]/10 resize-none"
+                                    className="min-h-[120px] resize-none rounded-xl border border-[#e2e4e6] bg-[#f7f9fb] p-3 text-sm text-[#191c1e] transition-all outline-none placeholder:text-[#a0a5b1] focus:border-[#1464BC] focus:bg-white focus:ring-4 focus:ring-[#1464BC]/10"
                                     required
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <label htmlFor="record_recommendation" className="text-sm font-bold text-[#191c1e]">
+                                <label
+                                    htmlFor="record_recommendation"
+                                    className="text-sm font-bold text-[#191c1e]"
+                                >
                                     Rekomendasi
                                 </label>
                                 <textarea
                                     id="record_recommendation"
                                     value={recordData.record_recommendation}
-                                    onChange={(e) => setRecordData('record_recommendation', e.target.value)}
+                                    onChange={(e) =>
+                                        setRecordData(
+                                            'record_recommendation',
+                                            e.target.value,
+                                        )
+                                    }
                                     placeholder="Tuliskan rekomendasi penanganan atau tugas untuk pasien..."
-                                    className="min-h-[120px] rounded-xl border border-[#e2e4e6] bg-[#f7f9fb] p-3 text-sm text-[#191c1e] outline-none transition-all placeholder:text-[#a0a5b1] focus:border-[#1464BC] focus:bg-white focus:ring-4 focus:ring-[#1464BC]/10 resize-none"
+                                    className="min-h-[120px] resize-none rounded-xl border border-[#e2e4e6] bg-[#f7f9fb] p-3 text-sm text-[#191c1e] transition-all outline-none placeholder:text-[#a0a5b1] focus:border-[#1464BC] focus:bg-white focus:ring-4 focus:ring-[#1464BC]/10"
                                     required
                                 />
                             </div>
 
                             {selectedRecord.rating && (
-                                <div className="mt-2 rounded-xl bg-[#fff8e6] p-4 border border-[#fef3c7]">
+                                <div className="mt-2 rounded-xl border border-[#fef3c7] bg-[#fff8e6] p-4">
                                     <div className="mb-2 flex items-center justify-between">
-                                        <h4 className="m-0 text-sm font-bold text-[#b45309]">Ulasan Pasien</h4>
+                                        <h4 className="m-0 text-sm font-bold text-[#b45309]">
+                                            Ulasan Pasien
+                                        </h4>
                                         <div className="flex items-center gap-1">
                                             {[1, 2, 3, 4, 5].map((star) => (
                                                 <Star
@@ -402,7 +472,10 @@ export default function PsychologistRecords({
                             <div className="mt-2 flex justify-end gap-3">
                                 <button
                                     type="button"
-                                    onClick={() => { setIsRecordModalOpen(false); setSelectedRecord(null); }}
+                                    onClick={() => {
+                                        setIsRecordModalOpen(false);
+                                        setSelectedRecord(null);
+                                    }}
                                     className="rounded-xl bg-[#f2f4f6] px-5 py-2.5 text-sm font-bold text-[#717783] transition-colors hover:bg-[#e2e4e6] hover:text-[#191c1e]"
                                 >
                                     Batal
@@ -410,9 +483,11 @@ export default function PsychologistRecords({
                                 <button
                                     type="submit"
                                     disabled={recordProcessing}
-                                    className="rounded-xl bg-[#1464BC] px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#1053A0] disabled:opacity-70 disabled:cursor-not-allowed"
+                                    className="rounded-xl bg-[#1464BC] px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#1053A0] disabled:cursor-not-allowed disabled:opacity-70"
                                 >
-                                    {recordProcessing ? 'Menyimpan...' : 'Simpan Record'}
+                                    {recordProcessing
+                                        ? 'Menyimpan...'
+                                        : 'Simpan Record'}
                                 </button>
                             </div>
                         </form>

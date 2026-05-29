@@ -10,7 +10,7 @@ import {
     Smile,
     X,
     UserRound,
-    Star
+    Star,
 } from 'lucide-react';
 import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
@@ -119,7 +119,10 @@ export default function Records({ records = [] }: RecordsProps) {
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
                                             <InitialsAvatar
                                                 name={userName}
-                                                photoUrl={(auth.user as any)?.photo_url}
+                                                photoUrl={
+                                                    (auth.user as any)
+                                                        ?.photo_url
+                                                }
                                                 className="size-11 text-base"
                                             />
                                             <div className="min-w-0">
@@ -148,9 +151,15 @@ export default function Records({ records = [] }: RecordsProps) {
                         </div>
                         <button
                             className="cursor-pointer border-none bg-transparent p-1 text-[#717783] md:hidden"
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            onClick={() =>
+                                setIsMobileMenuOpen(!isMobileMenuOpen)
+                            }
                         >
-                            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                            {isMobileMenuOpen ? (
+                                <X className="h-6 w-6" />
+                            ) : (
+                                <Menu className="h-6 w-6" />
+                            )}
                         </button>
                     </div>
                 </div>
@@ -184,7 +193,8 @@ export default function Records({ records = [] }: RecordsProps) {
                             Riwayat Record Konsultasi.
                         </h1>
                         <p className="m-0 mt-3 max-w-[660px] text-base leading-relaxed font-medium text-[#717783]">
-                            Akses ringkasan dan rekomendasi dari sesi konsultasi Anda bersama psikolog.
+                            Akses ringkasan dan rekomendasi dari sesi konsultasi
+                            Anda bersama psikolog.
                         </p>
                     </div>
                 </section>
@@ -196,7 +206,8 @@ export default function Records({ records = [] }: RecordsProps) {
                                 Daftar Record
                             </h2>
                             <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
-                                Rekam medis yang telah ditulis oleh psikolog Anda.
+                                Rekam medis yang telah ditulis oleh psikolog
+                                Anda.
                             </p>
                         </div>
                     </div>
@@ -204,26 +215,36 @@ export default function Records({ records = [] }: RecordsProps) {
                     {records.length > 0 ? (
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                             {records.map((record) => (
-                                <Link 
+                                <Link
                                     href={`/records/${record.id}`}
-                                    key={record.id} 
+                                    key={record.id}
                                     className="flex flex-col gap-4 rounded-2xl border border-[#f2f4f6] bg-white p-5 transition-colors hover:border-[#1464BC] hover:shadow-md"
                                 >
                                     <div className="flex items-center gap-4">
-                                        <InitialsAvatar name={record.psychologist_name} className="size-12 rounded-xl" />
+                                        <InitialsAvatar
+                                            name={record.psychologist_name}
+                                            className="size-12 rounded-xl"
+                                        />
                                         <div>
                                             <h3 className="m-0 text-base font-bold text-[#191c1e]">
                                                 {record.psychologist_name}
                                             </h3>
                                             <p className="m-0 text-xs font-medium text-[#717783]">
-                                                {record.specialization && record.specialization.length > 0 ? record.specialization.join(', ') : 'Psikologi'}
+                                                {record.specialization &&
+                                                record.specialization.length > 0
+                                                    ? record.specialization.join(
+                                                          ', ',
+                                                      )
+                                                    : 'Psikologi'}
                                             </p>
                                         </div>
                                     </div>
                                     <div className="h-px w-full bg-[#f2f4f6]" />
                                     <div>
                                         <div className="mb-2 flex items-center justify-between">
-                                            <span className="text-xs font-bold text-[#717783]">Sesi Terakhir</span>
+                                            <span className="text-xs font-bold text-[#717783]">
+                                                Sesi Terakhir
+                                            </span>
                                             <div className="flex items-center gap-2">
                                                 {record.rating ? (
                                                     <span className="flex items-center gap-1 rounded-md bg-[#fff8e6] px-2 py-0.5 text-[11px] font-bold text-[#b45309]">
@@ -235,7 +256,9 @@ export default function Records({ records = [] }: RecordsProps) {
                                                         Belum Diulas
                                                     </span>
                                                 )}
-                                                <span className="text-xs font-bold text-[#1464BC]">{record.session_date}</span>
+                                                <span className="text-xs font-bold text-[#1464BC]">
+                                                    {record.session_date}
+                                                </span>
                                             </div>
                                         </div>
                                         <p className="m-0 line-clamp-2 text-sm leading-relaxed text-[#717783]">
@@ -252,7 +275,9 @@ export default function Records({ records = [] }: RecordsProps) {
                                 Belum ada record
                             </h3>
                             <p className="m-0 mt-2 max-w-[420px] text-sm font-medium text-[#717783]">
-                                Record akan muncul di sini setelah Anda menyelesaikan sesi dengan psikolog dan psikolog telah mengisi catatan.
+                                Record akan muncul di sini setelah Anda
+                                menyelesaikan sesi dengan psikolog dan psikolog
+                                telah mengisi catatan.
                             </p>
                         </div>
                     )}

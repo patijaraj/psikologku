@@ -136,13 +136,6 @@ export default function PsychologistAppointments({
                                 <Bell className="h-[22px] w-[22px]" />
                                 <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#e65c5c] ring-2 ring-white" />
                             </button>
-                            <button
-                                type="button"
-                                aria-label="Pesan"
-                                className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]"
-                            >
-                                <MessageSquare className="h-[22px] w-[22px]" />
-                            </button>
                         </div>
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
                         <div className="relative">

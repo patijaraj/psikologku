@@ -14,7 +14,7 @@ import {
     UserRound,
     Stethoscope,
     FileHeart,
-    Star
+    Star,
 } from 'lucide-react';
 import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
@@ -138,7 +138,10 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
                                             <InitialsAvatar
                                                 name={userName}
-                                                photoUrl={(auth.user as any)?.photo_url}
+                                                photoUrl={
+                                                    (auth.user as any)
+                                                        ?.photo_url
+                                                }
                                                 className="size-11 text-base"
                                             />
                                             <div className="min-w-0">
@@ -167,9 +170,15 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                         </div>
                         <button
                             className="cursor-pointer border-none bg-transparent p-1 text-[#717783] md:hidden"
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            onClick={() =>
+                                setIsMobileMenuOpen(!isMobileMenuOpen)
+                            }
                         >
-                            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                            {isMobileMenuOpen ? (
+                                <X className="h-6 w-6" />
+                            ) : (
+                                <Menu className="h-6 w-6" />
+                            )}
                         </button>
                     </div>
                 </div>
@@ -211,7 +220,8 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                                     Detail Record Konsultasi
                                 </h1>
                                 <p className="m-0 mt-2 text-sm font-medium text-[#717783]">
-                                    Informasi lengkap mengenai sesi konsultasi Anda.
+                                    Informasi lengkap mengenai sesi konsultasi
+                                    Anda.
                                 </p>
                             </div>
                             <div className="hidden size-12 items-center justify-center rounded-2xl bg-[#eef5fe] text-[#1464BC] sm:flex">
@@ -221,22 +231,38 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
 
                         <div className="grid gap-4 rounded-2xl bg-[#f7f9fb] p-5 sm:grid-cols-2">
                             <div className="flex items-center gap-4">
-                                <InitialsAvatar name={record.psychologist_name} className="size-12 rounded-xl bg-[#1464BC] text-white" />
+                                <InitialsAvatar
+                                    name={record.psychologist_name}
+                                    className="size-12 rounded-xl bg-[#1464BC] text-white"
+                                />
                                 <div>
-                                    <p className="m-0 text-xs font-bold text-[#717783] uppercase tracking-wider">Psikolog</p>
-                                    <p className="m-0 mt-0.5 text-base font-bold text-[#191c1e]">{record.psychologist_name}</p>
-                                    <p className="m-0 text-xs font-medium text-[#1464BC]">{record.specialization && record.specialization.length > 0 ? record.specialization.join(', ') : 'Psikologi'}</p>
+                                    <p className="m-0 text-xs font-bold tracking-wider text-[#717783] uppercase">
+                                        Psikolog
+                                    </p>
+                                    <p className="m-0 mt-0.5 text-base font-bold text-[#191c1e]">
+                                        {record.psychologist_name}
+                                    </p>
+                                    <p className="m-0 text-xs font-medium text-[#1464BC]">
+                                        {record.specialization &&
+                                        record.specialization.length > 0
+                                            ? record.specialization.join(', ')
+                                            : 'Psikologi'}
+                                    </p>
                                 </div>
                             </div>
-                            
+
                             <div className="flex flex-col justify-center gap-3 sm:border-l sm:border-[#e2e4e6] sm:pl-6">
                                 <div className="flex items-center gap-3">
                                     <Calendar className="h-4 w-4 text-[#717783]" />
-                                    <span className="text-sm font-semibold text-[#191c1e]">{record.session_date}</span>
+                                    <span className="text-sm font-semibold text-[#191c1e]">
+                                        {record.session_date}
+                                    </span>
                                 </div>
                                 <div className="flex items-center gap-3">
                                     <Clock className="h-4 w-4 text-[#717783]" />
-                                    <span className="text-sm font-semibold text-[#191c1e]">{record.session_duration}</span>
+                                    <span className="text-sm font-semibold text-[#191c1e]">
+                                        {record.session_duration}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -249,10 +275,12 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                                 <div className="flex size-8 items-center justify-center rounded-lg bg-[#eef5fe] text-[#1464BC]">
                                     <FileText className="h-4 w-4" />
                                 </div>
-                                <h2 className="m-0 text-lg font-black text-[#191c1e]">Rekap Konsultasi</h2>
+                                <h2 className="m-0 text-lg font-black text-[#191c1e]">
+                                    Rekap Konsultasi
+                                </h2>
                             </div>
                             <div className="rounded-2xl border border-[#e2e4e6] bg-[#fdfefe] p-5">
-                                <p className="m-0 whitespace-pre-wrap text-[15px] leading-relaxed text-[#4a5568]">
+                                <p className="m-0 text-[15px] leading-relaxed whitespace-pre-wrap text-[#4a5568]">
                                     {record.record_summary}
                                 </p>
                             </div>
@@ -263,10 +291,12 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                                 <div className="flex size-8 items-center justify-center rounded-lg bg-[#eef5fe] text-[#1464BC]">
                                     <Stethoscope className="h-4 w-4" />
                                 </div>
-                                <h2 className="m-0 text-lg font-black text-[#191c1e]">Rekomendasi / Penanganan</h2>
+                                <h2 className="m-0 text-lg font-black text-[#191c1e]">
+                                    Rekomendasi / Penanganan
+                                </h2>
                             </div>
                             <div className="rounded-2xl border border-[#e2e4e6] bg-[#fdfefe] p-5">
-                                <p className="m-0 whitespace-pre-wrap text-[15px] leading-relaxed text-[#4a5568]">
+                                <p className="m-0 text-[15px] leading-relaxed whitespace-pre-wrap text-[#4a5568]">
                                     {record.record_recommendation}
                                 </p>
                             </div>
@@ -278,9 +308,11 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                                 <div className="flex size-8 items-center justify-center rounded-lg bg-[#fff8e6] text-[#f59e0b]">
                                     <Star className="h-4 w-4" />
                                 </div>
-                                <h2 className="m-0 text-lg font-black text-[#191c1e]">Ulasan Sesi</h2>
+                                <h2 className="m-0 text-lg font-black text-[#191c1e]">
+                                    Ulasan Sesi
+                                </h2>
                             </div>
-                            
+
                             {record.rating ? (
                                 <div className="rounded-2xl border border-[#e2e4e6] bg-[#fdfefe] p-5">
                                     <div className="mb-3 flex items-center gap-1">
@@ -298,17 +330,23 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                                     )}
                                 </div>
                             ) : (
-                                <form onSubmit={submitReview} className="rounded-2xl border border-[#e2e4e6] bg-[#fdfefe] p-5">
+                                <form
+                                    onSubmit={submitReview}
+                                    className="rounded-2xl border border-[#e2e4e6] bg-[#fdfefe] p-5"
+                                >
                                     <p className="mb-4 text-sm font-medium text-[#717783]">
-                                        Bagaimana pengalaman Anda pada sesi konsultasi ini?
+                                        Bagaimana pengalaman Anda pada sesi
+                                        konsultasi ini?
                                     </p>
-                                    
+
                                     <div className="mb-6 flex items-center gap-2">
                                         {[1, 2, 3, 4, 5].map((star) => (
                                             <button
                                                 key={star}
                                                 type="button"
-                                                onClick={() => setData('rating', star)}
+                                                onClick={() =>
+                                                    setData('rating', star)
+                                                }
                                                 className="cursor-pointer border-none bg-transparent p-1 transition-transform hover:scale-110"
                                             >
                                                 <Star
@@ -317,30 +355,50 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                                             </button>
                                         ))}
                                     </div>
-                                    {errors.rating && <p className="mb-4 text-xs font-bold text-[#e65c5c]">{errors.rating}</p>}
+                                    {errors.rating && (
+                                        <p className="mb-4 text-xs font-bold text-[#e65c5c]">
+                                            {errors.rating}
+                                        </p>
+                                    )}
 
                                     <div className="mb-6">
-                                        <label htmlFor="review" className="mb-2 block text-sm font-bold text-[#191c1e]">
+                                        <label
+                                            htmlFor="review"
+                                            className="mb-2 block text-sm font-bold text-[#191c1e]"
+                                        >
                                             Tulis Ulasan (Opsional)
                                         </label>
                                         <textarea
                                             id="review"
                                             rows={4}
                                             value={data.review}
-                                            onChange={(e) => setData('review', e.target.value)}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'review',
+                                                    e.target.value,
+                                                )
+                                            }
                                             className="w-full resize-none rounded-xl border border-[#e2e4e6] bg-[#f7f9fb] p-3 text-sm text-[#191c1e] focus:border-[#1464BC] focus:ring-1 focus:ring-[#1464BC] focus:outline-none"
                                             placeholder="Ceritakan pengalaman Anda bersama psikolog ini..."
                                         />
-                                        {errors.review && <p className="mt-2 text-xs font-bold text-[#e65c5c]">{errors.review}</p>}
+                                        {errors.review && (
+                                            <p className="mt-2 text-xs font-bold text-[#e65c5c]">
+                                                {errors.review}
+                                            </p>
+                                        )}
                                     </div>
 
                                     <div className="flex justify-end">
                                         <button
                                             type="submit"
-                                            disabled={processing || data.rating === 0}
+                                            disabled={
+                                                processing || data.rating === 0
+                                            }
                                             className="cursor-pointer rounded-xl border-none bg-[#1464BC] px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#10529a] disabled:opacity-50"
                                         >
-                                            {processing ? 'Menyimpan...' : 'Kirim Ulasan'}
+                                            {processing
+                                                ? 'Menyimpan...'
+                                                : 'Kirim Ulasan'}
                                         </button>
                                     </div>
                                 </form>

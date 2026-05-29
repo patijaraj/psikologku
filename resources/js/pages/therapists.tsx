@@ -16,7 +16,7 @@ import {
     Smile,
     Wallet,
     X,
-    Star
+    Star,
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
@@ -61,8 +61,8 @@ const navItems = [
     { label: 'Record', path: '/records', active: false },
 ];
 
-
-const defaultAvatar = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+const defaultAvatar =
+    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
 
 function formatRupiah(amount: number) {
     return new Intl.NumberFormat('id-ID', {
@@ -101,7 +101,9 @@ export default function Therapists({
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState<string>('');
-    const [selectedTimes, setSelectedTimes] = useState<{schedule_id: number, start_time: string, end_time: string}[]>([]);
+    const [selectedTimes, setSelectedTimes] = useState<
+        { schedule_id: number; start_time: string; end_time: string }[]
+    >([]);
     const [search, setSearch] = useState('');
     const [selectedSpecialization, setSelectedSpecialization] = useState('all');
     const { auth } = usePage().props;
@@ -128,10 +130,14 @@ export default function Therapists({
             const matchesSearch =
                 !query ||
                 therapist.name.toLowerCase().includes(query) ||
-                (therapist.specialization?.some(s => s.toLowerCase().includes(query)) ?? false);
+                (therapist.specialization?.some((s) =>
+                    s.toLowerCase().includes(query),
+                ) ??
+                    false);
             const matchesSpecialization =
                 selectedSpecialization === 'all' ||
-                (therapist.specialization?.includes(selectedSpecialization) ?? false);
+                (therapist.specialization?.includes(selectedSpecialization) ??
+                    false);
 
             return matchesSearch && matchesSpecialization;
         });
@@ -194,13 +200,6 @@ export default function Therapists({
                                 <Bell className="h-[22px] w-[22px]" />
                                 <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#e65c5c] ring-2 ring-white" />
                             </button>
-                            <button
-                                type="button"
-                                aria-label="Pesan"
-                                className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]"
-                            >
-                                <MessageSquare className="h-[22px] w-[22px]" />
-                            </button>
                         </div>
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
                         <div className="relative">
@@ -237,7 +236,10 @@ export default function Therapists({
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
                                             <InitialsAvatar
                                                 name={userName}
-                                                photoUrl={(auth.user as any)?.photo_url}
+                                                photoUrl={
+                                                    (auth.user as any)
+                                                        ?.photo_url
+                                                }
                                                 className="size-11 text-base"
                                             />
                                             <div className="min-w-0">
@@ -389,7 +391,6 @@ function ListingView({
                         ))}
                     </div>
                 </section>
-
             </aside>
 
             <section className="flex flex-col gap-8">
@@ -521,23 +522,31 @@ function TherapistCard({
                 </div>
             </div>
 
-            {therapist.specialization && therapist.specialization.length > 0 && (
-                <div className="mb-4 flex flex-wrap gap-2">
-                    {therapist.specialization.map(spec => (
-                        <span key={spec} className="w-fit rounded-full bg-[#eef5fe] px-3 py-1 text-xs font-bold text-[#0b4f8f]">
-                            {spec}
-                        </span>
-                    ))}
-                </div>
-            )}
+            {therapist.specialization &&
+                therapist.specialization.length > 0 && (
+                    <div className="mb-4 flex flex-wrap gap-2">
+                        {therapist.specialization.map((spec) => (
+                            <span
+                                key={spec}
+                                className="w-fit rounded-full bg-[#eef5fe] px-3 py-1 text-xs font-bold text-[#0b4f8f]"
+                            >
+                                {spec}
+                            </span>
+                        ))}
+                    </div>
+                )}
 
             <div className="mb-6 flex flex-col gap-2 text-sm font-medium text-[#717783]">
                 <span>{therapist.str_number ?? 'STR belum diisi'}</span>
                 {therapist.average_rating ? (
                     <div className="flex items-center gap-1">
                         <Star className="h-4 w-4 fill-[#f59e0b] text-[#f59e0b]" />
-                        <span className="font-bold text-[#191c1e]">{therapist.average_rating}</span>
-                        <span className="text-xs text-[#717783]">({therapist.review_count} ulasan)</span>
+                        <span className="font-bold text-[#191c1e]">
+                            {therapist.average_rating}
+                        </span>
+                        <span className="text-xs text-[#717783]">
+                            ({therapist.review_count} ulasan)
+                        </span>
                     </div>
                 ) : (
                     <span>Belum ada ulasan</span>
@@ -580,19 +589,27 @@ function ReferralCard() {
 // Helper for date generation
 function getNext14Days(schedules?: Schedule[]) {
     if (!schedules || schedules.length === 0) {
-return [];
-}
+        return [];
+    }
 
-    const availableDays = new Set(schedules.map((s) => s.day_of_week.toLowerCase()));
-    
+    const availableDays = new Set(
+        schedules.map((s) => s.day_of_week.toLowerCase()),
+    );
+
     const dayNamesMap: Record<number, string> = {
-        0: 'minggu', 1: 'senin', 2: 'selasa', 3: 'rabu', 4: 'kamis', 5: 'jumat', 6: 'sabtu'
+        0: 'minggu',
+        1: 'senin',
+        2: 'selasa',
+        3: 'rabu',
+        4: 'kamis',
+        5: 'jumat',
+        6: 'sabtu',
     };
-    
+
     const dates = [];
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     for (let i = 0; i < 14; i++) {
         const d = new Date(today);
         d.setDate(today.getDate() + i);
@@ -626,7 +643,7 @@ function ScheduleView({
     onSelectTimes: (times: any[]) => void;
 }) {
     const availableDates = getNext14Days(therapist.schedules);
-    const availableSchedules = (therapist.schedules || []).filter(s => {
+    const availableSchedules = (therapist.schedules || []).filter((s) => {
         if (!selectedDate) {
             return false;
         }
@@ -634,13 +651,19 @@ function ScheduleView({
         const [y, m, day] = selectedDate.split('-').map(Number);
         const d = new Date(y, m - 1, day);
         const dayNamesMap: Record<number, string> = {
-            0: 'minggu', 1: 'senin', 2: 'selasa', 3: 'rabu', 4: 'kamis', 5: 'jumat', 6: 'sabtu'
+            0: 'minggu',
+            1: 'senin',
+            2: 'selasa',
+            3: 'rabu',
+            4: 'kamis',
+            5: 'jumat',
+            6: 'sabtu',
         };
 
         return s.day_of_week.toLowerCase() === dayNamesMap[d.getDay()];
     });
 
-    const bookedForDate = (therapist.booked_appointments || []).filter(a => {
+    const bookedForDate = (therapist.booked_appointments || []).filter((a) => {
         const aDate = a.appointment_date.split('T')[0];
         return aDate === selectedDate;
     });
@@ -699,12 +722,26 @@ function ScheduleView({
                             <SummaryItem
                                 icon={<Calendar className="h-4 w-4" />}
                                 label="Tanggal"
-                                value={selectedDate ? new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' }).format(new Date(selectedDate)) : '-'}
+                                value={
+                                    selectedDate
+                                        ? new Intl.DateTimeFormat('id-ID', {
+                                              dateStyle: 'long',
+                                          }).format(new Date(selectedDate))
+                                        : '-'
+                                }
                             />
                             <SummaryItem
                                 icon={<Clock className="h-4 w-4" />}
                                 label="Waktu"
-                                value={selectedTimes.length > 0 ? selectedTimes.map(t => t.start_time.substring(0,5)).join(', ') + ' WIB' : '-'}
+                                value={
+                                    selectedTimes.length > 0
+                                        ? selectedTimes
+                                              .map((t) =>
+                                                  t.start_time.substring(0, 5),
+                                              )
+                                              .join(', ') + ' WIB'
+                                        : '-'
+                                }
                             />
                             <div className="flex gap-4">
                                 <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white text-[#1464BC] shadow-sm">
@@ -727,10 +764,13 @@ function ScheduleView({
                         </div>
 
                         <Link
-                            href={`/payment?psychologist_id=${therapist.id}${selectedTimes.length > 0 && selectedDate ? `&schedule_id=${selectedTimes[0].schedule_id}&date=${selectedDate}&times=${selectedTimes.map(t => t.start_time).join(',')}` : ''}`}
-                            className={`mb-4 flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] border-none text-base font-semibold text-white shadow-[0_8px_20px_-4px_rgba(0,93,167,0.4)] transition-colors ${selectedTimes.length > 0 && selectedDate ? 'bg-[#1464BC] hover:bg-[#1053A0] cursor-pointer' : 'bg-[#c1c7d3] cursor-not-allowed'}`}
+                            href={`/payment?psychologist_id=${therapist.id}${selectedTimes.length > 0 && selectedDate ? `&schedule_id=${selectedTimes[0].schedule_id}&date=${selectedDate}&times=${selectedTimes.map((t) => t.start_time).join(',')}` : ''}`}
+                            className={`mb-4 flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] border-none text-base font-semibold text-white shadow-[0_8px_20px_-4px_rgba(0,93,167,0.4)] transition-colors ${selectedTimes.length > 0 && selectedDate ? 'cursor-pointer bg-[#1464BC] hover:bg-[#1053A0]' : 'cursor-not-allowed bg-[#c1c7d3]'}`}
                             onClick={(e) => {
-                                if (selectedTimes.length === 0 || !selectedDate) {
+                                if (
+                                    selectedTimes.length === 0 ||
+                                    !selectedDate
+                                ) {
                                     e.preventDefault();
                                 }
                             }}
@@ -817,14 +857,19 @@ function DateRow({
     return (
         <div className="grid grid-cols-7 gap-2 lg:gap-4">
             {items.map((item) => (
-                <div key={item.dateStr} className="flex flex-col items-center gap-2">
+                <div
+                    key={item.dateStr}
+                    className="flex flex-col items-center gap-2"
+                >
                     <div className="text-[11px] font-bold tracking-widest text-[#a0a5b1]">
                         {item.dayNameShort}
                     </div>
                     <button
                         type="button"
                         disabled={item.disabled}
-                        onClick={() => !item.disabled && onSelectDate(item.dateStr)}
+                        onClick={() =>
+                            !item.disabled && onSelectDate(item.dateStr)
+                        }
                         className={`flex aspect-square w-full cursor-pointer items-center justify-center rounded-[14px] border-none text-[15px] font-semibold transition-all md:aspect-auto md:h-14 ${
                             item.disabled
                                 ? 'cursor-not-allowed bg-transparent text-[#c1c7d3]'
@@ -854,28 +899,33 @@ function TimePickerCard({
 }) {
     // Generate 1-hour slots from available schedules
     const slots: any[] = [];
-    availableSchedules.forEach(schedule => {
+    availableSchedules.forEach((schedule) => {
         const startHour = parseInt(schedule.start_time.split(':')[0]);
         const endHour = parseInt(schedule.end_time.split(':')[0]);
         for (let h = startHour; h < endHour; h++) {
             const slotStartTime = `${h.toString().padStart(2, '0')}:00:00`;
-            const isBooked = bookedForDate.some(b => 
-                b.schedule_id === schedule.id && 
-                b.start_time.startsWith(slotStartTime.substring(0, 5))
+            const isBooked = bookedForDate.some(
+                (b) =>
+                    b.schedule_id === schedule.id &&
+                    b.start_time.startsWith(slotStartTime.substring(0, 5)),
             );
-            
+
             if (!isBooked) {
                 slots.push({
                     schedule_id: schedule.id,
                     start_time: slotStartTime,
-                    end_time: `${(h+1).toString().padStart(2, '0')}:00:00`
+                    end_time: `${(h + 1).toString().padStart(2, '0')}:00:00`,
                 });
             }
         }
     });
 
-    const morningSlots = slots.filter(s => parseInt(s.start_time.split(':')[0]) < 12);
-    const afternoonSlots = slots.filter(s => parseInt(s.start_time.split(':')[0]) >= 12);
+    const morningSlots = slots.filter(
+        (s) => parseInt(s.start_time.split(':')[0]) < 12,
+    );
+    const afternoonSlots = slots.filter(
+        (s) => parseInt(s.start_time.split(':')[0]) >= 12,
+    );
 
     return (
         <section className="rounded-3xl border border-[#e2e4e6]/50 bg-white p-6 shadow-[0px_4px_24px_rgba(0,0,0,0.02)]">
@@ -889,7 +939,7 @@ function TimePickerCard({
             </div>
 
             {slots.length === 0 && (
-                <div className="text-sm font-medium text-[#717783] py-4 text-center">
+                <div className="py-4 text-center text-sm font-medium text-[#717783]">
                     Pilih tanggal yang tersedia untuk melihat jadwal.
                 </div>
             )}
@@ -902,7 +952,7 @@ function TimePickerCard({
                     onSelectTimes={onSelectTimes}
                 />
             )}
-            
+
             {afternoonSlots.length > 0 && (
                 <TimeSlotGroup
                     title="Sesi Siang / Sore"
@@ -933,7 +983,11 @@ function TimeSlotGroup({
             </h3>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {slots.map((slot) => {
-                    const isSelected = selectedTimes.some(t => t.schedule_id === slot.schedule_id && t.start_time === slot.start_time);
+                    const isSelected = selectedTimes.some(
+                        (t) =>
+                            t.schedule_id === slot.schedule_id &&
+                            t.start_time === slot.start_time,
+                    );
 
                     return (
                         <button
@@ -970,7 +1024,7 @@ function TherapistSummaryCard({ therapist }: { therapist: Therapist }) {
                         <img
                             src={therapist.photo_url}
                             alt={therapist.name}
-                            className="size-16 rounded-2xl object-cover border border-[#e2e4e6] shadow-xs"
+                            className="size-16 rounded-2xl border border-[#e2e4e6] object-cover shadow-xs"
                         />
                     ) : (
                         <InitialsAvatar
@@ -991,15 +1045,20 @@ function TherapistSummaryCard({ therapist }: { therapist: Therapist }) {
                         {therapist.name}
                     </h3>
                     <p className="m-0 mb-1 text-[13px] font-semibold text-[#1464BC]">
-                        {therapist.specialization && therapist.specialization.length > 0
+                        {therapist.specialization &&
+                        therapist.specialization.length > 0
                             ? therapist.specialization.join(', ')
                             : 'Spesialisasi belum diisi'}
                     </p>
                     {therapist.average_rating ? (
-                        <div className="flex items-center gap-1 mt-1">
+                        <div className="mt-1 flex items-center gap-1">
                             <Star className="h-3.5 w-3.5 fill-[#f59e0b] text-[#f59e0b]" />
-                            <span className="text-xs font-bold text-[#191c1e]">{therapist.average_rating}</span>
-                            <span className="text-xs font-medium text-[#717783]">({therapist.review_count} ulasan)</span>
+                            <span className="text-xs font-bold text-[#191c1e]">
+                                {therapist.average_rating}
+                            </span>
+                            <span className="text-xs font-medium text-[#717783]">
+                                ({therapist.review_count} ulasan)
+                            </span>
                         </div>
                     ) : (
                         <p className="m-0 text-xs font-medium text-[#717783]">

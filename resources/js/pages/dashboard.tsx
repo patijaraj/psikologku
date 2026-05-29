@@ -24,7 +24,8 @@ import { useEffect, useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
 
-const defaultAvatar = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+const defaultAvatar =
+    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
 
 const navItems = [
     { label: 'Dashboard', path: '/dashboard', active: true },
@@ -55,24 +56,36 @@ function ImageWithFallback({
     );
 }
 
-export default function Dashboard({ appointments = [], topPsychologists = [], recentRecords = [] }: { appointments?: any[], topPsychologists?: any[], recentRecords?: any[] }) {
-    const upcomingAppointments = appointments?.filter(a => {
-        const appointmentDateTime = new Date(`${a.appointment_date}T${a.start_time}`);
-        return appointmentDateTime >= new Date();
-    }) || [];
-    const closestAppointment = upcomingAppointments.length > 0 ? upcomingAppointments[0] : null;
+export default function Dashboard({
+    appointments = [],
+    topPsychologists = [],
+    recentRecords = [],
+}: {
+    appointments?: any[];
+    topPsychologists?: any[];
+    recentRecords?: any[];
+}) {
+    const upcomingAppointments =
+        appointments?.filter((a) => {
+            const appointmentDateTime = new Date(
+                `${a.appointment_date}T${a.start_time}`,
+            );
+            return appointmentDateTime >= new Date();
+        }) || [];
+    const closestAppointment =
+        upcomingAppointments.length > 0 ? upcomingAppointments[0] : null;
 
     const quotesIndo = [
-        "Sebab tidak ada yang lebih setia selain luka yang kau rawat sendiri. — M. Aan Mansyur",
-        "Mencintai diri sendiri adalah awal dari romansa seumur hidup. — Oscar Wilde",
-        "Apa pun yang terjadi, jangan pernah kehilangan harapan pada dirimu sendiri. — Chairil Anwar",
-        "Ada perasaan yang harus dijaga, meski hanya dalam diam dan doa. — Sapardi Djoko Damono",
-        "Jangan terburu-buru, hal-hal baik sedang dalam perjalanan menuju kepadamu. — Rupi Kaur",
-        "Kita adalah apa yang kita pikirkan. Semua yang kita alami lahir dari pikiran kita. — Dhammapada",
-        "Bersabarlah dengan segala sesuatu yang belum terselesaikan di hatimu. — Rainer Maria Rilke",
-        "Kadang kau harus menghilang untuk bisa benar-benar ditemukan kembali. — Buku Puisi",
-        "Hanya karena jalannya berbeda, bukan berarti kamu sedang tersesat. — Anonim",
-        "Istirahatlah, jiwa yang lelah pun butuh waktu untuk sekadar menjadi. — Kutipan Sastra"
+        'Sebab tidak ada yang lebih setia selain luka yang kau rawat sendiri. — M. Aan Mansyur',
+        'Mencintai diri sendiri adalah awal dari romansa seumur hidup. — Oscar Wilde',
+        'Apa pun yang terjadi, jangan pernah kehilangan harapan pada dirimu sendiri. — Chairil Anwar',
+        'Ada perasaan yang harus dijaga, meski hanya dalam diam dan doa. — Sapardi Djoko Damono',
+        'Jangan terburu-buru, hal-hal baik sedang dalam perjalanan menuju kepadamu. — Rupi Kaur',
+        'Kita adalah apa yang kita pikirkan. Semua yang kita alami lahir dari pikiran kita. — Dhammapada',
+        'Bersabarlah dengan segala sesuatu yang belum terselesaikan di hatimu. — Rainer Maria Rilke',
+        'Kadang kau harus menghilang untuk bisa benar-benar ditemukan kembali. — Buku Puisi',
+        'Hanya karena jalannya berbeda, bukan berarti kamu sedang tersesat. — Anonim',
+        'Istirahatlah, jiwa yang lelah pun butuh waktu untuk sekadar menjadi. — Kutipan Sastra',
     ];
 
     const [quote, setQuote] = useState(quotesIndo[0]);
@@ -142,13 +155,6 @@ export default function Dashboard({ appointments = [], topPsychologists = [], re
                                 <Bell className="h-[22px] w-[22px]" />
                                 <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#e65c5c] ring-2 ring-white" />
                             </button>
-                            <button
-                                type="button"
-                                aria-label="Pesan"
-                                className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]"
-                            >
-                                <MessageSquare className="h-[22px] w-[22px]" />
-                            </button>
                         </div>
 
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
@@ -187,7 +193,10 @@ export default function Dashboard({ appointments = [], topPsychologists = [], re
                                         <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
                                             <InitialsAvatar
                                                 name={userName}
-                                                photoUrl={(auth.user as any)?.photo_url}
+                                                photoUrl={
+                                                    (auth.user as any)
+                                                        ?.photo_url
+                                                }
                                                 className="size-11 text-base"
                                             />
                                             <div className="min-w-0">
@@ -273,13 +282,6 @@ export default function Dashboard({ appointments = [], topPsychologists = [], re
                                 <Bell className="h-6 w-6" />
                                 <span className="text-xs">Notifikasi</span>
                             </button>
-                            <button
-                                type="button"
-                                className="flex cursor-pointer flex-col items-center gap-1 border-none bg-transparent text-[#717783]"
-                            >
-                                <MessageSquare className="h-6 w-6" />
-                                <span className="text-xs">Pesan</span>
-                            </button>
                         </div>
                     </div>
                 )}
@@ -308,25 +310,43 @@ export default function Dashboard({ appointments = [], topPsychologists = [], re
                                         Obrolan Mendatang
                                     </span>
                                     <h2 className="m-0 text-2xl leading-tight font-bold text-white md:text-[28px]">
-                                        {closestAppointment ? closestAppointment.psychologist_name : "Belum ada jadwal"}
+                                        {closestAppointment
+                                            ? closestAppointment.psychologist_name
+                                            : 'Belum ada jadwal'}
                                     </h2>
                                     {closestAppointment ? (
-                                    <div className="flex items-center gap-1.5 text-sm font-medium text-blue-100 md:text-[15px]">
-                                        <Calendar className="h-4 w-4" />
-                                        {new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' }).format(new Date(closestAppointment.appointment_date))}, {closestAppointment.start_time.substring(0,5)} WIB
-                                    </div>
+                                        <div className="flex items-center gap-1.5 text-sm font-medium text-blue-100 md:text-[15px]">
+                                            <Calendar className="h-4 w-4" />
+                                            {new Intl.DateTimeFormat('id-ID', {
+                                                dateStyle: 'long',
+                                            }).format(
+                                                new Date(
+                                                    closestAppointment.appointment_date,
+                                                ),
+                                            )}
+                                            ,{' '}
+                                            {closestAppointment.start_time.substring(
+                                                0,
+                                                5,
+                                            )}{' '}
+                                            WIB
+                                        </div>
                                     ) : (
-                                    <div className="flex items-center gap-1.5 text-sm font-medium text-blue-100 md:text-[15px]">
-                                        <Calendar className="h-4 w-4" />
-                                        Silakan jadwalkan sesi dengan psikolog kami.
-                                    </div>
+                                        <div className="flex items-center gap-1.5 text-sm font-medium text-blue-100 md:text-[15px]">
+                                            <Calendar className="h-4 w-4" />
+                                            Silakan jadwalkan sesi dengan
+                                            psikolog kami.
+                                        </div>
                                     )}
                                 </div>
                             </div>
 
                             <Link
-                                href={closestAppointment?.meeting_link ?? '/sessions'}
-                                className={`relative z-10 flex w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl border-none px-6 py-3.5 text-[15px] font-bold text-[#1464BC] shadow-sm transition-colors md:w-auto ${closestAppointment ? 'bg-white hover:bg-blue-50' : 'bg-[#e2e4e6] cursor-not-allowed opacity-80'}`}
+                                href={
+                                    closestAppointment?.meeting_link ??
+                                    '/sessions'
+                                }
+                                className={`relative z-10 flex w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-xl border-none px-6 py-3.5 text-[15px] font-bold text-[#1464BC] shadow-sm transition-colors md:w-auto ${closestAppointment ? 'bg-white hover:bg-blue-50' : 'cursor-not-allowed bg-[#e2e4e6] opacity-80'}`}
                             >
                                 <MessageSquare className="h-5 w-5" />
                                 Masuk Obrolan
@@ -339,7 +359,10 @@ export default function Dashboard({ appointments = [], topPsychologists = [], re
                                     <h3 className="m-0 text-xl font-bold text-[#191c1e]">
                                         Rekomendasi Psikolog Terbaik
                                     </h3>
-                                    <Link href="/therapists" className="text-sm font-semibold text-[#1464BC] hover:underline">
+                                    <Link
+                                        href="/therapists"
+                                        className="text-sm font-semibold text-[#1464BC] hover:underline"
+                                    >
                                         Lihat Semua
                                     </Link>
                                 </div>
@@ -348,37 +371,59 @@ export default function Dashboard({ appointments = [], topPsychologists = [], re
                                         <TherapistCard
                                             key={therapist.id}
                                             therapistId={therapist.id}
-                                            image={therapist.photo_url ?? defaultAvatar}
+                                            image={
+                                                therapist.photo_url ??
+                                                defaultAvatar
+                                            }
                                             name={therapist.name}
-                                            specialty={therapist.specialization && therapist.specialization.length > 0 ? therapist.specialization.join(', ') : 'Spesialisasi Umum'}
-                                            rating={therapist.average_rating ? therapist.average_rating.toString() : '-'}
-                                            reviews={therapist.review_count ? therapist.review_count.toString() : '0'}
+                                            specialty={
+                                                therapist.specialization &&
+                                                therapist.specialization
+                                                    .length > 0
+                                                    ? therapist.specialization.join(
+                                                          ', ',
+                                                      )
+                                                    : 'Spesialisasi Umum'
+                                            }
+                                            rating={
+                                                therapist.average_rating
+                                                    ? therapist.average_rating.toString()
+                                                    : '-'
+                                            }
+                                            reviews={
+                                                therapist.review_count
+                                                    ? therapist.review_count.toString()
+                                                    : '0'
+                                            }
                                             match="Sangat Cocok"
-                                            price={new Intl.NumberFormat('id-ID', {
-                                                style: 'currency',
-                                                currency: 'IDR',
-                                                maximumFractionDigits: 0,
-                                            }).format(therapist.price)}
+                                            price={new Intl.NumberFormat(
+                                                'id-ID',
+                                                {
+                                                    style: 'currency',
+                                                    currency: 'IDR',
+                                                    maximumFractionDigits: 0,
+                                                },
+                                            ).format(therapist.price)}
                                             imageBg="bg-[#e1eef9]"
                                         />
                                     ))}
                                 </div>
                             </section>
                         )}
-                        
+
                         <section className="relative overflow-hidden rounded-3xl border border-[#e2e4e6] bg-white p-8 shadow-sm">
                             <div className="absolute -top-10 -right-10 size-32 rounded-full bg-[#eef5fe]/50 blur-3xl" />
-                            
+
                             <div className="relative z-10 flex flex-col items-center gap-4 text-center">
                                 <div className="flex size-14 items-center justify-center rounded-2xl bg-[#eef5fe] text-[#1464BC]">
                                     <Brain className="h-8 w-8" />
                                 </div>
-                                
+
                                 <div className="flex flex-col gap-2">
                                     <h3 className="m-0 text-xl font-bold text-[#191c1e]">
                                         Kata-kata hari ini bosku
                                     </h3>
-                                    <p className="m-0 max-w-[500px] text-[17px] font-medium italic leading-relaxed text-[#717783]">
+                                    <p className="m-0 max-w-[500px] text-[17px] leading-relaxed font-medium text-[#717783] italic">
                                         "{quote}"
                                     </p>
                                 </div>
@@ -388,8 +433,18 @@ export default function Dashboard({ appointments = [], topPsychologists = [], re
                                     onClick={handleRefresh}
                                     className="mt-2 flex cursor-pointer items-center gap-2 rounded-xl bg-[#f2f4f6] px-5 py-2.5 text-sm font-bold text-[#1464BC] transition-all hover:bg-[#eef5fe] active:scale-95"
                                 >
-                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    <svg
+                                        className="h-4 w-4"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                                        />
                                     </svg>
                                     Refresh Inspirasi
                                 </button>
@@ -404,20 +459,56 @@ export default function Dashboard({ appointments = [], topPsychologists = [], re
                             </h3>
                             <div className="flex flex-col gap-5">
                                 {upcomingAppointments.length > 0 ? (
-                                    upcomingAppointments.slice(0, 3).map((appointment, idx) => (
-                                        <div key={appointment.id} className="flex flex-col gap-2 border-b border-[#f2f4f6] pb-4 last:border-0 last:pb-0">
-                                            <div className="flex items-center justify-between">
-                                                <span className="font-semibold text-[#191c1e]">{appointment.psychologist_name}</span>
-                                                <span className="text-[11px] font-bold text-[#1464BC] bg-[#eef5fe] px-2 py-1 rounded-md uppercase tracking-wider">{appointment.status}</span>
+                                    upcomingAppointments
+                                        .slice(0, 3)
+                                        .map((appointment, idx) => (
+                                            <div
+                                                key={appointment.id}
+                                                className="flex flex-col gap-2 border-b border-[#f2f4f6] pb-4 last:border-0 last:pb-0"
+                                            >
+                                                <div className="flex items-center justify-between">
+                                                    <span className="font-semibold text-[#191c1e]">
+                                                        {
+                                                            appointment.psychologist_name
+                                                        }
+                                                    </span>
+                                                    <span className="rounded-md bg-[#eef5fe] px-2 py-1 text-[11px] font-bold tracking-wider text-[#1464BC] uppercase">
+                                                        {appointment.status}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center gap-1.5 text-[13px] font-medium text-[#717783]">
+                                                    <Calendar className="h-3.5 w-3.5" />
+                                                    <span>
+                                                        {new Intl.DateTimeFormat(
+                                                            'id-ID',
+                                                            {
+                                                                dateStyle:
+                                                                    'medium',
+                                                            },
+                                                        ).format(
+                                                            new Date(
+                                                                appointment.appointment_date,
+                                                            ),
+                                                        )}{' '}
+                                                        •{' '}
+                                                        {appointment.start_time.substring(
+                                                            0,
+                                                            5,
+                                                        )}{' '}
+                                                        -{' '}
+                                                        {appointment.end_time.substring(
+                                                            0,
+                                                            5,
+                                                        )}{' '}
+                                                        WIB
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <div className="text-[13px] font-medium text-[#717783] flex items-center gap-1.5">
-                                                <Calendar className="w-3.5 h-3.5" />
-                                                <span>{new Intl.DateTimeFormat('id-ID', { dateStyle: 'medium' }).format(new Date(appointment.appointment_date))} • {appointment.start_time.substring(0,5)} - {appointment.end_time.substring(0,5)} WIB</span>
-                                            </div>
-                                        </div>
-                                    ))
+                                        ))
                                 ) : (
-                                    <div className="text-sm font-medium text-[#717783] text-center py-4">Belum ada jadwal tersimpan.</div>
+                                    <div className="py-4 text-center text-sm font-medium text-[#717783]">
+                                        Belum ada jadwal tersimpan.
+                                    </div>
                                 )}
                             </div>
                         </section>
@@ -435,7 +526,9 @@ export default function Dashboard({ appointments = [], topPsychologists = [], re
                                             className="block no-underline"
                                         >
                                             <RecordItem
-                                                icon={<FileText className="h-6 w-6" />}
+                                                icon={
+                                                    <FileText className="h-6 w-6" />
+                                                }
                                                 title={`Sesi dengan ${record.psychologist_name}`}
                                                 meta={record.session_date}
                                                 className="bg-[#eef5fe] text-[#1464BC] transition-colors hover:bg-[#e1eef9]"
@@ -443,7 +536,9 @@ export default function Dashboard({ appointments = [], topPsychologists = [], re
                                         </Link>
                                     ))
                                 ) : (
-                                    <div className="text-sm font-medium text-[#717783] text-center py-4">Belum ada riwayat konsultasi.</div>
+                                    <div className="py-4 text-center text-sm font-medium text-[#717783]">
+                                        Belum ada riwayat konsultasi.
+                                    </div>
                                 )}
 
                                 <Link

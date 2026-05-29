@@ -66,11 +66,15 @@ export default function PsychologistProfileSetup({
     const { auth } = usePage().props as any;
     const userName = auth.user?.name ?? 'Psikolog';
 
-    const [photoUrl, setPhotoUrl] = useState<string | null>(profile?.photo_url ?? null);
+    const [photoUrl, setPhotoUrl] = useState<string | null>(
+        profile?.photo_url ?? null,
+    );
     const [isUploading, setIsUploading] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
 
-    const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePhotoChange = async (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
@@ -102,9 +106,9 @@ export default function PsychologistProfileSetup({
                 throw uploadError;
             }
 
-            const { data: { publicUrl } } = supabase.storage
-                .from('avatars')
-                .getPublicUrl(filePath);
+            const {
+                data: { publicUrl },
+            } = supabase.storage.from('avatars').getPublicUrl(filePath);
 
             setPhotoUrl(publicUrl);
         } catch (error: any) {
@@ -167,16 +171,13 @@ export default function PsychologistProfileSetup({
                             >
                                 <Bell className="h-[22px] w-[22px]" />
                             </button>
-                            <button
-                                type="button"
-                                aria-label="Pesan"
-                                className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]"
-                            >
-                                <MessageSquare className="h-[22px] w-[22px]" />
-                            </button>
                         </div>
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
-                        <InitialsAvatar name={userName} photoUrl={(auth.user as any)?.photo_url} className="size-9" />
+                        <InitialsAvatar
+                            name={userName}
+                            photoUrl={(auth.user as any)?.photo_url}
+                            className="size-9"
+                        />
                         <button
                             type="button"
                             aria-label="Buka menu"
@@ -255,21 +256,25 @@ export default function PsychologistProfileSetup({
                     >
                         {({ processing, errors }) => (
                             <>
-                                <input type="hidden" name="photo_url" value={photoUrl ?? ''} />
+                                <input
+                                    type="hidden"
+                                    name="photo_url"
+                                    value={photoUrl ?? ''}
+                                />
 
                                 <div className="flex flex-col items-center gap-4 rounded-2xl border border-[#e2e4e6] bg-[#fdfdfd] p-5 shadow-xs">
-                                    <span className="text-[13px] font-semibold text-[#191c1e] self-start ml-1">
+                                    <span className="ml-1 self-start text-[13px] font-semibold text-[#191c1e]">
                                         Foto Profil
                                     </span>
-                                    <div className="relative group">
+                                    <div className="group relative">
                                         {photoUrl ? (
                                             <img
                                                 src={photoUrl}
                                                 alt="Foto Profil Preview"
-                                                className="size-28 rounded-full object-cover border-2 border-[#1464BC] shadow-md"
+                                                className="size-28 rounded-full border-2 border-[#1464BC] object-cover shadow-md"
                                             />
                                         ) : (
-                                            <div className="flex size-28 items-center justify-center rounded-full bg-[#f2f4f6] text-[#717783] border border-[#e2e4e6]">
+                                            <div className="flex size-28 items-center justify-center rounded-full border border-[#e2e4e6] bg-[#f2f4f6] text-[#717783]">
                                                 <Smile className="size-12" />
                                             </div>
                                         )}
@@ -279,12 +284,14 @@ export default function PsychologistProfileSetup({
                                             </div>
                                         )}
                                     </div>
-                                    <div className="flex flex-col items-center gap-1.5 w-full">
+                                    <div className="flex w-full flex-col items-center gap-1.5">
                                         <label
                                             htmlFor="photo-upload"
                                             className="flex h-10 w-fit cursor-pointer items-center justify-center rounded-lg border border-[#1464BC] bg-transparent px-4 text-sm font-semibold text-[#1464BC] transition-colors hover:bg-[#eef5fe]"
                                         >
-                                            {photoUrl ? 'Ubah Foto' : 'Pilih Foto'}
+                                            {photoUrl
+                                                ? 'Ubah Foto'
+                                                : 'Pilih Foto'}
                                         </label>
                                         <input
                                             id="photo-upload"
@@ -298,7 +305,7 @@ export default function PsychologistProfileSetup({
                                             Format: JPG, PNG. Maksimal 2MB.
                                         </span>
                                         {uploadError && (
-                                            <span className="text-xs font-semibold text-red-500 mt-1 text-center">
+                                            <span className="mt-1 text-center text-xs font-semibold text-red-500">
                                                 {uploadError}
                                             </span>
                                         )}
@@ -306,9 +313,7 @@ export default function PsychologistProfileSetup({
                                 </div>
 
                                 <div className="flex flex-col gap-1.5">
-                                    <label
-                                        className="ml-1 text-[13px] font-semibold text-[#191c1e]"
-                                    >
+                                    <label className="ml-1 text-[13px] font-semibold text-[#191c1e]">
                                         Spesialisasi
                                     </label>
                                     <div className="mt-1 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -321,7 +326,9 @@ export default function PsychologistProfileSetup({
                                                     type="checkbox"
                                                     name="specialization[]"
                                                     value={spec}
-                                                    defaultChecked={profile?.specialization?.includes(spec)}
+                                                    defaultChecked={profile?.specialization?.includes(
+                                                        spec,
+                                                    )}
                                                     className="mt-0.5 size-4 rounded border-[#e2e4e6] text-[#1464BC] focus:ring-[#1464BC]"
                                                 />
                                                 <span className="text-[14px] text-[#191c1e]">
