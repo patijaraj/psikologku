@@ -1,4 +1,4 @@
-import { Form, Head, Link, router, usePage } from '@inertiajs/react';
+import { Form, Head, Link, router, useForm, usePage } from '@inertiajs/react';
 import {
     ArrowRight,
     BadgeCheck,
@@ -16,6 +16,7 @@ import {
 import { useState } from 'react';
 import InputError from '@/components/input-error';
 import { InitialsAvatar } from '@/components/initials-avatar';
+import { NotificationDropdown } from '@/components/notification-dropdown';
 import { Spinner } from '@/components/ui/spinner';
 import { logout } from '@/routes';
 import { supabase } from '@/lib/supabase';
@@ -164,13 +165,7 @@ export default function PsychologistProfileSetup({
 
                     <div className="flex items-center gap-4 sm:gap-6">
                         <div className="hidden items-center gap-2 sm:flex">
-                            <button
-                                type="button"
-                                aria-label="Notifikasi"
-                                className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]"
-                            >
-                                <Bell className="h-[22px] w-[22px]" />
-                            </button>
+                            <NotificationDropdown />
                         </div>
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
                         <InitialsAvatar

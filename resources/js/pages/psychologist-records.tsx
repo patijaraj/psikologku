@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
 import { updateRecord } from '@/actions/App/Http/Controllers/PsychologistAppointmentController';
+import { NotificationDropdown } from '@/components/notification-dropdown';
 
 type RecordType = {
     id: number;

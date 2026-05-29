@@ -15,6 +15,7 @@ import {
 import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
+import { NotificationDropdown } from '@/components/notification-dropdown';
 
 type Schedule = {
     id: number;
@@ -141,6 +142,10 @@ export default function PsychologistSchedules({
                     </div>
 
                     <div className="flex items-center gap-4 sm:gap-6">
+                        <div className="hidden items-center gap-2 sm:flex">
+                            <NotificationDropdown />
+                        </div>
+                        <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
                         <div className="relative">
                             <button
                                 type="button"
