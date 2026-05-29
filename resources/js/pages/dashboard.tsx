@@ -20,9 +20,10 @@ import {
     Star,
     X,
 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
+import { NotificationDropdown } from '@/components/notification-dropdown';
 
 const defaultAvatar =
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
@@ -147,14 +148,7 @@ export default function Dashboard({
 
                     <div className="flex items-center gap-4 sm:gap-6">
                         <div className="hidden items-center gap-2 sm:flex">
-                            <button
-                                type="button"
-                                aria-label="Notifikasi"
-                                className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]"
-                            >
-                                <Bell className="h-[22px] w-[22px]" />
-                                <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#e65c5c] ring-2 ring-white" />
-                            </button>
+                            <NotificationDropdown />
                         </div>
 
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
@@ -275,13 +269,7 @@ export default function Dashboard({
                         ))}
                         <div className="my-2 h-px w-full bg-[#e2e4e6]" />
                         <div className="flex justify-around p-2">
-                            <button
-                                type="button"
-                                className="flex cursor-pointer flex-col items-center gap-1 border-none bg-transparent text-[#717783]"
-                            >
-                                <Bell className="h-6 w-6" />
-                                <span className="text-xs">Notifikasi</span>
-                            </button>
+                            <NotificationDropdown />
                         </div>
                     </div>
                 )}

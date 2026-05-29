@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Notifications\PaymentStatusNotification;
 
 class PaymentController extends Controller
 {
@@ -33,6 +34,21 @@ class PaymentController extends Controller
                 'snap_token' => $this->midtransSnap->createToken($transaction),
             ]);
         }
+
+        return Inertia::render('payment', [
+            'snapToken' => $transaction->snap_token,
+            'orderId' => $transaction->order_id,
+            'amount' => (float) $transaction->gross_amount,
+            'therapist' => $psychologist ? $this->serializeTherapist($psychologist) : null,
+        ]);
+    }
+
+    public function resume(Request $request, Transaction $transaction): Response
+    {
+        abort_unless($transaction->user_id === $request->user()->id, 403);
+        abort_unless($transaction->status === 'pending', 404);
+
+        $psychologist = $transaction->psychologist_id ? PsychologistProfile::with('user')->find($transaction->psychologist_id) : null;
 
         return Inertia::render('payment', [
             'snapToken' => $transaction->snap_token,
@@ -217,9 +233,15 @@ class PaymentController extends Controller
             $status = 'pending';
         }
 
-        $transaction->update([
-            'status' => $status,
-            'payment_type' => is_string($paymentType) ? $paymentType : $transaction->payment_type,
-        ]);
+        if ($transaction->status !== $status) {
+            $transaction->update([
+                'status' => $status,
+                'payment_type' => is_string($paymentType) ? $paymentType : $transaction->payment_type,
+            ]);
+
+            if ($transaction->user) {
+                $transaction->user->notify(new PaymentStatusNotification($transaction));
+            }
+        }
     }
 }

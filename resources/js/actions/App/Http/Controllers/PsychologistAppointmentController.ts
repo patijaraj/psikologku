@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::index
-* @see app/Http/Controllers/PsychologistAppointmentController.php:14
+* @see app/Http/Controllers/PsychologistAppointmentController.php:15
 * @route '/psychologist/appointments'
 */
 export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::index
-* @see app/Http/Controllers/PsychologistAppointmentController.php:14
+* @see app/Http/Controllers/PsychologistAppointmentController.php:15
 * @route '/psychologist/appointments'
 */
 index.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::index
-* @see app/Http/Controllers/PsychologistAppointmentController.php:14
+* @see app/Http/Controllers/PsychologistAppointmentController.php:15
 * @route '/psychologist/appointments'
 */
 index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -35,7 +35,7 @@ index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::index
-* @see app/Http/Controllers/PsychologistAppointmentController.php:14
+* @see app/Http/Controllers/PsychologistAppointmentController.php:15
 * @route '/psychologist/appointments'
 */
 index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -45,7 +45,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::index
-* @see app/Http/Controllers/PsychologistAppointmentController.php:14
+* @see app/Http/Controllers/PsychologistAppointmentController.php:15
 * @route '/psychologist/appointments'
 */
 const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -55,7 +55,7 @@ const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::index
-* @see app/Http/Controllers/PsychologistAppointmentController.php:14
+* @see app/Http/Controllers/PsychologistAppointmentController.php:15
 * @route '/psychologist/appointments'
 */
 indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -65,7 +65,7 @@ indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::index
-* @see app/Http/Controllers/PsychologistAppointmentController.php:14
+* @see app/Http/Controllers/PsychologistAppointmentController.php:15
 * @route '/psychologist/appointments'
 */
 indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -82,7 +82,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::complete
-* @see app/Http/Controllers/PsychologistAppointmentController.php:54
+* @see app/Http/Controllers/PsychologistAppointmentController.php:55
 * @route '/psychologist/appointments/{appointment}/complete'
 */
 export const complete = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -97,7 +97,7 @@ complete.definition = {
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::complete
-* @see app/Http/Controllers/PsychologistAppointmentController.php:54
+* @see app/Http/Controllers/PsychologistAppointmentController.php:55
 * @route '/psychologist/appointments/{appointment}/complete'
 */
 complete.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -130,7 +130,7 @@ complete.url = (args: { appointment: number | { id: number } } | [appointment: n
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::complete
-* @see app/Http/Controllers/PsychologistAppointmentController.php:54
+* @see app/Http/Controllers/PsychologistAppointmentController.php:55
 * @route '/psychologist/appointments/{appointment}/complete'
 */
 complete.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -140,7 +140,7 @@ complete.patch = (args: { appointment: number | { id: number } } | [appointment:
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::complete
-* @see app/Http/Controllers/PsychologistAppointmentController.php:54
+* @see app/Http/Controllers/PsychologistAppointmentController.php:55
 * @route '/psychologist/appointments/{appointment}/complete'
 */
 const completeForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -155,7 +155,7 @@ const completeForm = (args: { appointment: number | { id: number } } | [appointm
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::complete
-* @see app/Http/Controllers/PsychologistAppointmentController.php:54
+* @see app/Http/Controllers/PsychologistAppointmentController.php:55
 * @route '/psychologist/appointments/{appointment}/complete'
 */
 completeForm.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -172,7 +172,7 @@ complete.form = completeForm
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::start
-* @see app/Http/Controllers/PsychologistAppointmentController.php:77
+* @see app/Http/Controllers/PsychologistAppointmentController.php:78
 * @route '/psychologist/appointments/{appointment}/start'
 */
 export const start = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -187,7 +187,7 @@ start.definition = {
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::start
-* @see app/Http/Controllers/PsychologistAppointmentController.php:77
+* @see app/Http/Controllers/PsychologistAppointmentController.php:78
 * @route '/psychologist/appointments/{appointment}/start'
 */
 start.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -220,7 +220,7 @@ start.url = (args: { appointment: number | { id: number } } | [appointment: numb
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::start
-* @see app/Http/Controllers/PsychologistAppointmentController.php:77
+* @see app/Http/Controllers/PsychologistAppointmentController.php:78
 * @route '/psychologist/appointments/{appointment}/start'
 */
 start.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -230,7 +230,7 @@ start.patch = (args: { appointment: number | { id: number } } | [appointment: nu
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::start
-* @see app/Http/Controllers/PsychologistAppointmentController.php:77
+* @see app/Http/Controllers/PsychologistAppointmentController.php:78
 * @route '/psychologist/appointments/{appointment}/start'
 */
 const startForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -245,7 +245,7 @@ const startForm = (args: { appointment: number | { id: number } } | [appointment
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::start
-* @see app/Http/Controllers/PsychologistAppointmentController.php:77
+* @see app/Http/Controllers/PsychologistAppointmentController.php:78
 * @route '/psychologist/appointments/{appointment}/start'
 */
 startForm.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -262,7 +262,7 @@ start.form = startForm
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::updateRecord
-* @see app/Http/Controllers/PsychologistAppointmentController.php:135
+* @see app/Http/Controllers/PsychologistAppointmentController.php:140
 * @route '/psychologist/appointments/{appointment}/record'
 */
 export const updateRecord = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -277,7 +277,7 @@ updateRecord.definition = {
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::updateRecord
-* @see app/Http/Controllers/PsychologistAppointmentController.php:135
+* @see app/Http/Controllers/PsychologistAppointmentController.php:140
 * @route '/psychologist/appointments/{appointment}/record'
 */
 updateRecord.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -310,7 +310,7 @@ updateRecord.url = (args: { appointment: number | { id: number } } | [appointmen
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::updateRecord
-* @see app/Http/Controllers/PsychologistAppointmentController.php:135
+* @see app/Http/Controllers/PsychologistAppointmentController.php:140
 * @route '/psychologist/appointments/{appointment}/record'
 */
 updateRecord.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -320,7 +320,7 @@ updateRecord.patch = (args: { appointment: number | { id: number } } | [appointm
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::updateRecord
-* @see app/Http/Controllers/PsychologistAppointmentController.php:135
+* @see app/Http/Controllers/PsychologistAppointmentController.php:140
 * @route '/psychologist/appointments/{appointment}/record'
 */
 const updateRecordForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -335,7 +335,7 @@ const updateRecordForm = (args: { appointment: number | { id: number } } | [appo
 
 /**
 * @see \App\Http\Controllers\PsychologistAppointmentController::updateRecord
-* @see app/Http/Controllers/PsychologistAppointmentController.php:135
+* @see app/Http/Controllers/PsychologistAppointmentController.php:140
 * @route '/psychologist/appointments/{appointment}/record'
 */
 updateRecordForm.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
+import { NotificationDropdown } from '@/components/notification-dropdown';
 import {
     complete,
     start,
@@ -401,14 +402,7 @@ export default function Sessions({
                     </div>
                     <div className="flex items-center gap-4 sm:gap-6">
                         <div className="hidden items-center gap-2 sm:flex">
-                            <button
-                                type="button"
-                                aria-label="Notifikasi"
-                                className="relative cursor-pointer rounded-full border-none bg-transparent p-2 text-[#717783] transition-colors hover:bg-[#f2f4f6] hover:text-[#191c1e]"
-                            >
-                                <Bell className="h-[22px] w-[22px]" />
-                                <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-[#e65c5c] ring-2 ring-white" />
-                            </button>
+                            <NotificationDropdown />
                         </div>
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
                         <div className="relative">

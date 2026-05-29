@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Notifications\SessionStartedNotification;
 
 class PsychologistAppointmentController extends Controller
 {
@@ -93,6 +94,10 @@ class PsychologistAppointmentController extends Controller
         $appointment->update([
             'status' => 'ongoing',
         ]);
+
+        if ($appointment->user) {
+            $appointment->user->notify(new SessionStartedNotification($appointment));
+        }
 
         return back();
     }

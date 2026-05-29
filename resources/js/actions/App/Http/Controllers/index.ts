@@ -6,6 +6,7 @@ import PsychologistRecordController from './PsychologistRecordController'
 import PsychologistScheduleController from './PsychologistScheduleController'
 import TherapistController from './TherapistController'
 import SessionController from './SessionController'
+import NotificationController from './NotificationController'
 import UserRecordController from './UserRecordController'
 import Settings from './Settings'
 
@@ -18,6 +19,7 @@ const Controllers = {
     PsychologistScheduleController: Object.assign(PsychologistScheduleController, PsychologistScheduleController),
     TherapistController: Object.assign(TherapistController, TherapistController),
     SessionController: Object.assign(SessionController, SessionController),
+    NotificationController: Object.assign(NotificationController, NotificationController),
     UserRecordController: Object.assign(UserRecordController, UserRecordController),
     Settings: Object.assign(Settings, Settings),
 }

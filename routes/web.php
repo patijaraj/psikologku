@@ -10,6 +10,7 @@ use App\Http\Controllers\PsychologistScheduleController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TherapistController;
 use App\Http\Controllers\UserRecordController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -66,6 +67,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('therapists/{psychologistProfile}', [TherapistController::class, 'show'])->name('therapists.show');
     Route::get('sessions', [SessionController::class, 'index'])->name('sessions');
     Route::get('payment', [PaymentController::class, 'show'])->name('payment');
+    Route::get('payment/{transaction}/resume', [PaymentController::class, 'resume'])->name('payment.resume');
+
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::patch('notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
+    Route::patch('notifications/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-as-read');
 
     // User Records
     Route::get('records', [UserRecordController::class, 'index'])->name('user.records.index');
