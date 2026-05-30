@@ -22,8 +22,7 @@ type Props = {
     canRegister?: boolean;
 };
 
-const heroImage =
-    'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMGRvY3RvcnxlbnwwfHx8fDE3Nzg1MTMxMzZ8MA&ixlib=rb-4.1.0&q=80&w=1080';
+const heroImage = '/images/hero-psychologist.jpg';
 
 const counselingTopics = [
     { name: 'Stres', icon: Brain },
