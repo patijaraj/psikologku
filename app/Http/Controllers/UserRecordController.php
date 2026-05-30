@@ -15,7 +15,7 @@ class UserRecordController extends Controller
         $user = $request->user();
 
         $appointments = $user->appointments()
-            ->with(['psychologist.user:id,name', 'psychologist:id,user_id,specialization'])
+            ->with(['psychologist.user:id,name', 'psychologist:id,user_id,specialization,photo_url'])
             ->where('status', 'completed')
             ->whereNotNull('record_summary')
             ->where('record_summary', '!=', '')
@@ -25,6 +25,7 @@ class UserRecordController extends Controller
                 return [
                     'id' => $appointment->id,
                     'psychologist_name' => $appointment->psychologist->user?->name ?? 'Psikolog',
+                    'psychologist_photo_url' => $appointment->psychologist->photo_url,
                     'specialization' => $appointment->psychologist->specialization ?? ['Psikologi'],
                     'session_date' => $appointment->appointment_date?->format('Y-m-d') ?? '-',
                     'record_summary' => $appointment->record_summary,
@@ -47,12 +48,13 @@ class UserRecordController extends Controller
         abort_unless($appointment->status === 'completed', 404);
         abort_unless($appointment->record_summary !== null, 404);
 
-        $appointment->load(['psychologist.user:id,name', 'psychologist:id,user_id,specialization']);
+        $appointment->load(['psychologist.user:id,name', 'psychologist:id,user_id,specialization,photo_url']);
 
         return Inertia::render('record-detail', [
             'record' => [
                 'id' => $appointment->id,
                 'psychologist_name' => $appointment->psychologist->user?->name ?? 'Psikolog',
+                'psychologist_photo_url' => $appointment->psychologist->photo_url,
                 'specialization' => $appointment->psychologist->specialization ?? ['Psikologi'],
                 'session_date' => $appointment->appointment_date?->format('M d, Y') ?? '-',
                 'session_duration' => '50 Minutes', // Usually standard

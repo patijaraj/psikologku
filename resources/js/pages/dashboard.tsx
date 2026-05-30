@@ -409,7 +409,7 @@ export default function Dashboard({
 
                                 <div className="flex flex-col gap-2">
                                     <h3 className="m-0 text-xl font-bold text-[#191c1e]">
-                                        Kata-kata hari ini bosku
+                                        Inspirasi Hari Ini
                                     </h3>
                                     <p className="m-0 max-w-[500px] text-[17px] leading-relaxed font-medium text-[#717783] italic">
                                         "{quote}"

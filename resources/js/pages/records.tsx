@@ -20,6 +20,7 @@ import { NotificationDropdown } from '@/components/notification-dropdown';
 type PatientRecord = {
     id: number;
     psychologist_name: string;
+    psychologist_photo_url?: string | null;
     specialization: string[] | null;
     session_date: string;
     record_summary: string;
@@ -222,6 +223,7 @@ export default function Records({ records = [] }: RecordsProps) {
                                     <div className="flex items-center gap-4">
                                         <InitialsAvatar
                                             name={record.psychologist_name}
+                                            photoUrl={record.psychologist_photo_url}
                                             className="size-12 rounded-xl"
                                         />
                                         <div>

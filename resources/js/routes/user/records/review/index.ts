@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\UserRecordController::update
-* @see app/Http/Controllers/UserRecordController.php:69
+* @see app/Http/Controllers/UserRecordController.php:71
 * @route '/records/{appointment}/review'
 */
 export const update = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -16,7 +16,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\UserRecordController::update
-* @see app/Http/Controllers/UserRecordController.php:69
+* @see app/Http/Controllers/UserRecordController.php:71
 * @route '/records/{appointment}/review'
 */
 update.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ update.url = (args: { appointment: number | { id: number } } | [appointment: num
 
 /**
 * @see \App\Http\Controllers\UserRecordController::update
-* @see app/Http/Controllers/UserRecordController.php:69
+* @see app/Http/Controllers/UserRecordController.php:71
 * @route '/records/{appointment}/review'
 */
 update.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -59,7 +59,7 @@ update.patch = (args: { appointment: number | { id: number } } | [appointment: n
 
 /**
 * @see \App\Http\Controllers\UserRecordController::update
-* @see app/Http/Controllers/UserRecordController.php:69
+* @see app/Http/Controllers/UserRecordController.php:71
 * @route '/records/{appointment}/review'
 */
 const updateForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -74,7 +74,7 @@ const updateForm = (args: { appointment: number | { id: number } } | [appointmen
 
 /**
 * @see \App\Http\Controllers\UserRecordController::update
-* @see app/Http/Controllers/UserRecordController.php:69
+* @see app/Http/Controllers/UserRecordController.php:71
 * @route '/records/{appointment}/review'
 */
 updateForm.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

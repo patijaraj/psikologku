@@ -32,6 +32,7 @@ import { NotificationDropdown } from '@/components/notification-dropdown';
 type RecordDetail = {
     id: number;
     psychologist_name: string;
+    psychologist_photo_url?: string | null;
     specialization: string[] | null;
     session_date: string;
     session_duration: string;
@@ -310,6 +311,7 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                             <div className="flex items-center gap-4">
                                 <InitialsAvatar
                                     name={record.psychologist_name}
+                                    photoUrl={record.psychologist_photo_url}
                                     className="size-12 rounded-xl bg-[#1464BC] text-white"
                                 />
                                 <div>

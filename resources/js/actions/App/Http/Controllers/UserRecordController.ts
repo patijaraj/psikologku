@@ -82,7 +82,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 export const show = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -97,7 +97,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 show.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -130,7 +130,7 @@ show.url = (args: { appointment: number | { id: number } } | [appointment: numbe
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 show.get = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -140,7 +140,7 @@ show.get = (args: { appointment: number | { id: number } } | [appointment: numbe
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 show.head = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -150,7 +150,7 @@ show.head = (args: { appointment: number | { id: number } } | [appointment: numb
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 const showForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -160,7 +160,7 @@ const showForm = (args: { appointment: number | { id: number } } | [appointment:
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 showForm.get = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -170,7 +170,7 @@ showForm.get = (args: { appointment: number | { id: number } } | [appointment: n
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 showForm.head = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -187,7 +187,7 @@ show.form = showForm
 
 /**
 * @see \App\Http\Controllers\UserRecordController::updateReview
-* @see app/Http/Controllers/UserRecordController.php:69
+* @see app/Http/Controllers/UserRecordController.php:71
 * @route '/records/{appointment}/review'
 */
 export const updateReview = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -202,7 +202,7 @@ updateReview.definition = {
 
 /**
 * @see \App\Http\Controllers\UserRecordController::updateReview
-* @see app/Http/Controllers/UserRecordController.php:69
+* @see app/Http/Controllers/UserRecordController.php:71
 * @route '/records/{appointment}/review'
 */
 updateReview.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -235,7 +235,7 @@ updateReview.url = (args: { appointment: number | { id: number } } | [appointmen
 
 /**
 * @see \App\Http\Controllers\UserRecordController::updateReview
-* @see app/Http/Controllers/UserRecordController.php:69
+* @see app/Http/Controllers/UserRecordController.php:71
 * @route '/records/{appointment}/review'
 */
 updateReview.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -245,7 +245,7 @@ updateReview.patch = (args: { appointment: number | { id: number } } | [appointm
 
 /**
 * @see \App\Http\Controllers\UserRecordController::updateReview
-* @see app/Http/Controllers/UserRecordController.php:69
+* @see app/Http/Controllers/UserRecordController.php:71
 * @route '/records/{appointment}/review'
 */
 const updateReviewForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -260,7 +260,7 @@ const updateReviewForm = (args: { appointment: number | { id: number } } | [appo
 
 /**
 * @see \App\Http\Controllers\UserRecordController::updateReview
-* @see app/Http/Controllers/UserRecordController.php:69
+* @see app/Http/Controllers/UserRecordController.php:71
 * @route '/records/{appointment}/review'
 */
 updateReviewForm.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -277,7 +277,7 @@ updateReview.form = updateReviewForm
 
 /**
 * @see \App\Http\Controllers\UserRecordController::downloadPdf
-* @see app/Http/Controllers/UserRecordController.php:89
+* @see app/Http/Controllers/UserRecordController.php:91
 * @route '/records/{appointment}/pdf'
 */
 export const downloadPdf = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -292,7 +292,7 @@ downloadPdf.definition = {
 
 /**
 * @see \App\Http\Controllers\UserRecordController::downloadPdf
-* @see app/Http/Controllers/UserRecordController.php:89
+* @see app/Http/Controllers/UserRecordController.php:91
 * @route '/records/{appointment}/pdf'
 */
 downloadPdf.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -325,7 +325,7 @@ downloadPdf.url = (args: { appointment: number | { id: number } } | [appointment
 
 /**
 * @see \App\Http\Controllers\UserRecordController::downloadPdf
-* @see app/Http/Controllers/UserRecordController.php:89
+* @see app/Http/Controllers/UserRecordController.php:91
 * @route '/records/{appointment}/pdf'
 */
 downloadPdf.get = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -335,7 +335,7 @@ downloadPdf.get = (args: { appointment: number | { id: number } } | [appointment
 
 /**
 * @see \App\Http\Controllers\UserRecordController::downloadPdf
-* @see app/Http/Controllers/UserRecordController.php:89
+* @see app/Http/Controllers/UserRecordController.php:91
 * @route '/records/{appointment}/pdf'
 */
 downloadPdf.head = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -345,7 +345,7 @@ downloadPdf.head = (args: { appointment: number | { id: number } } | [appointmen
 
 /**
 * @see \App\Http\Controllers\UserRecordController::downloadPdf
-* @see app/Http/Controllers/UserRecordController.php:89
+* @see app/Http/Controllers/UserRecordController.php:91
 * @route '/records/{appointment}/pdf'
 */
 const downloadPdfForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -355,7 +355,7 @@ const downloadPdfForm = (args: { appointment: number | { id: number } } | [appoi
 
 /**
 * @see \App\Http\Controllers\UserRecordController::downloadPdf
-* @see app/Http/Controllers/UserRecordController.php:89
+* @see app/Http/Controllers/UserRecordController.php:91
 * @route '/records/{appointment}/pdf'
 */
 downloadPdfForm.get = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -365,7 +365,7 @@ downloadPdfForm.get = (args: { appointment: number | { id: number } } | [appoint
 
 /**
 * @see \App\Http\Controllers\UserRecordController::downloadPdf
-* @see app/Http/Controllers/UserRecordController.php:89
+* @see app/Http/Controllers/UserRecordController.php:91
 * @route '/records/{appointment}/pdf'
 */
 downloadPdfForm.head = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

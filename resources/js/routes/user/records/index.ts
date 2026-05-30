@@ -83,7 +83,7 @@ index.form = indexForm
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 export const show = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -98,7 +98,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 show.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -131,7 +131,7 @@ show.url = (args: { appointment: number | { id: number } } | [appointment: numbe
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 show.get = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -141,7 +141,7 @@ show.get = (args: { appointment: number | { id: number } } | [appointment: numbe
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 show.head = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -151,7 +151,7 @@ show.head = (args: { appointment: number | { id: number } } | [appointment: numb
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 const showForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -161,7 +161,7 @@ const showForm = (args: { appointment: number | { id: number } } | [appointment:
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 showForm.get = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -171,7 +171,7 @@ showForm.get = (args: { appointment: number | { id: number } } | [appointment: n
 
 /**
 * @see \App\Http\Controllers\UserRecordController::show
-* @see app/Http/Controllers/UserRecordController.php:42
+* @see app/Http/Controllers/UserRecordController.php:43
 * @route '/records/{appointment}'
 */
 showForm.head = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
