@@ -141,10 +141,33 @@
             <div class="signature-box">
                 <div class="date-text">Jakarta, {{ now()->format('d F Y') }}</div>
                 <div class="signer-title">Mengetahui,</div>
+                @php
+                    $sigPath = $appointment->psychologist->signature_path;
+                    $sigSrc = null;
+                    if ($sigPath) {
+                        try {
+                            if (str_starts_with($sigPath, 'http')) {
+                                $response = \Illuminate\Support\Facades\Http::get($sigPath);
+                                if ($response->successful()) {
+                                    $mime = $response->header('Content-Type') ?? 'image/png';
+                                    $sigSrc = 'data:' . $mime . ';base64,' . base64_encode($response->body());
+                                }
+                            } else {
+                                $path = public_path('storage/' . $sigPath);
+                                if (file_exists($path)) {
+                                    $mime = mime_content_type($path);
+                                    $sigSrc = 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($path));
+                                }
+                            }
+                        } catch (\Exception $e) {
+                            // Abaikan error
+                        }
+                    }
+                @endphp
                 
-                @if($appointment->psychologist->signature_path)
+                @if($sigSrc)
                     <div style="margin: 10px 0;">
-                        <img src="{{ str_starts_with($appointment->psychologist->signature_path, 'http') ? $appointment->psychologist->signature_path : public_path('storage/' . $appointment->psychologist->signature_path) }}" style="max-height: 80px; max-width: 200px;">
+                        <img src="{{ $sigSrc }}" style="height: 70px; width: auto;">
                     </div>
                 @else
                     <div style="height: 80px; margin: 10px 0;"></div>
@@ -155,7 +178,7 @@
                     <div class="signer-license">STR : {{ $appointment->psychologist->str_number ?? '-' }}</div>
                     <div class="signer-license">SIP : {{ $appointment->psychologist->sipp ?? '-' }}</div>
                 @else
-                    <div class="signer-name">({{ $appointment->psychologist->user->name }}, M.Psi., Psikolog)</div>
+                    <div class="signer-name">({{ $appointment->psychologist->user->name }})</div>
                     <div class="signer-license">STRPK : {{ $appointment->psychologist->str_number ?? '-' }}</div>
                     <div class="signer-license">SIPPK : {{ $appointment->psychologist->sippk ?? '-' }}</div>
                 @endif
