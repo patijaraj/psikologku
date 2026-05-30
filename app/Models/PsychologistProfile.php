@@ -9,6 +9,8 @@ class PsychologistProfile extends Model
     protected $fillable = [
         'user_id',
         'str_number',
+        'sipp',
+        'sippk',
         'specialization',
         'price',
         'is_online',

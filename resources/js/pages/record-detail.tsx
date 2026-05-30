@@ -43,6 +43,7 @@ type RecordDetail = {
     structured_recommendations?: { title: string; description: string; type: string }[];
     rating: number | null;
     review: string | null;
+    has_referral_letter?: boolean;
 };
 
 type RecordDetailProps = {
@@ -262,15 +263,28 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                         <ArrowLeft className="h-4 w-4" />
                         Kembali
                     </Link>
-                    <a
-                        href={`/records/${record.id}/pdf`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 rounded-xl bg-[#1464BC] px-4 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[#1053A0]"
-                    >
-                        <Printer className="h-4 w-4" />
-                        Unduh PDF
-                    </a>
+                    <div className="flex gap-2">
+                        {record.has_referral_letter && (
+                            <a
+                                href={`/records/${record.id}/referral-letter/pdf`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-2 rounded-xl bg-[#fff8e6] px-4 py-2 text-sm font-bold text-[#b45309] shadow-sm transition-colors hover:bg-[#fef3c7]"
+                            >
+                                <FileText className="h-4 w-4" />
+                                Surat Rujukan
+                            </a>
+                        )}
+                        <a
+                            href={`/records/${record.id}/pdf`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 rounded-xl bg-[#1464BC] px-4 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[#1053A0]"
+                        >
+                            <Printer className="h-4 w-4" />
+                            Unduh Rekam Medis
+                        </a>
+                    </div>
                 </div>
 
                 {/* Document Header (Print Only) */}

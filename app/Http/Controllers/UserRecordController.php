@@ -48,7 +48,7 @@ class UserRecordController extends Controller
         abort_unless($appointment->status === 'completed', 404);
         abort_unless($appointment->record_summary !== null, 404);
 
-        $appointment->load(['psychologist.user:id,name', 'psychologist:id,user_id,specialization,photo_url']);
+        $appointment->load(['psychologist.user:id,name', 'psychologist:id,user_id,specialization,photo_url', 'referralLetter']);
 
         return Inertia::render('record-detail', [
             'record' => [
@@ -64,6 +64,7 @@ class UserRecordController extends Controller
                 'structured_recommendations' => $appointment->structured_recommendations ?? [],
                 'rating' => $appointment->rating,
                 'review' => $appointment->review,
+                'has_referral_letter' => $appointment->referralLetter !== null,
             ],
         ]);
     }

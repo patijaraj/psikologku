@@ -19,6 +19,7 @@ import { logout } from '@/routes';
 import { updateRecord } from '@/actions/App/Http/Controllers/PsychologistAppointmentController';
 import { NotificationDropdown } from '@/components/notification-dropdown';
 import { RecordFormModal } from '@/components/record-form-modal';
+import { ReferralLetterModal } from '@/components/referral-letter-modal';
 
 type RecordType = {
     id: number;
@@ -60,6 +61,7 @@ export default function PsychologistRecords({
     const userEmail = auth.user?.email ?? 'psikolog@example.com';
 
     const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
+    const [isReferralModalOpen, setIsReferralModalOpen] = useState(false);
     const [selectedRecord, setSelectedRecord] = useState<RecordType | null>(null);
 
     const pendingRecords = records.filter((r) => r.status === 'Pending');
@@ -68,6 +70,11 @@ export default function PsychologistRecords({
     const openRecordModal = (record: RecordType) => {
         setSelectedRecord(record);
         setIsRecordModalOpen(true);
+    };
+
+    const openReferralModal = (record: RecordType) => {
+        setSelectedRecord(record);
+        setIsReferralModalOpen(true);
     };
 
     return (
@@ -326,13 +333,21 @@ export default function PsychologistRecords({
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-2">
+                                            <button
+                                                onClick={() =>
+                                                    openReferralModal(record)
+                                                }
+                                                className="flex h-9 items-center justify-center rounded-xl bg-[#fff8e6] px-4 text-xs font-bold text-[#b45309] transition-colors hover:bg-[#fef3c7]"
+                                            >
+                                                Surat Rujukan
+                                            </button>
                                             <a
                                                 href={`/records/${record.id}/pdf`}
                                                 target="_blank"
                                                 rel="noreferrer"
                                                 className="flex h-9 items-center justify-center rounded-xl bg-[#eef5fe] px-3 text-xs font-bold text-[#1464BC] transition-colors hover:bg-[#d9e8fc]"
                                             >
-                                                Unduh PDF
+                                                Unduh Rekam Medis
                                             </a>
                                             <button
                                                 onClick={() =>
@@ -375,6 +390,20 @@ export default function PsychologistRecords({
                 }}
                 rating={selectedRecord?.rating}
                 review={selectedRecord?.review}
+            />
+            <ReferralLetterModal
+                isOpen={isReferralModalOpen}
+                onClose={() => {
+                    setIsReferralModalOpen(false);
+                    setSelectedRecord(null);
+                }}
+                appointmentId={selectedRecord?.id || 0}
+                patientName={selectedRecord?.patient_name || ''}
+                sessionDate={selectedRecord?.session_date}
+                initialData={{
+                    diagnostic_focus: selectedRecord?.diagnostic_focus || '',
+                    patient_state: selectedRecord?.patient_state || [],
+                }}
             />
         </div>
     );

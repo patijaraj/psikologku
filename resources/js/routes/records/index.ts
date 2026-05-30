@@ -1,7 +1,8 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import referralLetter from './referral-letter'
 /**
 * @see \App\Http\Controllers\UserRecordController::pdf
-* @see app/Http/Controllers/UserRecordController.php:91
+* @see app/Http/Controllers/UserRecordController.php:92
 * @route '/records/{appointment}/pdf'
 */
 export const pdf = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +17,7 @@ pdf.definition = {
 
 /**
 * @see \App\Http\Controllers\UserRecordController::pdf
-* @see app/Http/Controllers/UserRecordController.php:91
+* @see app/Http/Controllers/UserRecordController.php:92
 * @route '/records/{appointment}/pdf'
 */
 pdf.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +50,7 @@ pdf.url = (args: { appointment: number | { id: number } } | [appointment: number
 
 /**
 * @see \App\Http\Controllers\UserRecordController::pdf
-* @see app/Http/Controllers/UserRecordController.php:91
+* @see app/Http/Controllers/UserRecordController.php:92
 * @route '/records/{appointment}/pdf'
 */
 pdf.get = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -59,7 +60,7 @@ pdf.get = (args: { appointment: number | { id: number } } | [appointment: number
 
 /**
 * @see \App\Http\Controllers\UserRecordController::pdf
-* @see app/Http/Controllers/UserRecordController.php:91
+* @see app/Http/Controllers/UserRecordController.php:92
 * @route '/records/{appointment}/pdf'
 */
 pdf.head = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -69,7 +70,7 @@ pdf.head = (args: { appointment: number | { id: number } } | [appointment: numbe
 
 /**
 * @see \App\Http\Controllers\UserRecordController::pdf
-* @see app/Http/Controllers/UserRecordController.php:91
+* @see app/Http/Controllers/UserRecordController.php:92
 * @route '/records/{appointment}/pdf'
 */
 const pdfForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -79,7 +80,7 @@ const pdfForm = (args: { appointment: number | { id: number } } | [appointment: 
 
 /**
 * @see \App\Http\Controllers\UserRecordController::pdf
-* @see app/Http/Controllers/UserRecordController.php:91
+* @see app/Http/Controllers/UserRecordController.php:92
 * @route '/records/{appointment}/pdf'
 */
 pdfForm.get = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -89,7 +90,7 @@ pdfForm.get = (args: { appointment: number | { id: number } } | [appointment: nu
 
 /**
 * @see \App\Http\Controllers\UserRecordController::pdf
-* @see app/Http/Controllers/UserRecordController.php:91
+* @see app/Http/Controllers/UserRecordController.php:92
 * @route '/records/{appointment}/pdf'
 */
 pdfForm.head = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -105,6 +106,7 @@ pdfForm.head = (args: { appointment: number | { id: number } } | [appointment: n
 pdf.form = pdfForm
 
 const records = {
+    referralLetter: Object.assign(referralLetter, referralLetter),
     pdf: Object.assign(pdf, pdf),
 }
 

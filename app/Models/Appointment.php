@@ -20,6 +20,13 @@ class Appointment extends Model
         ];
     }
 
+
+
+    public function referralLetter()
+    {
+        return $this->hasOne(ReferralLetter::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

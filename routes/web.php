@@ -50,6 +50,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Psychologist Records
     Route::get('psychologist/records', [PsychologistRecordController::class, 'index'])
         ->name('psychologist.records.index');
+    Route::post('records/{appointment}/referral-letter', [\App\Http\Controllers\ReferralLetterController::class, 'store'])
+        ->name('records.referral-letter.store');
+    Route::get('records/{appointment}/referral-letter', [\App\Http\Controllers\ReferralLetterController::class, 'show'])
+        ->name('records.referral-letter.show');
+    Route::get('records/{appointment}/referral-letter/pdf', [\App\Http\Controllers\ReferralLetterController::class, 'downloadPdf'])
+        ->name('records.referral-letter.pdf');
 
     // Psychologist Schedules
     Route::get('psychologist/schedules', [PsychologistScheduleController::class, 'index'])
