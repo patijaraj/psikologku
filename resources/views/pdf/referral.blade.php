@@ -73,8 +73,9 @@
 <body>
     <div class="header">
         <div class="logo-container">
-            <!-- Simulated Logo -->
-            <div class="logo-box">☻</div>
+            <div class="logo-box">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-top: 8px;"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" x2="9.01" y1="9" y2="9"></line><line x1="15" x2="15.01" y1="9" y2="9"></line></svg>
+            </div>
             <div class="logo-text">Psikologku</div>
         </div>
         <div class="header-text">
@@ -108,17 +109,17 @@
             <div class="info-row">
                 <div class="info-label">Jenis Kelamin</div>
                 <div class="info-colon">:</div>
-                <div class="info-value">{{ $appointment->user->gender == 'male' ? 'Laki-laki' : ($appointment->user->gender == 'female' ? 'Perempuan' : '-') }}</div>
+                <div class="info-value">{{ $appointment->user->gender ?? '-' }}</div>
             </div>
             <div class="info-row">
                 <div class="info-label">Tempat, Tanggal Lahir</div>
                 <div class="info-colon">:</div>
-                <div class="info-value">- , {{ $appointment->user->birthdate ? \Carbon\Carbon::parse($appointment->user->birthdate)->format('d F Y') : '-' }}</div>
+                <div class="info-value">{{ $appointment->user->birthplace ?? '-' }}, {{ $appointment->user->birthdate ? \Carbon\Carbon::parse($appointment->user->birthdate)->format('d F Y') : '-' }}</div>
             </div>
             <div class="info-row">
                 <div class="info-label">Alamat</div>
                 <div class="info-colon">:</div>
-                <div class="info-value">-</div>
+                <div class="info-value">{{ $appointment->user->address ?? '-' }}</div>
             </div>
             <div class="info-row">
                 <div class="info-label">Yang datang diperiksa pada</div>
