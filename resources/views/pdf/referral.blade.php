@@ -84,7 +84,7 @@
         </div>
     </div>
 
-    <div class="rahasia-box">RAHASIA</div>
+
 
     <h1 class="title">SURAT RUJUKAN</h1>
 

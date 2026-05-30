@@ -35,7 +35,7 @@ class ReferralLetterController extends Controller
             $validated
         );
 
-        return response()->json($referralLetter);
+        return back()->with('success', 'Surat rujukan berhasil disimpan.');
     }
 
     public function downloadPdf(Appointment $appointment)

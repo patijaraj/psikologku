@@ -26,7 +26,7 @@ class EnsureProfileIsComplete
             'complete-profile.update',
         );
 
-        if ($user->phone && $user->birthdate) {
+        if ($user->phone && $user->birthdate && $user->gender && $user->birthplace && $user->address) {
             if ($isCompleteProfileRoute) {
                 return redirect()->route('dashboard');
             }

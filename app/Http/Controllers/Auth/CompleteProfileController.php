@@ -12,7 +12,8 @@ class CompleteProfileController extends Controller
 {
     public function edit(Request $request): Response|RedirectResponse
     {
-        if ($request->user()->phone && $request->user()->birthdate) {
+        $user = $request->user();
+        if ($user->phone && $user->birthdate && $user->gender && $user->birthplace && $user->address) {
             return redirect()->route('dashboard');
         }
 
@@ -24,6 +25,9 @@ class CompleteProfileController extends Controller
         $validated = $request->validate([
             'phone' => ['required', 'string', 'max:25'],
             'birthdate' => ['required', 'date', 'before_or_equal:today'],
+            'gender' => ['required', 'string', 'max:50'],
+            'birthplace' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string'],
         ]);
 
         $request->user()->forceFill($validated)->save();

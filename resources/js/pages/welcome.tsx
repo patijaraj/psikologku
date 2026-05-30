@@ -158,12 +158,22 @@ export default function Welcome({ canRegister = true }: Props) {
                                     Dashboard
                                 </Link>
                             ) : (
-                                <Link
-                                    href={login()}
-                                    className="rounded-xl bg-[#1464BC] px-6 py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-[#1053A0]"
-                                >
-                                    Masuk
-                                </Link>
+                                <>
+                                    <Link
+                                        href={login()}
+                                        className="rounded-xl px-6 py-2.5 text-[15px] font-semibold text-[#1464BC] transition-colors hover:bg-blue-50"
+                                    >
+                                        Masuk
+                                    </Link>
+                                    {canRegister && (
+                                        <Link
+                                            href={register()}
+                                            className="rounded-xl bg-[#1464BC] px-6 py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-[#1053A0]"
+                                        >
+                                            Daftar
+                                        </Link>
+                                    )}
+                                </>
                             )}
                         </div>
                     </div>

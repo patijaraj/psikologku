@@ -23,6 +23,9 @@ class CreateNewUser implements CreatesNewUsers
             ...$this->profileRules(),
             'phone' => ['required', 'string', 'max:25'],
             'birthdate' => ['required', 'date', 'before_or_equal:today'],
+            'gender' => ['required', 'string', 'max:50'],
+            'birthplace' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string'],
             'password' => $this->passwordRules(),
         ])->validate();
 
@@ -31,6 +34,9 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'phone' => $input['phone'],
             'birthdate' => $input['birthdate'],
+            'gender' => $input['gender'],
+            'birthplace' => $input['birthplace'],
+            'address' => $input['address'],
             'password' => $input['password'],
         ]);
     }

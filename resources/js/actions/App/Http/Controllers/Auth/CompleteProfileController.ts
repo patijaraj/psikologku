@@ -82,7 +82,7 @@ edit.form = editForm
 
 /**
 * @see \App\Http\Controllers\Auth\CompleteProfileController::update
-* @see app/Http/Controllers/Auth/CompleteProfileController.php:22
+* @see app/Http/Controllers/Auth/CompleteProfileController.php:23
 * @route '/complete-profile'
 */
 export const update = (options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -97,7 +97,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\Auth\CompleteProfileController::update
-* @see app/Http/Controllers/Auth/CompleteProfileController.php:22
+* @see app/Http/Controllers/Auth/CompleteProfileController.php:23
 * @route '/complete-profile'
 */
 update.url = (options?: RouteQueryOptions) => {
@@ -106,7 +106,7 @@ update.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\Auth\CompleteProfileController::update
-* @see app/Http/Controllers/Auth/CompleteProfileController.php:22
+* @see app/Http/Controllers/Auth/CompleteProfileController.php:23
 * @route '/complete-profile'
 */
 update.put = (options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -116,7 +116,7 @@ update.put = (options?: RouteQueryOptions): RouteDefinition<'put'> => ({
 
 /**
 * @see \App\Http\Controllers\Auth\CompleteProfileController::update
-* @see app/Http/Controllers/Auth/CompleteProfileController.php:22
+* @see app/Http/Controllers/Auth/CompleteProfileController.php:23
 * @route '/complete-profile'
 */
 const updateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -131,7 +131,7 @@ const updateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> =>
 
 /**
 * @see \App\Http\Controllers\Auth\CompleteProfileController::update
-* @see app/Http/Controllers/Auth/CompleteProfileController.php:22
+* @see app/Http/Controllers/Auth/CompleteProfileController.php:23
 * @route '/complete-profile'
 */
 updateForm.put = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

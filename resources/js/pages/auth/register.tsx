@@ -12,6 +12,10 @@ export default function Register() {
     const [birthDay, setBirthDay] = useState('');
     const [birthMonth, setBirthMonth] = useState('');
     const [birthYear, setBirthYear] = useState('');
+    const [genderSelect, setGenderSelect] = useState('');
+    const [customGender, setCustomGender] = useState('');
+    const [birthplace, setBirthplace] = useState('');
+    const [address, setAddress] = useState('');
     const birthdate =
         birthYear && birthMonth && birthDay
             ? `${birthYear}-${birthMonth}-${birthDay}`
@@ -54,7 +58,16 @@ export default function Register() {
                     </div>
 
                     <Form
-                        {...store.form()}
+                        {...store.form({
+                            query: undefined,
+                            mergeQuery: undefined,
+                        })}
+                        transform={(data) => ({
+                            ...data,
+                            gender: genderSelect === 'Lainnya' ? customGender : genderSelect,
+                            birthplace,
+                            address,
+                        })}
                         resetOnSuccess={['password', 'password_confirmation']}
                         disableWhileProcessing
                         className="flex w-full flex-col gap-4"
@@ -72,6 +85,30 @@ export default function Register() {
                                         error={errors.name}
                                     />
 
+                                    <Field
+                                        id="email"
+                                        name="email"
+                                        label="Email"
+                                        type="email"
+                                        placeholder="name@example.com"
+                                        autoComplete="email"
+                                        tabIndex={2}
+                                        error={errors.email}
+                                    />
+                                </div>
+
+                                <div className="flex w-full flex-col gap-4 md:flex-row">
+                                    <Field
+                                        id="birthplace"
+                                        name="birthplace"
+                                        label="Tempat Lahir"
+                                        placeholder="Jakarta"
+                                        tabIndex={3}
+                                        value={birthplace}
+                                        onChange={(e) => setBirthplace(e.target.value)}
+                                        error={errors.birthplace}
+                                    />
+
                                     <BirthdateField
                                         day={birthDay}
                                         month={birthMonth}
@@ -80,11 +117,42 @@ export default function Register() {
                                         onDayChange={setBirthDay}
                                         onMonthChange={setBirthMonth}
                                         onYearChange={setBirthYear}
+                                        tabIndexStart={4}
                                         error={errors.birthdate}
                                     />
                                 </div>
 
                                 <div className="flex w-full flex-col gap-4 md:flex-row">
+                                    <div className="flex w-full flex-col gap-1.5 md:w-1/2">
+                                        <label className="ml-1 text-[13px] font-semibold text-[#191c1e]">
+                                            Jenis Kelamin
+                                        </label>
+                                        <select
+                                            aria-label="Jenis Kelamin"
+                                            required
+                                            value={genderSelect}
+                                            onChange={(e) => setGenderSelect(e.target.value)}
+                                            tabIndex={6}
+                                            className="h-12 w-full cursor-pointer rounded-[14px] border border-[#e2e4e6] bg-white/90 px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
+                                        >
+                                            <option value="" disabled hidden>Pilih</option>
+                                            <option value="Laki-laki">Laki-laki</option>
+                                            <option value="Perempuan">Perempuan</option>
+                                            <option value="Lainnya">Lainnya (Isi sendiri)</option>
+                                        </select>
+                                        {genderSelect === 'Lainnya' && (
+                                            <input
+                                                type="text"
+                                                placeholder="Sebutkan jenis kelamin"
+                                                required
+                                                value={customGender}
+                                                onChange={(e) => setCustomGender(e.target.value)}
+                                                className="mt-2 h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white/90 px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
+                                            />
+                                        )}
+                                        <InputError message={errors.gender} />
+                                    </div>
+
                                     <Field
                                         id="phone"
                                         name="phone"
@@ -92,21 +160,30 @@ export default function Register() {
                                         type="tel"
                                         placeholder="08123456789"
                                         autoComplete="tel"
-                                        tabIndex={5}
+                                        tabIndex={7}
                                         error={errors.phone}
                                     />
-
-                                    <Field
-                                        id="email"
-                                        name="email"
-                                        label="Email"
-                                        type="email"
-                                        placeholder="name@example.com"
-                                        autoComplete="email"
-                                        tabIndex={6}
-                                        error={errors.email}
-                                    />
                                 </div>
+
+                                <div className="flex w-full flex-col gap-1.5">
+                                    <label htmlFor="address" className="ml-1 text-[13px] font-semibold text-[#191c1e]">
+                                        Alamat Lengkap
+                                    </label>
+                                    <textarea
+                                        id="address"
+                                        name="address"
+                                        required
+                                        placeholder="Alamat domisili saat ini"
+                                        rows={3}
+                                        tabIndex={8}
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
+                                        className="w-full resize-y rounded-[14px] border border-[#e2e4e6] bg-white/90 px-4 py-3 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
+                                    />
+                                    <InputError message={errors.address} />
+                                </div>
+
+
 
                                 <div className="flex w-full flex-col gap-1.5">
                                     <label
@@ -131,7 +208,7 @@ export default function Register() {
                                             placeholder="Minimal 8 karakter"
                                             required
                                             minLength={8}
-                                            tabIndex={7}
+                                            tabIndex={10}
                                             autoComplete="new-password"
                                             className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white/90 px-4 pr-12 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                         />
@@ -192,7 +269,7 @@ export default function Register() {
                                     className="mt-4 flex h-[52px] w-full cursor-pointer items-center justify-center gap-2 rounded-[14px] border-none bg-[#1464BC] text-base font-semibold text-white shadow-[0px_8px_24px_-8px_rgba(0,93,167,0.5)] transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-70"
                                     disabled={processing}
                                     data-test="register-user-button"
-                                    tabIndex={8}
+                                    tabIndex={11}
                                 >
                                     {processing && (
                                         <Spinner className="h-4 w-4" />
@@ -228,6 +305,8 @@ function Field({
     autoComplete?: string;
     tabIndex: number;
     error?: string;
+    value?: string;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
     return (
         <div className="flex w-full flex-col gap-1.5 md:w-1/2">
@@ -245,6 +324,8 @@ function Field({
                 required
                 autoComplete={autoComplete}
                 tabIndex={tabIndex}
+                value={value}
+                onChange={onChange}
                 className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white/90 px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
             />
             <InputError message={error} />
@@ -292,6 +373,7 @@ function BirthdateField({
     onDayChange: (value: string) => void;
     onMonthChange: (value: string) => void;
     onYearChange: (value: string) => void;
+    tabIndexStart?: number;
     error?: string;
 }) {
     const maxDays =
@@ -320,7 +402,7 @@ function BirthdateField({
                     required
                     value={day}
                     onChange={(event) => onDayChange(event.target.value)}
-                    tabIndex={2}
+                    tabIndex={tabIndexStart}
                     className="h-12 w-full cursor-pointer rounded-[14px] border border-[#e2e4e6] bg-white/90 px-3 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                 >
                     <option value="">Tgl</option>
@@ -338,7 +420,7 @@ function BirthdateField({
                         keepValidDay(event.target.value, year);
                         onMonthChange(event.target.value);
                     }}
-                    tabIndex={3}
+                    tabIndex={tabIndexStart ? tabIndexStart + 1 : undefined}
                     className="h-12 w-full cursor-pointer rounded-[14px] border border-[#e2e4e6] bg-white/90 px-3 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                 >
                     <option value="">Bln</option>
@@ -356,7 +438,7 @@ function BirthdateField({
                         keepValidDay(month, event.target.value);
                         onYearChange(event.target.value);
                     }}
-                    tabIndex={4}
+                    tabIndex={tabIndexStart ? tabIndexStart + 2 : undefined}
                     className="h-12 w-full cursor-pointer rounded-[14px] border border-[#e2e4e6] bg-white/90 px-3 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                 >
                     <option value="">Thn</option>
