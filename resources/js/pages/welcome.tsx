@@ -1,14 +1,20 @@
 import { Head, Link, usePage } from '@inertiajs/react';
 import {
-    BookOpen,
-    Calendar,
-    Clock,
-    FileText,
-    MessageCircle,
-    Search,
-    ShieldCheck,
+    Activity,
+    AlertCircle,
+    Brain,
+    CloudRain,
+    HeartHandshake,
+    LayoutGrid,
     Smile,
-    Star,
+    Users,
+    MessageCircle,
+    Calendar,
+    FileText,
+    BookOpen,
+    UserCheck,
+    Video,
+    ShieldCheck,
 } from 'lucide-react';
 import { dashboard, login, register } from '@/routes';
 
@@ -16,43 +22,64 @@ type Props = {
     canRegister?: boolean;
 };
 
-type Service = {
-    icon: typeof MessageCircle;
-    title: string;
-    description: string;
-    color: string;
-};
-
 const heroImage =
-    'https://images.unsplash.com/photo-1758691462743-f9fc9e430d39?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMGRvY3RvciUyMHBzeWNob2xvZ2lzdCUyMG9ubGluZSUyMGNvbnN1bHRhdGlvbnxlbnwxfHx8fDE3Nzg1MTMxMzZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral';
+    'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMGRvY3RvcnxlbnwwfHx8fDE3Nzg1MTMxMzZ8MA&ixlib=rb-4.1.0&q=80&w=1080';
 
-const mobileUserImage =
-    'https://images.unsplash.com/photo-1775479367275-424c38c3df6f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMHdvbWFuJTIwc21pbGluZyUyMHBob25lfGVufDF8fHx8MTc3ODUxMzEzOXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral';
+const counselingTopics = [
+    { name: 'Stres', icon: Brain },
+    { name: 'Kecemasan', icon: Activity },
+    { name: 'Depresi', icon: CloudRain },
+    { name: 'Keluarga', icon: Users },
+    { name: 'Trauma', icon: AlertCircle },
+    { name: 'Hubungan', icon: HeartHandshake },
+    { name: 'Lainnya', icon: LayoutGrid },
+];
 
-const mainServices: Service[] = [
+const mainServices = [
     {
         icon: MessageCircle,
         title: 'Chat Psikolog',
-        description: 'Konsultasi online via chat atau video',
+        description: 'Konsultasi online via chat atau panggilan',
         color: 'bg-blue-50 text-[#1464BC]',
     },
     {
         icon: Calendar,
         title: 'Buat Janji',
-        description: 'Konsultasi tatap muka di klinik',
-        color: 'bg-emerald-50 text-emerald-700',
+        description: 'Jadwalkan sesi tatap muka atau online',
+        color: 'bg-emerald-50 text-emerald-600',
     },
     {
         icon: FileText,
         title: 'Tes Psikologi',
-        description: 'Ketahui kondisi mentalmu',
-        color: 'bg-violet-50 text-violet-700',
+        description: 'Ketahui lebih dalam kondisi mentalmu',
+        color: 'bg-violet-50 text-violet-600',
     },
     {
         icon: BookOpen,
         title: 'Artikel Edukasi',
-        description: 'Tips kesehatan mental',
-        color: 'bg-amber-50 text-amber-700',
+        description: 'Tips dan panduan kesehatan mental',
+        color: 'bg-amber-50 text-amber-600',
+    },
+];
+
+const howItWorks = [
+    {
+        icon: UserCheck,
+        title: 'Pilih Psikolog',
+        description:
+            'Pilih tenaga ahli yang sesuai dengan kebutuhan dan masalah yang sedang kamu hadapi.',
+    },
+    {
+        icon: Calendar,
+        title: 'Tentukan Waktu',
+        description:
+            'Pilih jadwal yang paling nyaman untukmu, bisa hari ini atau untuk beberapa hari ke depan.',
+    },
+    {
+        icon: Video,
+        title: 'Mulai Konsultasi',
+        description:
+            'Lakukan sesi konseling secara aman dan rahasia melalui platform kami.',
     },
 ];
 
@@ -79,29 +106,6 @@ function BrandMark({ inverted = false }: { inverted?: boolean }) {
     );
 }
 
-function LandingImage({
-    src,
-    alt,
-    className,
-}: {
-    src: string;
-    alt: string;
-    className?: string;
-}) {
-    return (
-        <img
-            src={src}
-            alt={alt}
-            className={className}
-            loading="lazy"
-            onError={(event) => {
-                event.currentTarget.src =
-                    'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1080&auto=format&fit=crop';
-            }}
-        />
-    );
-}
-
 export default function Welcome({ canRegister = true }: Props) {
     const { auth } = usePage().props;
     const primaryAction = auth.user ? dashboard() : login();
@@ -113,7 +117,7 @@ export default function Welcome({ canRegister = true }: Props) {
             </Head>
 
             <div className="min-h-screen bg-white font-sans text-gray-900">
-                <nav className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur">
+                <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur">
                     <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-4 sm:px-8">
                         <Link href="/" className="no-underline">
                             <BrandMark />
@@ -122,25 +126,25 @@ export default function Welcome({ canRegister = true }: Props) {
                         <div className="hidden items-center gap-8 md:flex">
                             <a
                                 href="#beranda"
-                                className="text-[15px] font-semibold text-gray-900 transition-colors hover:text-[#1464BC]"
+                                className="text-[15px] font-bold text-gray-900 hover:text-[#1464BC]"
                             >
                                 Beranda
                             </a>
                             <a
                                 href="#layanan"
-                                className="text-[15px] font-medium text-gray-600 transition-colors hover:text-[#1464BC]"
+                                className="text-[15px] font-medium text-gray-600 hover:text-[#1464BC]"
                             >
                                 Layanan
                             </a>
                             <a
                                 href="#artikel"
-                                className="text-[15px] font-medium text-gray-600 transition-colors hover:text-[#1464BC]"
+                                className="text-[15px] font-medium text-gray-600 hover:text-[#1464BC]"
                             >
                                 Artikel
                             </a>
                             <a
                                 href="#tentang"
-                                className="text-[15px] font-medium text-gray-600 transition-colors hover:text-[#1464BC]"
+                                className="text-[15px] font-medium text-gray-600 hover:text-[#1464BC]"
                             >
                                 Tentang Kami
                             </a>
@@ -150,163 +154,137 @@ export default function Welcome({ canRegister = true }: Props) {
                             {auth.user ? (
                                 <Link
                                     href={dashboard()}
-                                    className="rounded-xl bg-[#1464BC] px-5 py-2.5 text-[15px] font-semibold text-white shadow-sm shadow-blue-900/20 transition-colors hover:bg-[#1053A0]"
+                                    className="rounded-xl bg-[#1464BC] px-6 py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-[#1053A0]"
                                 >
                                     Dashboard
                                 </Link>
                             ) : (
-                                <>
-                                    <Link
-                                        href={login()}
-                                        className="hidden rounded-xl px-4 py-2 text-[15px] font-semibold text-[#1464BC] transition-colors hover:bg-blue-50 sm:flex"
-                                    >
-                                        Masuk
-                                    </Link>
-                                    {canRegister && (
-                                        <Link
-                                            href={register()}
-                                            className="rounded-xl bg-[#1464BC] px-5 py-2.5 text-[15px] font-semibold text-white shadow-sm shadow-blue-900/20 transition-colors hover:bg-[#1053A0]"
-                                        >
-                                            Daftar
-                                        </Link>
-                                    )}
-                                </>
+                                <Link
+                                    href={login()}
+                                    className="rounded-xl bg-[#1464BC] px-6 py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-[#1053A0]"
+                                >
+                                    Masuk
+                                </Link>
                             )}
                         </div>
                     </div>
                 </nav>
 
                 <main>
+                    {/* Hero Section */}
                     <section
                         id="beranda"
-                        className="overflow-hidden bg-[#F8FAFC] px-4 pt-12 pb-20 sm:px-8 md:pt-20 md:pb-24"
+                        className="overflow-hidden bg-white px-4 pt-10 pb-16 sm:px-8 md:pt-16 md:pb-20"
                     >
                         <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-2">
-                            <div className="relative z-10 flex flex-col gap-8">
-                                <div className="inline-flex w-fit items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-[13px] font-semibold text-[#1464BC] ring-1 ring-blue-100">
-                                    <ShieldCheck className="h-4 w-4" />
-                                    Platform kesehatan mental terpercaya
-                                </div>
+                            {/* Left Side: Content */}
+                            <div className="relative z-10 flex flex-col gap-6">
+                                <h3 className="m-0 text-lg font-bold text-[#1464BC]">
+                                    Jangan abaikan kesehatan mentalmu.
+                                </h3>
 
-                                <div className="flex flex-col gap-4">
-                                    <h1 className="m-0 max-w-2xl text-[42px] leading-[1.08] font-black tracking-tight text-gray-950 md:text-[56px]">
-                                        Temukan ketenangan bersama ahlinya.
+                                <div className="flex flex-col gap-2">
+                                    <h1 className="m-0 text-[36px] leading-[1.2] font-black text-gray-900 md:text-[44px]">
+                                        Jelajahi Topik Konseling Umum
                                     </h1>
-                                    <p className="m-0 max-w-[540px] text-lg leading-relaxed text-gray-600">
-                                        Konsultasi dengan psikolog klinis
-                                        berlisensi kapan saja, di mana saja.
-                                        Solusi kesehatan mental yang aman,
-                                        rahasia, dan profesional.
+                                    <p className="m-0 text-lg text-gray-600">
+                                        Pelajari masalah yang sering dihadapi.
                                     </p>
                                 </div>
 
-                                <form
-                                    className="flex max-w-[520px] items-center rounded-2xl border border-gray-200 bg-white p-3 shadow-xl shadow-blue-900/5"
-                                    onSubmit={(event) => event.preventDefault()}
-                                >
-                                    <div className="px-3 text-gray-400">
-                                        <Search className="h-6 w-6" />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="Cari keluhan atau nama psikolog..."
-                                        className="min-w-0 flex-1 border-none bg-transparent text-base text-gray-900 outline-none placeholder:text-gray-400"
-                                    />
-                                    <button
-                                        type="submit"
-                                        className="ml-2 shrink-0 rounded-xl bg-[#1464BC] px-5 py-3 text-sm font-semibold whitespace-nowrap text-white transition-colors hover:bg-[#1053A0] sm:px-6"
-                                    >
-                                        Cari
-                                    </button>
-                                </form>
+                                {/* Topics Grid */}
+                                <div className="mt-4 flex flex-wrap gap-4">
+                                    {counselingTopics.map((topic) => {
+                                        const Icon = topic.icon;
+                                        return (
+                                            <button
+                                                key={topic.name}
+                                                className="group flex h-[110px] w-[110px] flex-col items-center justify-center gap-3 rounded-2xl border border-gray-100 bg-gray-50/50 p-4 transition-all hover:border-blue-200 hover:bg-blue-50"
+                                            >
+                                                <div className="flex size-12 items-center justify-center rounded-full bg-white text-[#1464BC] shadow-sm transition-transform group-hover:scale-110">
+                                                    <Icon className="h-6 w-6" />
+                                                </div>
+                                                <span className="text-center text-[13px] leading-tight font-semibold text-gray-700">
+                                                    {topic.name}
+                                                </span>
+                                            </button>
+                                        );
+                                    })}
+                                </div>
 
-                                <div className="flex flex-wrap items-center gap-6">
-                                    <div className="flex items-center gap-3">
-                                        <div className="flex -space-x-3">
-                                            <div className="h-8 w-8 rounded-full border-2 border-white bg-blue-200" />
-                                            <div className="h-8 w-8 rounded-full border-2 border-white bg-emerald-200" />
-                                            <div className="h-8 w-8 rounded-full border-2 border-white bg-amber-200" />
-                                        </div>
-                                        <div className="flex flex-col">
-                                            <span className="text-sm font-bold text-gray-950">
-                                                10rb+
-                                            </span>
-                                            <span className="text-xs font-medium text-gray-500">
-                                                Pengguna aktif
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="hidden h-8 w-px bg-gray-200 sm:block" />
-                                    <div className="flex flex-col">
-                                        <div className="flex items-center gap-1">
-                                            <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-                                            <span className="text-sm font-bold text-gray-950">
-                                                4.9/5
-                                            </span>
-                                        </div>
-                                        <span className="text-xs font-medium text-gray-500">
-                                            Rating pengguna
-                                        </span>
-                                    </div>
+                                <div className="mt-8 flex gap-4">
+                                    <Link
+                                        href={primaryAction}
+                                        className="inline-flex rounded-xl bg-[#1464BC] px-8 py-3.5 text-base font-bold text-white transition-colors hover:bg-[#1053A0]"
+                                    >
+                                        Carikan Ahli
+                                    </Link>
+                                    <a
+                                        href="#cara-kerja"
+                                        className="inline-flex rounded-xl bg-blue-50 px-8 py-3.5 text-base font-bold text-[#1464BC] transition-colors hover:bg-blue-100"
+                                    >
+                                        Pelajari Lebih Lanjut
+                                    </a>
                                 </div>
                             </div>
 
-                            <div className="relative flex justify-center lg:justify-end">
-                                <div className="absolute top-1/2 left-1/2 -z-10 h-[115%] w-[115%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-100/70 blur-3xl" />
+                            {/* Right Side: Image/Visual */}
+                            <div className="relative mt-10 flex justify-center lg:mt-0 lg:justify-end">
+                                <div className="relative w-full max-w-[450px]">
+                                    {/* Abstract background shapes */}
+                                    <div className="absolute top-10 right-0 bottom-0 left-10 rounded-full bg-[#1464BC]" />
+                                    <div className="absolute top-1/4 -left-8 h-24 w-24 rounded-full border-[16px] border-[#1464BC] bg-transparent opacity-20" />
+                                    <div className="absolute -right-4 bottom-1/4 h-16 w-16 rounded-full bg-blue-200" />
+                                    <div className="absolute -bottom-6 left-1/4 flex size-16 rotate-12 items-center justify-center rounded-2xl bg-white shadow-xl">
+                                        <Smile className="h-8 w-8 text-[#1464BC]" />
+                                    </div>
 
-                                <div className="relative aspect-[4/5] w-full max-w-[500px] overflow-hidden rounded-[2rem] border-8 border-white shadow-2xl shadow-blue-950/15">
-                                    <LandingImage
-                                        src={heroImage}
-                                        alt="Konsultasi psikolog online"
-                                        className="h-full w-full object-cover"
-                                    />
-
-                                    <div className="absolute right-5 bottom-5 left-5 flex items-center gap-4 rounded-2xl bg-white/92 p-4 shadow-lg shadow-blue-950/10 backdrop-blur">
-                                        <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-                                            <Clock className="h-6 w-6" />
-                                        </div>
-                                        <div>
-                                            <h4 className="m-0 text-[15px] font-bold text-gray-950">
-                                                Tersedia 24/7
-                                            </h4>
-                                            <p className="m-0 mt-0.5 text-[13px] text-gray-500">
-                                                Psikolog siap membantumu kapan
-                                                saja
-                                            </p>
-                                        </div>
+                                    {/* Main Image */}
+                                    <div className="relative z-10 aspect-[4/5] overflow-hidden rounded-t-[200px] rounded-br-[40px] rounded-bl-[100px] bg-blue-50">
+                                        <img
+                                            src={heroImage}
+                                            alt="Konsultasi Psikolog"
+                                            className="h-full w-full object-cover object-top"
+                                            loading="lazy"
+                                        />
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </section>
 
+                    {/* Layanan Utama Section */}
                     <section
                         id="layanan"
-                        className="bg-white px-4 py-16 sm:px-8 md:py-24"
+                        className="bg-[#F8FAFC] px-4 py-16 sm:px-8 md:py-24"
                     >
                         <div className="mx-auto max-w-7xl">
-                            <h2 className="mb-10 text-center text-[28px] font-black tracking-tight text-gray-950 md:text-4xl">
-                                Layanan Utama Kami
+                            <h2 className="mb-2 text-center text-[28px] font-black tracking-tight text-gray-900 md:text-[36px]">
+                                Layanan Terpadu Kami
                             </h2>
+                            <p className="mx-auto mb-12 max-w-2xl text-center text-lg text-gray-600">
+                                Berbagai kemudahan untuk menjaga dan
+                                meningkatkan kualitas kesehatan mentalmu dalam
+                                satu platform.
+                            </p>
 
                             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                                 {mainServices.map((service) => {
                                     const Icon = service.icon;
-
                                     return (
                                         <div
                                             key={service.title}
-                                            className="group cursor-pointer rounded-2xl border border-gray-200 bg-white p-6 transition-all hover:border-[#1464BC] hover:shadow-xl hover:shadow-blue-900/10"
+                                            className="group cursor-pointer rounded-3xl border border-gray-100 bg-white p-6 shadow-sm transition-all hover:border-[#1464BC] hover:shadow-xl hover:shadow-blue-900/5"
                                         >
                                             <div
-                                                className={`mb-6 flex size-14 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-105 ${service.color}`}
+                                                className={`mb-5 flex size-14 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110 ${service.color}`}
                                             >
                                                 <Icon className="h-7 w-7" />
                                             </div>
-                                            <h3 className="m-0 mb-2 text-lg font-bold text-gray-950 transition-colors group-hover:text-[#1464BC]">
+                                            <h3 className="m-0 mb-2 text-[17px] font-bold text-gray-900 transition-colors group-hover:text-[#1464BC]">
                                                 {service.title}
                                             </h3>
-                                            <p className="m-0 text-sm text-gray-500">
+                                            <p className="m-0 text-[14px] leading-relaxed text-gray-500">
                                                 {service.description}
                                             </p>
                                         </div>
@@ -316,37 +294,76 @@ export default function Welcome({ canRegister = true }: Props) {
                         </div>
                     </section>
 
+                    {/* Cara Kerja Section */}
                     <section
-                        id="artikel"
-                        className="bg-white px-4 py-20 sm:px-8"
+                        id="cara-kerja"
+                        className="bg-white px-4 py-16 sm:px-8 md:py-24"
                     >
-                        <div className="mx-auto flex max-w-7xl flex-col items-center overflow-hidden rounded-[2rem] bg-[#1464BC] md:flex-row">
-                            <div className="flex flex-1 flex-col gap-6 p-8 text-white sm:p-10 md:p-16">
-                                <h2 className="m-0 max-w-xl text-[32px] leading-tight font-black tracking-tight md:text-[40px]">
-                                    Langkah kecil menuju perubahan besar.
-                                </h2>
-                                <p className="m-0 max-w-[460px] text-base leading-relaxed text-blue-100 md:text-lg">
-                                    Bergabunglah dengan ribuan orang yang telah
-                                    merasakan manfaat konseling bersama
-                                    Psikologku. Jadwalkan sesimu hari ini.
-                                </p>
-                                <div className="pt-2">
+                        <div className="mx-auto max-w-7xl">
+                            <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
+                                <div>
+                                    <div className="mb-6 inline-flex w-fit items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-[13px] font-semibold text-[#1464BC]">
+                                        <ShieldCheck className="h-4 w-4" />
+                                        Aman & Terpercaya
+                                    </div>
+                                    <h2 className="m-0 mb-4 text-[32px] leading-tight font-black tracking-tight text-gray-900 md:text-[40px]">
+                                        Konseling menjadi lebih mudah dan
+                                        praktis
+                                    </h2>
+                                    <p className="mb-10 text-lg leading-relaxed text-gray-600">
+                                        Kami memahami bahwa mengambil langkah
+                                        pertama tidaklah mudah. Oleh karena itu,
+                                        kami membuat prosesnya sesederhana
+                                        mungkin.
+                                    </p>
+
+                                    <div className="flex flex-col gap-8">
+                                        {howItWorks.map((step, index) => {
+                                            const Icon = step.icon;
+                                            return (
+                                                <div
+                                                    key={index}
+                                                    className="flex gap-4"
+                                                >
+                                                    <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-[#1464BC]">
+                                                        <Icon className="h-6 w-6" />
+                                                    </div>
+                                                    <div>
+                                                        <h4 className="m-0 mb-1 text-[17px] font-bold text-gray-900">
+                                                            {index + 1}.{' '}
+                                                            {step.title}
+                                                        </h4>
+                                                        <p className="m-0 text-[14px] leading-relaxed text-gray-500">
+                                                            {step.description}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                <div className="relative rounded-[2.5rem] bg-[#1464BC] p-8 text-white shadow-2xl shadow-blue-900/20 sm:p-12">
+                                    <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-amber-400 opacity-20 blur-2xl" />
+                                    <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-emerald-400 opacity-20 blur-3xl" />
+
+                                    <h3 className="m-0 mb-4 text-[28px] leading-tight font-black">
+                                        "Kesehatan mentalmu sama pentingnya
+                                        dengan kesehatan fisikmu."
+                                    </h3>
+                                    <p className="mb-8 text-[15px] leading-relaxed text-blue-100">
+                                        Jangan tunggu sampai masalah menjadi
+                                        lebih besar. Konselor profesional kami
+                                        siap mendengarkan tanpa menghakimi.
+                                    </p>
+
                                     <Link
                                         href={primaryAction}
-                                        className="inline-block w-full rounded-xl bg-white px-8 py-4 text-center text-base font-bold text-[#1464BC] transition-colors hover:bg-blue-50 sm:w-auto"
+                                        className="inline-block w-full rounded-xl bg-white px-6 py-4 text-center text-[15px] font-bold text-[#1464BC] transition-colors hover:bg-blue-50 sm:w-auto"
                                     >
-                                        {auth.user
-                                            ? 'Buka Dashboard'
-                                            : 'Mulai Konsultasi Sekarang'}
+                                        Mulai Sesi Pertamamu
                                     </Link>
                                 </div>
-                            </div>
-                            <div className="h-[300px] w-full self-stretch md:h-auto md:w-[45%]">
-                                <LandingImage
-                                    src={mobileUserImage}
-                                    alt="Pengguna Psikologku tersenyum dengan ponsel"
-                                    className="h-full w-full object-cover"
-                                />
                             </div>
                         </div>
                     </section>
