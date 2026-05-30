@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 export const resume = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ resume.definition = {
 
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 resume.url = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ resume.url = (args: { transaction: number | { id: number } } | [transaction: num
 
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 resume.get = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -59,7 +59,7 @@ resume.get = (args: { transaction: number | { id: number } } | [transaction: num
 
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 resume.head = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -69,7 +69,7 @@ resume.head = (args: { transaction: number | { id: number } } | [transaction: nu
 
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 const resumeForm = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -79,7 +79,7 @@ const resumeForm = (args: { transaction: number | { id: number } } | [transactio
 
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 resumeForm.get = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -89,7 +89,7 @@ resumeForm.get = (args: { transaction: number | { id: number } } | [transaction:
 
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 resumeForm.head = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

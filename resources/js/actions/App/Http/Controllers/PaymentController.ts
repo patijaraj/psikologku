@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:61
+* @see app/Http/Controllers/PaymentController.php:62
 * @route '/midtrans-callback'
 */
 export const callback = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -16,7 +16,7 @@ callback.definition = {
 
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:61
+* @see app/Http/Controllers/PaymentController.php:62
 * @route '/midtrans-callback'
 */
 callback.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ callback.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:61
+* @see app/Http/Controllers/PaymentController.php:62
 * @route '/midtrans-callback'
 */
 callback.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -35,7 +35,7 @@ callback.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:61
+* @see app/Http/Controllers/PaymentController.php:62
 * @route '/midtrans-callback'
 */
 const callbackForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -45,7 +45,7 @@ const callbackForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> 
 
 /**
 * @see \App\Http\Controllers\PaymentController::callback
-* @see app/Http/Controllers/PaymentController.php:61
+* @see app/Http/Controllers/PaymentController.php:62
 * @route '/midtrans-callback'
 */
 callbackForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -57,7 +57,7 @@ callback.form = callbackForm
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:22
+* @see app/Http/Controllers/PaymentController.php:23
 * @route '/payment'
 */
 export const show = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -72,7 +72,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:22
+* @see app/Http/Controllers/PaymentController.php:23
 * @route '/payment'
 */
 show.url = (options?: RouteQueryOptions) => {
@@ -81,7 +81,7 @@ show.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:22
+* @see app/Http/Controllers/PaymentController.php:23
 * @route '/payment'
 */
 show.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -91,7 +91,7 @@ show.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:22
+* @see app/Http/Controllers/PaymentController.php:23
 * @route '/payment'
 */
 show.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -101,7 +101,7 @@ show.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:22
+* @see app/Http/Controllers/PaymentController.php:23
 * @route '/payment'
 */
 const showForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -111,7 +111,7 @@ const showForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:22
+* @see app/Http/Controllers/PaymentController.php:23
 * @route '/payment'
 */
 showForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -121,7 +121,7 @@ showForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
 
 /**
 * @see \App\Http\Controllers\PaymentController::show
-* @see app/Http/Controllers/PaymentController.php:22
+* @see app/Http/Controllers/PaymentController.php:23
 * @route '/payment'
 */
 showForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -138,7 +138,7 @@ show.form = showForm
 
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 export const resume = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -153,7 +153,7 @@ resume.definition = {
 
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 resume.url = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -186,7 +186,7 @@ resume.url = (args: { transaction: number | { id: number } } | [transaction: num
 
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 resume.get = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -196,7 +196,7 @@ resume.get = (args: { transaction: number | { id: number } } | [transaction: num
 
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 resume.head = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -206,7 +206,7 @@ resume.head = (args: { transaction: number | { id: number } } | [transaction: nu
 
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 const resumeForm = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -216,7 +216,7 @@ const resumeForm = (args: { transaction: number | { id: number } } | [transactio
 
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 resumeForm.get = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -226,7 +226,7 @@ resumeForm.get = (args: { transaction: number | { id: number } } | [transaction:
 
 /**
 * @see \App\Http\Controllers\PaymentController::resume
-* @see app/Http/Controllers/PaymentController.php:46
+* @see app/Http/Controllers/PaymentController.php:47
 * @route '/payment/{transaction}/resume'
 */
 resumeForm.head = (args: { transaction: number | { id: number } } | [transaction: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

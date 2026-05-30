@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Notifications\PaymentStatusNotification;
+use App\Notifications\NewAppointmentNotification;
 
 class PaymentController extends Controller
 {
@@ -241,6 +242,16 @@ class PaymentController extends Controller
 
             if ($transaction->user) {
                 $transaction->user->notify(new PaymentStatusNotification($transaction));
+            }
+
+            if ($status === 'paid') {
+                $appointments = \App\Models\Appointment::where('transaction_id', $transaction->id)->get();
+                $transaction->load('psychologistProfile.user');
+                $psychologistUser = $transaction->psychologistProfile?->user;
+                
+                if ($psychologistUser && $appointments->isNotEmpty()) {
+                    $psychologistUser->notify(new NewAppointmentNotification($transaction, $appointments));
+                }
             }
         }
     }
