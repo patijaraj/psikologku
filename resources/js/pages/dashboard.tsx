@@ -24,6 +24,7 @@ import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
 import { NotificationDropdown } from '@/components/notification-dropdown';
+import { MiniFooter } from '@/components/mini-footer';
 
 const defaultAvatar =
     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
@@ -539,6 +540,7 @@ export default function Dashboard({
                         </section>
                     </aside>
                 </div>
+                <MiniFooter />
             </main>
         </div>
     );
