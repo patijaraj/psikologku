@@ -5,10 +5,9 @@ namespace App\Notifications;
 use App\Models\Transaction;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PaymentStatusNotification extends Notification implements ShouldQueue
+class PaymentStatusNotification extends Notification
 {
     use Queueable;
 

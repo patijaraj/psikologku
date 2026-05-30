@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Carbon\Carbon;
 
-class UpcomingSessionNotification extends Notification implements ShouldQueue
+class UpcomingSessionNotification extends Notification
 {
     use Queueable;
 

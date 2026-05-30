@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Carbon\Carbon;
 
-class NewAppointmentNotification extends Notification implements ShouldQueue
+class NewAppointmentNotification extends Notification
 {
     use Queueable;
 
