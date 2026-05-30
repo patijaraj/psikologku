@@ -30,6 +30,14 @@ class PsychologistAppointmentController extends Controller
             ->map(function (Appointment $appointment): array {
                 $status = $this->appointmentStatus($appointment);
 
+                $appointmentEnd = $appointment->appointment_date && $appointment->end_time
+                    ? CarbonImmutable::parse(
+                        $appointment->appointment_date->format('Y-m-d').' '.$appointment->end_time->format('H:i:s'),
+                        'Asia/Jakarta',
+                    )
+                    : null;
+                $isTimePassed = $appointmentEnd ? $appointmentEnd->isPast() : false;
+
                 return [
                     'id' => $appointment->id,
                     'patient_name' => $appointment->user?->name ?? 'Pasien',
@@ -42,8 +50,8 @@ class PsychologistAppointmentController extends Controller
                     'payment_status' => $appointment->transaction?->status ?? 'unpaid',
                     'amount' => $appointment->transaction ? (float) $appointment->transaction->gross_amount : 0,
                     'can_complete' => $appointment->transaction?->status === 'paid'
-                        && in_array($status, ['due', 'overdue'], true)
-                        && $appointment->status !== 'completed',
+                        && $isTimePassed
+                        && !in_array($appointment->status, ['completed', 'cancelled', 'failed'], true),
                 ];
             });
 
@@ -66,7 +74,15 @@ class PsychologistAppointmentController extends Controller
 
         abort_if(in_array($appointment->status, ['cancelled', 'failed'], true), 422);
         abort_unless($appointment->transaction?->status === 'paid', 422);
-        abort_unless(in_array($this->appointmentStatus($appointment), ['due', 'overdue', 'ongoing'], true), 422);
+        
+        $appointmentEnd = $appointment->appointment_date && $appointment->end_time
+            ? CarbonImmutable::parse(
+                $appointment->appointment_date->format('Y-m-d').' '.$appointment->end_time->format('H:i:s'),
+                'Asia/Jakarta',
+            )
+            : null;
+            
+        abort_unless($appointmentEnd && $appointmentEnd->isPast(), 422);
 
         $appointment->update([
             'status' => 'completed',

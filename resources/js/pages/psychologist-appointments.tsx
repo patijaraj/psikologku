@@ -55,7 +55,7 @@ function statusText(status: string) {
         return 'Selesai';
     }
 
-    if (status === 'due') {
+    if (status === 'due' || status === 'ongoing') {
         return 'Sedang berjalan';
     }
 
@@ -75,7 +75,7 @@ export default function PsychologistAppointments({
     const userName = auth.user?.name ?? 'Psikolog';
     const userEmail = auth.user?.email ?? 'psikolog@example.com';
     const runningAppointments = appointments.filter((appointment) =>
-        ['due', 'overdue'].includes(appointment.status),
+        ['due', 'overdue', 'ongoing'].includes(appointment.status),
     );
     const upcomingAppointments = appointments.filter(
         (appointment) => appointment.status === 'upcoming',
@@ -433,7 +433,7 @@ function AppointmentRow({ appointment }: { appointment: Appointment }) {
                         className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${
                             appointment.status === 'upcoming'
                                 ? 'bg-[#e1eef9] text-[#1464BC]'
-                                : appointment.status === 'due'
+                                : ['due', 'ongoing'].includes(appointment.status)
                                   ? 'bg-[#dcfce7] text-[#166534]'
                                   : appointment.status === 'overdue'
                                     ? 'bg-[#feecec] text-[#b02a2a]'
