@@ -261,14 +261,15 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                         <ArrowLeft className="h-4 w-4" />
                         Kembali
                     </Link>
-                    
-                    <button
-                        onClick={handlePrint}
+                    <a
+                        href={`/records/${record.id}/pdf`}
+                        target="_blank"
+                        rel="noreferrer"
                         className="inline-flex items-center gap-2 rounded-xl bg-[#1464BC] px-4 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[#1053A0]"
                     >
                         <Printer className="h-4 w-4" />
-                        Unduh PDF / Cetak
-                    </button>
+                        Unduh PDF
+                    </a>
                 </div>
 
                 {/* Document Header (Print Only) */}

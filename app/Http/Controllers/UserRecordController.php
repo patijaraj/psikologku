@@ -85,4 +85,25 @@ class UserRecordController extends Controller
 
         return back();
     }
+
+    public function downloadPdf(Request $request, Appointment $appointment)
+    {
+        $user = $request->user();
+
+        // Allow either the patient or the psychologist to download the PDF
+        abort_unless(
+            $appointment->user_id === $user->id || 
+            ($user->psychologistProfile && $appointment->psychologist_profile_id === $user->psychologistProfile->id), 
+            403
+        );
+        
+        abort_unless($appointment->status === 'completed', 404);
+        abort_unless($appointment->record_summary !== null, 404);
+
+        $appointment->load(['psychologist.user:id,name', 'user:id,name']);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.record', compact('appointment'));
+
+        return $pdf->download('Rekam-Medis-' . $appointment->appointment_date?->format('Y-m-d') . '.pdf');
+    }
 }

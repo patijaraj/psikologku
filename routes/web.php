@@ -77,6 +77,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('records', [UserRecordController::class, 'index'])->name('user.records.index');
     Route::get('records/{appointment}', [UserRecordController::class, 'show'])->name('user.records.show');
     Route::patch('records/{appointment}/review', [UserRecordController::class, 'updateReview'])->name('user.records.review.update');
+    Route::get('records/{appointment}/pdf', [UserRecordController::class, 'downloadPdf'])->name('records.pdf');
 });
 
 require __DIR__.'/settings.php';

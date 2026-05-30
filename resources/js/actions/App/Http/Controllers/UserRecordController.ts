@@ -275,6 +275,111 @@ updateReviewForm.patch = (args: { appointment: number | { id: number } } | [appo
 
 updateReview.form = updateReviewForm
 
-const UserRecordController = { index, show, updateReview }
+/**
+* @see \App\Http\Controllers\UserRecordController::downloadPdf
+* @see app/Http/Controllers/UserRecordController.php:89
+* @route '/records/{appointment}/pdf'
+*/
+export const downloadPdf = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: downloadPdf.url(args, options),
+    method: 'get',
+})
+
+downloadPdf.definition = {
+    methods: ["get","head"],
+    url: '/records/{appointment}/pdf',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\UserRecordController::downloadPdf
+* @see app/Http/Controllers/UserRecordController.php:89
+* @route '/records/{appointment}/pdf'
+*/
+downloadPdf.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { appointment: args }
+    }
+
+    if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+        args = { appointment: args.id }
+    }
+
+    if (Array.isArray(args)) {
+        args = {
+            appointment: args[0],
+        }
+    }
+
+    args = applyUrlDefaults(args)
+
+    const parsedArgs = {
+        appointment: typeof args.appointment === 'object'
+        ? args.appointment.id
+        : args.appointment,
+    }
+
+    return downloadPdf.definition.url
+            .replace('{appointment}', parsedArgs.appointment.toString())
+            .replace(/\/+$/, '') + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\UserRecordController::downloadPdf
+* @see app/Http/Controllers/UserRecordController.php:89
+* @route '/records/{appointment}/pdf'
+*/
+downloadPdf.get = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: downloadPdf.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\UserRecordController::downloadPdf
+* @see app/Http/Controllers/UserRecordController.php:89
+* @route '/records/{appointment}/pdf'
+*/
+downloadPdf.head = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: downloadPdf.url(args, options),
+    method: 'head',
+})
+
+/**
+* @see \App\Http\Controllers\UserRecordController::downloadPdf
+* @see app/Http/Controllers/UserRecordController.php:89
+* @route '/records/{appointment}/pdf'
+*/
+const downloadPdfForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: downloadPdf.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\UserRecordController::downloadPdf
+* @see app/Http/Controllers/UserRecordController.php:89
+* @route '/records/{appointment}/pdf'
+*/
+downloadPdfForm.get = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: downloadPdf.url(args, options),
+    method: 'get',
+})
+
+/**
+* @see \App\Http\Controllers\UserRecordController::downloadPdf
+* @see app/Http/Controllers/UserRecordController.php:89
+* @route '/records/{appointment}/pdf'
+*/
+downloadPdfForm.head = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: downloadPdf.url(args, {
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+downloadPdf.form = downloadPdfForm
+
+const UserRecordController = { index, show, updateReview, downloadPdf }
 
 export default UserRecordController

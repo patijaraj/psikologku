@@ -325,14 +325,24 @@ export default function PsychologistRecords({
                                                 </div>
                                             </div>
                                         </div>
-                                        <button
-                                            onClick={() =>
-                                                openRecordModal(record)
-                                            }
-                                            className="flex h-9 items-center justify-center rounded-xl bg-[#f2f4f6] px-4 text-xs font-bold text-[#191c1e] transition-colors hover:bg-[#e2e4e6]"
-                                        >
-                                            Edit / Lihat
-                                        </button>
+                                        <div className="flex items-center gap-2">
+                                            <a
+                                                href={`/records/${record.id}/pdf`}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="flex h-9 items-center justify-center rounded-xl bg-[#eef5fe] px-3 text-xs font-bold text-[#1464BC] transition-colors hover:bg-[#d9e8fc]"
+                                            >
+                                                Unduh PDF
+                                            </a>
+                                            <button
+                                                onClick={() =>
+                                                    openRecordModal(record)
+                                                }
+                                                className="flex h-9 items-center justify-center rounded-xl bg-[#f2f4f6] px-4 text-xs font-bold text-[#191c1e] transition-colors hover:bg-[#e2e4e6]"
+                                            >
+                                                Edit / Lihat
+                                            </button>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
