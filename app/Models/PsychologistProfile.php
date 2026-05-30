@@ -8,9 +8,11 @@ class PsychologistProfile extends Model
 {
     protected $fillable = [
         'user_id',
+        'profession',
         'str_number',
         'sipp',
         'sippk',
+        'signature_path',
         'specialization',
         'price',
         'is_online',

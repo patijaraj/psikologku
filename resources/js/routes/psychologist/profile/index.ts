@@ -82,7 +82,7 @@ edit.form = editForm
 
 /**
 * @see \App\Http\Controllers\DashboardController::store
-* @see app/Http/Controllers/DashboardController.php:187
+* @see app/Http/Controllers/DashboardController.php:191
 * @route '/psychologist-profile'
 */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -97,7 +97,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\DashboardController::store
-* @see app/Http/Controllers/DashboardController.php:187
+* @see app/Http/Controllers/DashboardController.php:191
 * @route '/psychologist-profile'
 */
 store.url = (options?: RouteQueryOptions) => {
@@ -106,7 +106,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\DashboardController::store
-* @see app/Http/Controllers/DashboardController.php:187
+* @see app/Http/Controllers/DashboardController.php:191
 * @route '/psychologist-profile'
 */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -116,7 +116,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 /**
 * @see \App\Http\Controllers\DashboardController::store
-* @see app/Http/Controllers/DashboardController.php:187
+* @see app/Http/Controllers/DashboardController.php:191
 * @route '/psychologist-profile'
 */
 const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -126,7 +126,7 @@ const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => 
 
 /**
 * @see \App\Http\Controllers\DashboardController::store
-* @see app/Http/Controllers/DashboardController.php:187
+* @see app/Http/Controllers/DashboardController.php:191
 * @route '/psychologist-profile'
 */
 storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

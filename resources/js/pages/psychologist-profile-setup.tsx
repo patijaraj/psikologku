@@ -22,7 +22,11 @@ import { logout } from '@/routes';
 import { supabase } from '@/lib/supabase';
 
 type PsychologistProfileForm = {
+    profession?: string | null;
     str_number?: string | null;
+    sipp?: string | null;
+    sippk?: string | null;
+    signature_path?: string | null;
     specialization?: string[] | null;
     price?: number | null;
     is_online?: boolean;
@@ -73,6 +77,16 @@ export default function PsychologistProfileSetup({
     const [isUploading, setIsUploading] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
 
+    const [signaturePath, setSignaturePath] = useState<string | null>(
+        profile?.signature_path ?? null,
+    );
+    const [isSignatureUploading, setIsSignatureUploading] = useState(false);
+    const [signatureUploadError, setSignatureUploadError] = useState<string | null>(null);
+
+    const [selectedProfession, setSelectedProfession] = useState<string>(
+        profile?.profession ?? 'Psikolog Klinis',
+    );
+
     const handlePhotoChange = async (
         e: React.ChangeEvent<HTMLInputElement>,
     ) => {
@@ -117,6 +131,53 @@ export default function PsychologistProfileSetup({
             setUploadError(error.message || 'Gagal mengunggah foto profil.');
         } finally {
             setIsUploading(false);
+        }
+    };
+
+    const handleSignatureChange = async (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            setSignatureUploadError('File harus berupa gambar.');
+            return;
+        }
+        if (file.size > 2 * 1024 * 1024) {
+            setSignatureUploadError('Ukuran gambar maksimal 2MB.');
+            return;
+        }
+
+        setIsSignatureUploading(true);
+        setSignatureUploadError(null);
+
+        try {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `sig-${auth.user?.id}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+            const filePath = `avatars/${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('avatars')
+                .upload(filePath, file, {
+                    cacheControl: '3600',
+                    upsert: true,
+                });
+
+            if (uploadError) {
+                throw uploadError;
+            }
+
+            const {
+                data: { publicUrl },
+            } = supabase.storage.from('avatars').getPublicUrl(filePath);
+
+            setSignaturePath(publicUrl);
+        } catch (error: any) {
+            console.error('Error uploading signature:', error);
+            setSignatureUploadError(error.message || 'Gagal mengunggah tanda tangan.');
+        } finally {
+            setIsSignatureUploading(false);
         }
     };
 
@@ -256,6 +317,11 @@ export default function PsychologistProfileSetup({
                                     name="photo_url"
                                     value={photoUrl ?? ''}
                                 />
+                                <input
+                                    type="hidden"
+                                    name="signature_path"
+                                    value={signaturePath ?? ''}
+                                />
 
                                 <div className="flex flex-col items-center gap-4 rounded-2xl border border-[#e2e4e6] bg-[#fdfdfd] p-5 shadow-xs">
                                     <span className="ml-1 self-start text-[13px] font-semibold text-[#191c1e]">
@@ -309,6 +375,22 @@ export default function PsychologistProfileSetup({
 
                                 <div className="flex flex-col gap-1.5">
                                     <label className="ml-1 text-[13px] font-semibold text-[#191c1e]">
+                                        Profesi
+                                    </label>
+                                    <select
+                                        name="profession"
+                                        value={selectedProfession}
+                                        onChange={(e) => setSelectedProfession(e.target.value)}
+                                        className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
+                                    >
+                                        <option value="Psikolog Klinis">Psikolog Klinis</option>
+                                        <option value="Psikiater">Psikiater</option>
+                                    </select>
+                                    <InputError message={errors.profession as string} />
+                                </div>
+
+                                <div className="flex flex-col gap-1.5">
+                                    <label className="ml-1 text-[13px] font-semibold text-[#191c1e]">
                                         Spesialisasi
                                     </label>
                                     <div className="mt-1 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -342,17 +424,112 @@ export default function PsychologistProfileSetup({
                                         htmlFor="str_number"
                                         className="ml-1 text-[13px] font-semibold text-[#191c1e]"
                                     >
-                                        Nomor STR
+                                        {selectedProfession === 'Psikiater' ? 'Nomor STR' : 'Nomor STRPK'}
                                     </label>
                                     <input
                                         id="str_number"
                                         name="str_number"
                                         type="text"
                                         defaultValue={profile?.str_number ?? ''}
-                                        placeholder="Contoh: STR-123456789"
+                                        placeholder={selectedProfession === 'Psikiater' ? "Contoh: STR-123456789" : "Contoh: STRPK-123456789"}
                                         className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                     />
-                                    <InputError message={errors.str_number} />
+                                    <InputError message={errors.str_number as string} />
+                                </div>
+
+                                {selectedProfession === 'Psikiater' && (
+                                    <div className="flex flex-col gap-1.5">
+                                        <label
+                                            htmlFor="sipp"
+                                            className="ml-1 text-[13px] font-semibold text-[#191c1e]"
+                                        >
+                                            Nomor SIP (opsional)
+                                        </label>
+                                        <input
+                                            id="sipp"
+                                            name="sipp"
+                                            type="text"
+                                            defaultValue={profile?.sipp ?? ''}
+                                            placeholder="Contoh: SIP-123456"
+                                            className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
+                                        />
+                                        <InputError message={errors.sipp as string} />
+                                    </div>
+                                )}
+
+                                {selectedProfession === 'Psikolog Klinis' && (
+                                    <div className="flex flex-col gap-1.5">
+                                        <label
+                                            htmlFor="sippk"
+                                            className="ml-1 text-[13px] font-semibold text-[#191c1e]"
+                                        >
+                                            Nomor SIPPK (opsional)
+                                        </label>
+                                        <input
+                                            id="sippk"
+                                            name="sippk"
+                                            type="text"
+                                            defaultValue={profile?.sippk ?? ''}
+                                            placeholder="Contoh: SIPPK-123456"
+                                            className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
+                                        />
+                                        <InputError message={errors.sippk as string} />
+                                    </div>
+                                )}
+
+                                <div className="flex flex-col gap-1.5">
+                                    <label className="ml-1 text-[13px] font-semibold text-[#191c1e]">
+                                        Tanda Tangan (Format PNG/JPG transparan)
+                                    </label>
+                                    <div className="flex flex-col items-start gap-4 rounded-2xl border border-[#e2e4e6] bg-[#fdfdfd] p-5 shadow-xs">
+                                        <div className="group relative w-full rounded-xl border-2 border-dashed border-[#e2e4e6] bg-[#f7f9fb] p-6 text-center transition-colors hover:bg-[#f0f6fc]">
+                                            {signaturePath ? (
+                                                <div className="flex flex-col items-center gap-4">
+                                                    <img
+                                                        src={signaturePath}
+                                                        alt="Tanda Tangan Preview"
+                                                        className="max-h-24 object-contain mix-blend-multiply"
+                                                    />
+                                                    <label
+                                                        htmlFor="signature-upload"
+                                                        className="cursor-pointer text-sm font-semibold text-[#1464BC] hover:underline"
+                                                    >
+                                                        Ubah Tanda Tangan
+                                                    </label>
+                                                </div>
+                                            ) : (
+                                                <label
+                                                    htmlFor="signature-upload"
+                                                    className="flex cursor-pointer flex-col items-center justify-center gap-2"
+                                                >
+                                                    <div className="flex size-12 items-center justify-center rounded-full bg-blue-50 text-[#1464BC]">
+                                                        <Upload className="size-5" />
+                                                    </div>
+                                                    <span className="text-sm font-semibold text-[#1464BC]">Klik untuk mengunggah</span>
+                                                    <span className="text-xs text-[#717783]">Atau seret & lepas file di sini</span>
+                                                </label>
+                                            )}
+                                            {isSignatureUploading && (
+                                                <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-white/80">
+                                                    <Spinner className="h-6 w-6" />
+                                                </div>
+                                            )}
+                                            <input
+                                                id="signature-upload"
+                                                type="file"
+                                                accept="image/*"
+                                                className="hidden"
+                                                onChange={handleSignatureChange}
+                                                disabled={isSignatureUploading}
+                                            />
+                                        </div>
+                                        {signatureUploadError && (
+                                            <span className="text-xs font-semibold text-red-500">
+                                                {signatureUploadError}
+                                            </span>
+                                        )}
+                                        <InputError message={errors.signature_path as string} />
+                                    </div>
                                 </div>
 
                                 <div className="flex flex-col gap-1.5">

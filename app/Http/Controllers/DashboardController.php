@@ -175,7 +175,11 @@ class DashboardController extends Controller
 
         return Inertia::render('psychologist-profile-setup', [
             'profile' => $profile ? [
+                'profession' => $profile->profession,
                 'str_number' => $profile->str_number,
+                'sipp' => $profile->sipp,
+                'sippk' => $profile->sippk,
+                'signature_path' => $profile->signature_path,
                 'specialization' => $profile->specialization,
                 'price' => (float) $profile->price,
                 'is_online' => (bool) $profile->is_online,
@@ -191,7 +195,11 @@ class DashboardController extends Controller
         abort_unless($user->isPsychologist(), 403);
 
         $validated = $request->validate([
+            'profession' => ['nullable', 'string', Rule::in(['Psikolog Klinis', 'Psikiater'])],
             'str_number' => ['nullable', 'string', 'max:100'],
+            'sipp' => ['nullable', 'string', 'max:100'],
+            'sippk' => ['nullable', 'string', 'max:100'],
+            'signature_path' => ['nullable', 'string'],
             'specialization' => ['required', 'array', 'min:1'],
             'specialization.*' => ['string', Rule::in([
                 'Stress', 'Gangguan Kecemasan', 'Depresi', 'Keluarga dan Hubungan',
@@ -205,7 +213,11 @@ class DashboardController extends Controller
         PsychologistProfile::query()->updateOrCreate(
             ['user_id' => $user->id],
             [
+                'profession' => $validated['profession'] ?? 'Psikolog Klinis',
                 'str_number' => $validated['str_number'] ?? null,
+                'sipp' => $validated['sipp'] ?? null,
+                'sippk' => $validated['sippk'] ?? null,
+                'signature_path' => $validated['signature_path'] ?? null,
                 'specialization' => $validated['specialization'],
                 'price' => $validated['price'],
                 'is_online' => $user->psychologistProfile?->is_online ?? false,

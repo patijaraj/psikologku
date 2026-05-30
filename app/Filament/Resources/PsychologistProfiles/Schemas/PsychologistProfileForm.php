@@ -15,13 +15,25 @@ class PsychologistProfileForm
                 TextInput::make('user_id')
                     ->required()
                     ->numeric(),
+                \Filament\Forms\Components\Select::make('profession')
+                    ->options([
+                        'Psikolog Klinis' => 'Psikolog Klinis',
+                        'Psikiater' => 'Psikiater',
+                    ])
+                    ->required()
+                    ->default('Psikolog Klinis'),
                 TextInput::make('str_number'),
+                TextInput::make('sipp'),
+                TextInput::make('sippk'),
+                \Filament\Forms\Components\FileUpload::make('signature_path')
+                    ->image()
+                    ->directory('signatures'),
                 TextInput::make('specialization')
                     ->required(),
                 TextInput::make('price')
                     ->required()
                     ->numeric()
-                    ->prefix('$'),
+                    ->prefix('Rp'),
                 Toggle::make('is_online')
                     ->required(),
                 TextInput::make('photo_url')
