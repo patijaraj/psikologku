@@ -18,6 +18,7 @@ import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout } from '@/routes';
 import { updateRecord } from '@/actions/App/Http/Controllers/PsychologistAppointmentController';
 import { NotificationDropdown } from '@/components/notification-dropdown';
+import { RecordFormModal } from '@/components/record-form-modal';
 
 type RecordType = {
     id: number;
@@ -25,7 +26,9 @@ type RecordType = {
     patient_email?: string | null;
     session_date: string;
     record_summary?: string | null;
-    record_recommendation?: string | null;
+    diagnostic_focus?: string | null;
+    patient_state?: string[] | null;
+    structured_recommendations?: any[] | null;
     rating?: number | null;
     review?: string | null;
     status: string;
@@ -57,45 +60,14 @@ export default function PsychologistRecords({
     const userEmail = auth.user?.email ?? 'psikolog@example.com';
 
     const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
-    const [selectedRecord, setSelectedRecord] = useState<RecordType | null>(
-        null,
-    );
-
-    const {
-        data: recordData,
-        setData: setRecordData,
-        patch: patchRecord,
-        processing: recordProcessing,
-        reset: resetRecord,
-    } = useForm({
-        record_summary: '',
-        record_recommendation: '',
-    });
+    const [selectedRecord, setSelectedRecord] = useState<RecordType | null>(null);
 
     const pendingRecords = records.filter((r) => r.status === 'Pending');
     const completedRecords = records.filter((r) => r.status === 'Selesai');
 
     const openRecordModal = (record: RecordType) => {
         setSelectedRecord(record);
-        setRecordData({
-            record_summary: record.record_summary ?? '',
-            record_recommendation: record.record_recommendation ?? '',
-        });
         setIsRecordModalOpen(true);
-    };
-
-    const handleRecordSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!selectedRecord) return;
-
-        patchRecord(updateRecord.url(selectedRecord.id), {
-            onSuccess: () => {
-                setIsRecordModalOpen(false);
-                setSelectedRecord(null);
-                resetRecord();
-            },
-            preserveScroll: true,
-        });
     };
 
     return (
@@ -376,125 +348,24 @@ export default function PsychologistRecords({
                 </div>
             </main>
 
-            {isRecordModalOpen && selectedRecord && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#191c1e]/60 p-4 backdrop-blur-sm">
-                    <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl sm:p-8">
-                        <div className="mb-6 flex items-start justify-between gap-4">
-                            <div>
-                                <h3 className="m-0 text-xl font-black text-[#191c1e]">
-                                    Record: {selectedRecord.patient_name}
-                                </h3>
-                                <p className="m-0 mt-1 text-sm font-medium text-[#717783]">
-                                    Sesi {selectedRecord.session_date}
-                                </p>
-                            </div>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setIsRecordModalOpen(false);
-                                    setSelectedRecord(null);
-                                }}
-                                className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full border-none bg-[#f2f4f6] text-[#717783] transition-colors hover:bg-[#e2e4e6] hover:text-[#191c1e]"
-                            >
-                                <X className="h-5 w-5" />
-                            </button>
-                        </div>
-
-                        <form
-                            onSubmit={handleRecordSubmit}
-                            className="flex flex-col gap-5"
-                        >
-                            <div className="flex flex-col gap-2">
-                                <label
-                                    htmlFor="record_summary"
-                                    className="text-sm font-bold text-[#191c1e]"
-                                >
-                                    Rekap Konsul
-                                </label>
-                                <textarea
-                                    id="record_summary"
-                                    value={recordData.record_summary}
-                                    onChange={(e) =>
-                                        setRecordData(
-                                            'record_summary',
-                                            e.target.value,
-                                        )
-                                    }
-                                    placeholder="Tuliskan ringkasan konsultasi pasien di sini..."
-                                    className="min-h-[120px] resize-none rounded-xl border border-[#e2e4e6] bg-[#f7f9fb] p-3 text-sm text-[#191c1e] transition-all outline-none placeholder:text-[#a0a5b1] focus:border-[#1464BC] focus:bg-white focus:ring-4 focus:ring-[#1464BC]/10"
-                                    required
-                                />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <label
-                                    htmlFor="record_recommendation"
-                                    className="text-sm font-bold text-[#191c1e]"
-                                >
-                                    Rekomendasi
-                                </label>
-                                <textarea
-                                    id="record_recommendation"
-                                    value={recordData.record_recommendation}
-                                    onChange={(e) =>
-                                        setRecordData(
-                                            'record_recommendation',
-                                            e.target.value,
-                                        )
-                                    }
-                                    placeholder="Tuliskan rekomendasi penanganan atau tugas untuk pasien..."
-                                    className="min-h-[120px] resize-none rounded-xl border border-[#e2e4e6] bg-[#f7f9fb] p-3 text-sm text-[#191c1e] transition-all outline-none placeholder:text-[#a0a5b1] focus:border-[#1464BC] focus:bg-white focus:ring-4 focus:ring-[#1464BC]/10"
-                                    required
-                                />
-                            </div>
-
-                            {selectedRecord.rating && (
-                                <div className="mt-2 rounded-xl border border-[#fef3c7] bg-[#fff8e6] p-4">
-                                    <div className="mb-2 flex items-center justify-between">
-                                        <h4 className="m-0 text-sm font-bold text-[#b45309]">
-                                            Ulasan Pasien
-                                        </h4>
-                                        <div className="flex items-center gap-1">
-                                            {[1, 2, 3, 4, 5].map((star) => (
-                                                <Star
-                                                    key={star}
-                                                    className={`h-4 w-4 ${star <= selectedRecord.rating! ? 'fill-[#f59e0b] text-[#f59e0b]' : 'fill-[#fcd34d] text-[#fcd34d]'}`}
-                                                />
-                                            ))}
-                                        </div>
-                                    </div>
-                                    {selectedRecord.review && (
-                                        <p className="m-0 text-[13px] text-[#92400e] italic">
-                                            "{selectedRecord.review}"
-                                        </p>
-                                    )}
-                                </div>
-                            )}
-
-                            <div className="mt-2 flex justify-end gap-3">
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setIsRecordModalOpen(false);
-                                        setSelectedRecord(null);
-                                    }}
-                                    className="rounded-xl bg-[#f2f4f6] px-5 py-2.5 text-sm font-bold text-[#717783] transition-colors hover:bg-[#e2e4e6] hover:text-[#191c1e]"
-                                >
-                                    Batal
-                                </button>
-                                <button
-                                    type="submit"
-                                    disabled={recordProcessing}
-                                    className="rounded-xl bg-[#1464BC] px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#1053A0] disabled:cursor-not-allowed disabled:opacity-70"
-                                >
-                                    {recordProcessing
-                                        ? 'Menyimpan...'
-                                        : 'Simpan Record'}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
+            <RecordFormModal
+                isOpen={isRecordModalOpen}
+                onClose={() => {
+                    setIsRecordModalOpen(false);
+                    setSelectedRecord(null);
+                }}
+                appointmentId={selectedRecord?.id || 0}
+                patientName={selectedRecord?.patient_name || ''}
+                sessionDate={selectedRecord?.session_date}
+                initialData={{
+                    record_summary: selectedRecord?.record_summary || '',
+                    diagnostic_focus: selectedRecord?.diagnostic_focus || '',
+                    patient_state: selectedRecord?.patient_state || [],
+                    structured_recommendations: selectedRecord?.structured_recommendations || [],
+                }}
+                rating={selectedRecord?.rating}
+                review={selectedRecord?.review}
+            />
         </div>
     );
 }

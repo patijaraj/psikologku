@@ -1,0 +1,80 @@
+
+> build
+> vite build
+
+vite v8.0.10 building client environment for production...
+[plugin @laravel/vite-plugin-wayfinder] Types generated for actions, routes, form variants
+[2Ktransforming...✓ 2303 modules transformed.
+✗ Build failed in 6.81s
+error during build:
+Build failed with 1 error:
+
+[plugin vite:react-babel] /home/fatihza/Documents/psikologku/resources/js/pages/psychologist-records.tsx:67:11
+SyntaxError: /home/fatihza/Documents/psikologku/resources/js/pages/psychologist-records.tsx: Identifier 'isRecordModalOpen' has already been declared. (67:11)
+
+  65 |     );
+  66 |
+> 67 |     const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
+     |            ^
+  68 |     const [selectedRecord, setSelectedRecord] = useState<RecordType | null>(
+  69 |         null,
+  70 |     );
+    at constructor (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:365:19)
+    at TypeScriptParserMixin.raise (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:6599:19)
+    at TypeScriptScopeHandler.checkRedeclarationInScope (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:1619:19)
+    at TypeScriptScopeHandler.declareName (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:1585:12)
+    at TypeScriptScopeHandler.declareName (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:4880:11)
+    at TypeScriptParserMixin.declareNameFromIdentifier (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:7567:16)
+    at TypeScriptParserMixin.checkIdentifier (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:7563:12)
+    at TypeScriptParserMixin.checkLVal (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:7500:12)
+    at TypeScriptParserMixin.checkLVal (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:7540:16)
+    at TypeScriptParserMixin.parseVarId (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:13412:10)
+    at TypeScriptParserMixin.parseVarId (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:9752:11)
+    at TypeScriptParserMixin.parseVar (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:13383:12)
+    at TypeScriptParserMixin.parseVarStatement (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:13230:10)
+    at TypeScriptParserMixin.parseVarStatement (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:9408:31)
+    at TypeScriptParserMixin.parseStatementContent (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:12851:23)
+    at TypeScriptParserMixin.parseStatementContent (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:9508:18)
+    at TypeScriptParserMixin.parseStatementLike (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:12767:17)
+    at TypeScriptParserMixin.parseStatementListItem (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:12747:17)
+    at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:13316:61)
+    at TypeScriptParserMixin.parseBlockBody (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:13309:10)
+    at TypeScriptParserMixin.parseBlock (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:13297:10)
+    at TypeScriptParserMixin.parseFunctionBody (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:12100:24)
+    at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:12086:10)
+    at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:9172:18)
+    at /home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:13445:12
+    at TypeScriptParserMixin.withSmartMixTopicForbiddingContext (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:12403:14)
+    at TypeScriptParserMixin.parseFunction (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:13444:10)
+    at TypeScriptParserMixin.parseExportDefaultExpression (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:13907:19)
+    at TypeScriptParserMixin.parseExportDefaultExpression (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:9402:18)
+    at TypeScriptParserMixin.parseExport (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:13828:25)
+    at TypeScriptParserMixin.parseExport (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:9385:20)
+    at TypeScriptParserMixin.parseStatementContent (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:12878:27)
+    at TypeScriptParserMixin.parseStatementContent (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:9508:18)
+    at TypeScriptParserMixin.parseStatementLike (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:12767:17)
+    at TypeScriptParserMixin.parseModuleItem (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:12744:17)
+    at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:13316:36)
+    at TypeScriptParserMixin.parseBlockBody (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:13309:10)
+    at TypeScriptParserMixin.parseProgram (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:12622:10)
+    at TypeScriptParserMixin.parseTopLevel (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:12612:25)
+    at TypeScriptParserMixin.parse (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:14488:25)
+    at TypeScriptParserMixin.parse (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:10126:18)
+    at parse (/home/fatihza/Documents/psikologku/node_modules/@babel/parser/lib/index.js:14522:38)
+    at parser (/home/fatihza/Documents/psikologku/node_modules/@babel/core/lib/parser/index.js:41:34)
+    at parser.next (<anonymous>)
+    at normalizeFile (/home/fatihza/Documents/psikologku/node_modules/@babel/core/lib/transformation/normalize-file.js:64:37)
+    at normalizeFile.next (<anonymous>)
+    at run (/home/fatihza/Documents/psikologku/node_modules/@babel/core/lib/transformation/index.js:22:50)
+    at run.next (<anonymous>)
+    at transform (/home/fatihza/Documents/psikologku/node_modules/@babel/core/lib/transform.js:22:33)
+    at transform.next (<anonymous>)
+    at aggregateBindingErrorsIntoJsError (file:///home/fatihza/Documents/psikologku/node_modules/rolldown/dist/shared/error-DL-e8-oE.mjs:48:18)
+    at unwrapBindingResult (file:///home/fatihza/Documents/psikologku/node_modules/rolldown/dist/shared/error-DL-e8-oE.mjs:18:128)
+    at #build (file:///home/fatihza/Documents/psikologku/node_modules/rolldown/dist/shared/rolldown-build-DSxL8qiP.mjs:3317:34)
+    at async buildEnvironment (file:///home/fatihza/Documents/psikologku/node_modules/vite/dist/node/chunks/node.js:33018:64)
+    at async Object.build (file:///home/fatihza/Documents/psikologku/node_modules/vite/dist/node/chunks/node.js:33440:19)
+    at async Object.buildApp (file:///home/fatihza/Documents/psikologku/node_modules/vite/dist/node/chunks/node.js:33437:153)
+    at async CAC.<anonymous> (file:///home/fatihza/Documents/psikologku/node_modules/vite/dist/node/cli.js:778:3) {
+  errors: [Getter/Setter]
+}

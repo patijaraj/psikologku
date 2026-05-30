@@ -187,7 +187,7 @@ show.form = showForm
 
 /**
 * @see \App\Http\Controllers\UserRecordController::updateReview
-* @see app/Http/Controllers/UserRecordController.php:67
+* @see app/Http/Controllers/UserRecordController.php:69
 * @route '/records/{appointment}/review'
 */
 export const updateReview = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -202,7 +202,7 @@ updateReview.definition = {
 
 /**
 * @see \App\Http\Controllers\UserRecordController::updateReview
-* @see app/Http/Controllers/UserRecordController.php:67
+* @see app/Http/Controllers/UserRecordController.php:69
 * @route '/records/{appointment}/review'
 */
 updateReview.url = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
@@ -235,7 +235,7 @@ updateReview.url = (args: { appointment: number | { id: number } } | [appointmen
 
 /**
 * @see \App\Http\Controllers\UserRecordController::updateReview
-* @see app/Http/Controllers/UserRecordController.php:67
+* @see app/Http/Controllers/UserRecordController.php:69
 * @route '/records/{appointment}/review'
 */
 updateReview.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -245,7 +245,7 @@ updateReview.patch = (args: { appointment: number | { id: number } } | [appointm
 
 /**
 * @see \App\Http\Controllers\UserRecordController::updateReview
-* @see app/Http/Controllers/UserRecordController.php:67
+* @see app/Http/Controllers/UserRecordController.php:69
 * @route '/records/{appointment}/review'
 */
 const updateReviewForm = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -260,7 +260,7 @@ const updateReviewForm = (args: { appointment: number | { id: number } } | [appo
 
 /**
 * @see \App\Http\Controllers\UserRecordController::updateReview
-* @see app/Http/Controllers/UserRecordController.php:67
+* @see app/Http/Controllers/UserRecordController.php:69
 * @route '/records/{appointment}/review'
 */
 updateReviewForm.patch = (args: { appointment: number | { id: number } } | [appointment: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

@@ -55,9 +55,11 @@ class UserRecordController extends Controller
                 'psychologist_name' => $appointment->psychologist->user?->name ?? 'Psikolog',
                 'specialization' => $appointment->psychologist->specialization ?? ['Psikologi'],
                 'session_date' => $appointment->appointment_date?->format('M d, Y') ?? '-',
-                'session_duration' => '60 Minutes', // Assuming standard duration
+                'session_duration' => '50 Minutes', // Usually standard
                 'record_summary' => $appointment->record_summary,
-                'record_recommendation' => $appointment->record_recommendation,
+                'patient_state' => $appointment->patient_state ?? [],
+                'diagnostic_focus' => $appointment->diagnostic_focus,
+                'structured_recommendations' => $appointment->structured_recommendations ?? [],
                 'rating' => $appointment->rating,
                 'review' => $appointment->review,
             ],

@@ -166,10 +166,23 @@ class PsychologistAppointmentController extends Controller
 
         $validated = $request->validate([
             'record_summary' => ['required', 'string'],
-            'record_recommendation' => ['required', 'string'],
+            'record_recommendation' => ['nullable', 'string'],
+            'patient_state' => ['nullable', 'array'],
+            'patient_state.*' => ['string'],
+            'diagnostic_focus' => ['nullable', 'string'],
+            'structured_recommendations' => ['nullable', 'array'],
+            'structured_recommendations.*.title' => ['required', 'string'],
+            'structured_recommendations.*.description' => ['required', 'string'],
+            'structured_recommendations.*.type' => ['nullable', 'string'],
         ]);
 
-        $appointment->update($validated);
+        $appointment->update([
+            'record_summary' => $validated['record_summary'],
+            'record_recommendation' => $validated['record_recommendation'] ?? null,
+            'patient_state' => $validated['patient_state'] ?? null,
+            'diagnostic_focus' => $validated['diagnostic_focus'] ?? null,
+            'structured_recommendations' => $validated['structured_recommendations'] ?? null,
+        ]);
 
         return back();
     }
