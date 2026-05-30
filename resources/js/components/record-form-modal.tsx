@@ -1,4 +1,4 @@
-import { X, Plus, Trash2, Tag, BookOpen, Activity, AlertCircle } from 'lucide-react';
+import { X, Plus, Trash2, Tag, BookOpen, Activity, Wind, Edit3, Users, Coffee, Moon } from 'lucide-react';
 import { useForm } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import { updateRecord } from '@/actions/App/Http/Controllers/PsychologistAppointmentController';
@@ -25,9 +25,14 @@ type RecordFormModalProps = {
 
 const predefinedStates = ['Calm', 'Reflective', 'Highly Verbal', 'Anxious', 'Withdrawn', 'Agitated'];
 const recommendationTypes = [
-    { value: 'exercise', label: 'Exercise', icon: <Activity className="h-4 w-4" /> },
-    { value: 'reading', label: 'Reading', icon: <BookOpen className="h-4 w-4" /> },
-    { value: 'general', label: 'General', icon: <Tag className="h-4 w-4" /> },
+    { value: 'exercise', label: 'Exercise / Physical', icon: <Activity className="h-4 w-4" /> },
+    { value: 'reading', label: 'Reading / Bibliotherapy', icon: <BookOpen className="h-4 w-4" /> },
+    { value: 'meditation', label: 'Meditation / Mindfulness', icon: <Wind className="h-4 w-4" /> },
+    { value: 'journaling', label: 'Journaling / Writing', icon: <Edit3 className="h-4 w-4" /> },
+    { value: 'social', label: 'Social Activity', icon: <Users className="h-4 w-4" /> },
+    { value: 'relaxation', label: 'Relaxation / Hobby', icon: <Coffee className="h-4 w-4" /> },
+    { value: 'sleep', label: 'Sleep Hygiene', icon: <Moon className="h-4 w-4" /> },
+    { value: 'general', label: 'General Task', icon: <Tag className="h-4 w-4" /> },
 ];
 
 export function RecordFormModal({
@@ -110,8 +115,9 @@ export function RecordFormModal({
     };
 
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#191c1e]/60 p-4 backdrop-blur-sm overflow-y-auto">
-            <div className="w-full max-w-3xl rounded-3xl bg-white p-6 shadow-xl sm:p-8 my-8">
+        <div className="fixed inset-0 z-[100] overflow-y-auto bg-[#191c1e]/60 backdrop-blur-sm">
+            <div className="flex min-h-full items-center justify-center p-4">
+                <div className="w-full max-w-3xl rounded-3xl bg-white p-6 shadow-xl sm:p-8">
                 <div className="mb-6 flex items-start justify-between gap-4 sticky top-0 bg-white z-10 pb-4 border-b border-[#f2f4f6]">
                     <div>
                         <h3 className="m-0 text-xl font-black text-[#191c1e]">
@@ -239,13 +245,17 @@ export function RecordFormModal({
                                 </div>
                             ) : (
                                 data.structured_recommendations.map((rec, idx) => (
-                                    <div key={idx} className="relative rounded-xl border border-[#e2e4e6] p-4 bg-[#f7f9fb] flex flex-col gap-3">
+                                    <div key={idx} className="relative rounded-xl border border-[#e2e4e6] p-4 pt-12 bg-[#f7f9fb] flex flex-col gap-3">
+                                        <span className="absolute top-4 left-4 text-[11px] font-black uppercase tracking-wider text-[#1464BC]">
+                                            Rekomendasi {idx + 1}
+                                        </span>
                                         <button
                                             type="button"
                                             onClick={() => removeRecommendation(idx)}
-                                            className="absolute top-3 right-3 text-[#a0a5b1] hover:text-[#b02a2a]"
+                                            className="absolute top-3 right-3 flex items-center justify-center rounded-lg p-1.5 text-[#717783] transition-colors hover:bg-[#feecec] hover:text-[#e65c5c]"
+                                            title="Hapus rekomendasi"
                                         >
-                                            <Trash2 className="h-4 w-4" />
+                                            <Trash2 className="h-5 w-5" />
                                         </button>
                                         <div className="flex gap-3">
                                             <div className="flex-1">
@@ -254,7 +264,7 @@ export function RecordFormModal({
                                                     value={rec.title}
                                                     onChange={(e) => updateRecommendation(idx, 'title', e.target.value)}
                                                     placeholder="Judul (mis: Daily Reflection Exercise)"
-                                                    className="w-full h-9 rounded-lg border border-[#e2e4e6] px-3 text-sm outline-none focus:border-[#1464BC]"
+                                                    className="w-full h-9 rounded-lg border border-[#e2e4e6] px-3 text-sm text-[#191c1e] outline-none focus:border-[#1464BC] bg-white"
                                                     required
                                                 />
                                             </div>
@@ -262,7 +272,7 @@ export function RecordFormModal({
                                                 <select
                                                     value={rec.type}
                                                     onChange={(e) => updateRecommendation(idx, 'type', e.target.value)}
-                                                    className="w-full h-9 rounded-lg border border-[#e2e4e6] px-3 text-sm outline-none focus:border-[#1464BC] bg-white"
+                                                    className="w-full h-9 rounded-lg border border-[#e2e4e6] px-3 text-sm text-[#191c1e] outline-none focus:border-[#1464BC] bg-white"
                                                 >
                                                     {recommendationTypes.map(type => (
                                                         <option key={type.value} value={type.value}>{type.label}</option>
@@ -274,7 +284,7 @@ export function RecordFormModal({
                                             value={rec.description}
                                             onChange={(e) => updateRecommendation(idx, 'description', e.target.value)}
                                             placeholder="Deskripsi rekomendasi..."
-                                            className="w-full h-20 resize-none rounded-lg border border-[#e2e4e6] p-3 text-sm outline-none focus:border-[#1464BC]"
+                                            className="w-full h-20 resize-none rounded-lg border border-[#e2e4e6] p-3 text-sm text-[#191c1e] outline-none focus:border-[#1464BC] bg-white"
                                             required
                                         />
                                     </div>
@@ -300,6 +310,7 @@ export function RecordFormModal({
                         </button>
                     </div>
                 </form>
+                </div>
             </div>
         </div>
     );

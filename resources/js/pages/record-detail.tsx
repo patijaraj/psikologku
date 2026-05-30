@@ -17,7 +17,12 @@ import {
     BookOpen,
     Tag,
     AlertCircle,
-    User
+    User,
+    Wind,
+    Edit3,
+    Users,
+    Coffee,
+    Moon
 } from 'lucide-react';
 import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
@@ -79,6 +84,16 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                 return <Activity className="h-5 w-5 text-[#1464BC]" />;
             case 'reading':
                 return <BookOpen className="h-5 w-5 text-[#1464BC]" />;
+            case 'meditation':
+                return <Wind className="h-5 w-5 text-[#1464BC]" />;
+            case 'journaling':
+                return <Edit3 className="h-5 w-5 text-[#1464BC]" />;
+            case 'social':
+                return <Users className="h-5 w-5 text-[#1464BC]" />;
+            case 'relaxation':
+                return <Coffee className="h-5 w-5 text-[#1464BC]" />;
+            case 'sleep':
+                return <Moon className="h-5 w-5 text-[#1464BC]" />;
             default:
                 return <Tag className="h-5 w-5 text-[#1464BC]" />;
         }
