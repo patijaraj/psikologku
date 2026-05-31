@@ -41,6 +41,7 @@ export default function CustomerService() {
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
         post('/customer-service', {
+            forceFormData: true,
             onSuccess: () => {
                 reset();
                 setPreviewUrl(null);

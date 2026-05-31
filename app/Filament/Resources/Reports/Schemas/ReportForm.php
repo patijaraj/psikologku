@@ -17,18 +17,23 @@ class ReportForm
                 Select::make('user_id')
                     ->relationship('user', 'name')
                     ->required()
+                    ->disabled()
                     ->label('User'),
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255)
+                    ->disabled()
                     ->label('Judul Laporan'),
                 Textarea::make('content')
                     ->required()
                     ->columnSpanFull()
+                    ->disabled()
                     ->label('Isi Laporan'),
                 FileUpload::make('photo_path')
                     ->image()
                     ->directory('reports')
+                    ->disk('public')
+                    ->disabled()
                     ->label('Foto Pendukung (Opsional)'),
                 Select::make('status')
                     ->options([

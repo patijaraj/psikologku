@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -24,21 +25,13 @@ class ReportsTable
                     ->searchable(),
                 ImageColumn::make('photo_path')
                     ->label('Foto'),
-                TextColumn::make('status')
+                SelectColumn::make('status')
                     ->label('Status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'pending' => 'warning',
-                        'in_progress' => 'info',
-                        'resolved' => 'success',
-                        default => 'gray',
-                    })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                    ->options([
                         'pending' => 'Pending',
                         'in_progress' => 'Diproses',
                         'resolved' => 'Selesai',
-                        default => $state,
-                    })
+                    ])
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
