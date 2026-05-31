@@ -296,6 +296,8 @@ function Field({
     autoComplete,
     tabIndex,
     error,
+    value,
+    onChange,
 }: {
     id: string;
     name: string;
@@ -365,6 +367,7 @@ function BirthdateField({
     onMonthChange,
     onYearChange,
     error,
+    tabIndexStart,
 }: {
     day: string;
     month: string;
