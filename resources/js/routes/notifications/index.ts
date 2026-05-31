@@ -166,7 +166,7 @@ markAsRead.form = markAsReadForm
 
 /**
 * @see \App\Http\Controllers\NotificationController::markAllAsRead
-* @see app/Http/Controllers/NotificationController.php:30
+* @see app/Http/Controllers/NotificationController.php:31
 * @route '/notifications/mark-all-as-read'
 */
 export const markAllAsRead = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -181,7 +181,7 @@ markAllAsRead.definition = {
 
 /**
 * @see \App\Http\Controllers\NotificationController::markAllAsRead
-* @see app/Http/Controllers/NotificationController.php:30
+* @see app/Http/Controllers/NotificationController.php:31
 * @route '/notifications/mark-all-as-read'
 */
 markAllAsRead.url = (options?: RouteQueryOptions) => {
@@ -190,7 +190,7 @@ markAllAsRead.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\NotificationController::markAllAsRead
-* @see app/Http/Controllers/NotificationController.php:30
+* @see app/Http/Controllers/NotificationController.php:31
 * @route '/notifications/mark-all-as-read'
 */
 markAllAsRead.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -200,7 +200,7 @@ markAllAsRead.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> =>
 
 /**
 * @see \App\Http\Controllers\NotificationController::markAllAsRead
-* @see app/Http/Controllers/NotificationController.php:30
+* @see app/Http/Controllers/NotificationController.php:31
 * @route '/notifications/mark-all-as-read'
 */
 const markAllAsReadForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -215,7 +215,7 @@ const markAllAsReadForm = (options?: RouteQueryOptions): RouteFormDefinition<'po
 
 /**
 * @see \App\Http\Controllers\NotificationController::markAllAsRead
-* @see app/Http/Controllers/NotificationController.php:30
+* @see app/Http/Controllers/NotificationController.php:31
 * @route '/notifications/mark-all-as-read'
 */
 markAllAsReadForm.patch = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
