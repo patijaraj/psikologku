@@ -3,14 +3,16 @@
 use App\Http\Controllers\Auth\CompleteProfileController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PsychologistAppointmentController;
 use App\Http\Controllers\PsychologistRecordController;
 use App\Http\Controllers\PsychologistScheduleController;
+use App\Http\Controllers\ReferralLetterController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\TherapistController;
 use App\Http\Controllers\UserRecordController;
-use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
@@ -50,11 +52,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Psychologist Records
     Route::get('psychologist/records', [PsychologistRecordController::class, 'index'])
         ->name('psychologist.records.index');
-    Route::post('records/{appointment}/referral-letter', [\App\Http\Controllers\ReferralLetterController::class, 'store'])
+    Route::post('records/{appointment}/referral-letter', [ReferralLetterController::class, 'store'])
         ->name('records.referral-letter.store');
-    Route::get('records/{appointment}/referral-letter', [\App\Http\Controllers\ReferralLetterController::class, 'show'])
+    Route::get('records/{appointment}/referral-letter', [ReferralLetterController::class, 'show'])
         ->name('records.referral-letter.show');
-    Route::get('records/{appointment}/referral-letter/pdf', [\App\Http\Controllers\ReferralLetterController::class, 'downloadPdf'])
+    Route::get('records/{appointment}/referral-letter/pdf', [ReferralLetterController::class, 'downloadPdf'])
         ->name('records.referral-letter.pdf');
 
     // Psychologist Schedules
@@ -84,6 +86,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('records/{appointment}', [UserRecordController::class, 'show'])->name('user.records.show');
     Route::patch('records/{appointment}/review', [UserRecordController::class, 'updateReview'])->name('user.records.review.update');
     Route::get('records/{appointment}/pdf', [UserRecordController::class, 'downloadPdf'])->name('records.pdf');
+
+    // Customer Service (Reports)
+    Route::get('customer-service', [ReportController::class, 'create'])->name('reports.create');
+    Route::post('customer-service', [ReportController::class, 'store'])->name('reports.store');
 });
 
 require __DIR__.'/settings.php';

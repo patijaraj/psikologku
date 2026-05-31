@@ -34,6 +34,7 @@ const navItems = [
     { label: 'Therapist', path: '/therapists', active: false },
     { label: 'Sessions', path: '/sessions', active: false },
     { label: 'Record', path: '/records', active: false },
+    { label: 'Pusat Bantuan', path: '/customer-service', active: false },
 ];
 
 function ImageWithFallback({

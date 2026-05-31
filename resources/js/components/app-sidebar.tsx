@@ -23,7 +23,6 @@ export function AppSidebar() {
 
     return (
         <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col border-r border-gray-100 bg-white font-sans shadow-sm">
-            
             {/* Logo Area */}
             <div className="flex h-20 items-center gap-3 border-b border-gray-50 px-6">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1E70B9] text-white shadow-sm">
@@ -82,11 +81,11 @@ export function AppSidebar() {
                     label="Pengaturan"
                 />
                 <NavItem
-                    href={pendingRouteHref}
+                    href="/customer-service"
                     icon={<CircleHelp className="h-5 w-5" />}
                     label="Bantuan"
                 />
-                
+
                 <Link
                     href={logout()}
                     as="button"
@@ -127,7 +126,7 @@ function NavItem({ href, icon, label, active = false, badge }: NavItemProps) {
                 {icon}
                 <span>{label}</span>
             </div>
-            
+
             {/* Logika untuk menampilkan badge merah kalau ada properti 'badge' yang dikirim */}
             {badge && (
                 <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#EF4444] text-[11px] font-bold text-white shadow-sm">

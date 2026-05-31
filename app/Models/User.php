@@ -72,4 +72,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Appointment::class);
     }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
 }
