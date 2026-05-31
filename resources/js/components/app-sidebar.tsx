@@ -83,7 +83,7 @@ export function AppSidebar() {
                 <NavItem
                     href="/customer-service"
                     icon={<CircleHelp className="h-5 w-5" />}
-                    label="Bantuan"
+                    label="Customer Service"
                 />
 
                 <Link

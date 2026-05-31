@@ -34,7 +34,6 @@ const navItems = [
     { label: 'Therapist', path: '/therapists', active: false },
     { label: 'Sessions', path: '/sessions', active: false },
     { label: 'Record', path: '/records', active: false },
-    { label: 'Pusat Bantuan', path: '/customer-service', active: false },
 ];
 
 function ImageWithFallback({
@@ -536,6 +535,34 @@ export default function Dashboard({
                                     className="mt-2 flex w-full cursor-pointer items-center justify-center rounded-xl border border-[#e2e4e6] bg-white py-3 text-sm font-semibold text-[#191c1e] no-underline transition-colors hover:bg-[#f7f9fb]"
                                 >
                                     Lihat Semua Riwayat
+                                </Link>
+                            </div>
+                        </section>
+
+                        <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1464BC] to-[#0A3D7A] p-6 text-white shadow-md">
+                            <div className="absolute -top-10 -right-10 size-32 rounded-full bg-white/10 blur-3xl" />
+                            <div className="absolute -bottom-10 -left-10 size-32 rounded-full bg-white/10 blur-3xl" />
+
+                            <div className="relative z-10 flex flex-col gap-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="flex size-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+                                        <Headphones className="h-5 w-5 text-white" />
+                                    </div>
+                                    <h3 className="m-0 text-lg font-bold">
+                                        Customer Service
+                                    </h3>
+                                </div>
+                                <p className="m-0 text-sm leading-relaxed text-blue-100/90">
+                                    Butuh bantuan atau ingin menyampaikan
+                                    keluhan? Tim kami siap mendengarkan dan
+                                    membantu Anda.
+                                </p>
+                                <Link
+                                    href="/customer-service"
+                                    className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-white px-4 py-3 text-sm font-bold text-[#1464BC] transition-all hover:bg-blue-50 active:scale-95"
+                                >
+                                    <MessageSquare className="h-4 w-4" />
+                                    Hubungi Kami
                                 </Link>
                             </div>
                         </section>
