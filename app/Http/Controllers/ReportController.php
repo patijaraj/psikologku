@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\ReportSubmittedNotification;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Illuminate\Http\Request;
@@ -34,11 +35,14 @@ class ReportController extends Controller
             'status' => 'pending',
         ]);
 
+        $isPsychologist = $request->user()->isPsychologist();
+        $roleName = $isPsychologist ? 'Psikolog' : 'Pasien';
+
         $admins = User::role('admin')->get();
 
         foreach ($admins as $admin) {
             Notification::make()
-                ->title('Laporan Baru Diterima')
+                ->title('Laporan Baru dari '.$roleName)
                 ->body('Laporan "'.$report->title.'" telah dikirim oleh '.$request->user()->name.'.')
                 ->info()
                 ->actions([
@@ -48,6 +52,8 @@ class ReportController extends Controller
                 ])
                 ->sendToDatabase($admin);
         }
+
+        $request->user()->notify(new ReportSubmittedNotification);
 
         return redirect()->back()->with('success', 'Laporan berhasil dikirim, tim kami akan segera menindaklanjutinya.');
     }

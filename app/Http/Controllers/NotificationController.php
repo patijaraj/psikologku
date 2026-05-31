@@ -12,7 +12,9 @@ class NotificationController extends Controller
     public function index(Request $request): Response
     {
         return Inertia::render('notifications', [
-            'notifications' => $request->user()->notifications,
+            'notifications' => $request->user()->notifications()
+                ->where('type', '!=', 'Filament\Notifications\DatabaseNotification')
+                ->get(),
         ]);
     }
 
@@ -22,12 +24,17 @@ class NotificationController extends Controller
         if ($notification) {
             $notification->markAsRead();
         }
+
         return back();
     }
 
     public function markAllAsRead(Request $request): RedirectResponse
     {
-        $request->user()->unreadNotifications->markAsRead();
+        $request->user()->unreadNotifications()
+            ->where('type', '!=', 'Filament\Notifications\DatabaseNotification')
+            ->get()
+            ->markAsRead();
+
         return back();
     }
 }

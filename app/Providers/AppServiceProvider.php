@@ -2,15 +2,17 @@
 
 namespace App\Providers;
 
+use App\Models\Report;
+use App\Models\Transaction;
+use App\Models\User;
+use App\Observers\ReportObserver;
+use App\Observers\TransactionObserver;
+use App\Observers\UserObserver;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use App\Observers\UserObserver;
-use App\Models\User;
-use App\Models\Transaction;
-use App\Observers\TransactionObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
         User::observe(UserObserver::class);
         Transaction::observe(TransactionObserver::class);
+        Report::observe(ReportObserver::class);
     }
 
     /**
@@ -44,13 +47,13 @@ class AppServiceProvider extends ServiceProvider
         );
 
         Password::defaults(
-            fn(): ?Password => app()->isProduction()
+            fn (): ?Password => app()->isProduction()
                 ? Password::min(12)
-                ->mixedCase()
-                ->letters()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
+                    ->mixedCase()
+                    ->letters()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
                 : null,
         );
     }

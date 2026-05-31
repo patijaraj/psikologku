@@ -41,7 +41,9 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user() ? array_merge($request->user()->toArray(), [
                     'photo_url' => $request->user()->isPsychologist() ? $request->user()->psychologistProfile?->photo_url : null,
-                    'notifications' => $request->user()->unreadNotifications()->take(5)->get(),
+                    'notifications' => $request->user()->unreadNotifications()
+                        ->where('type', '!=', 'Filament\Notifications\DatabaseNotification')
+                        ->take(5)->get(),
                 ]) : null,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
