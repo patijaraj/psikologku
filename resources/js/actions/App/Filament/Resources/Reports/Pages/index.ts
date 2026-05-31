@@ -1,11 +1,11 @@
 import ListReports from './ListReports'
 import CreateReport from './CreateReport'
-import ViewReport from './ViewReport'
+import EditReport from './EditReport'
 
 const Pages = {
     ListReports: Object.assign(ListReports, ListReports),
     CreateReport: Object.assign(CreateReport, CreateReport),
-    ViewReport: Object.assign(ViewReport, ViewReport),
+    EditReport: Object.assign(EditReport, EditReport),
 }
 
 export default Pages

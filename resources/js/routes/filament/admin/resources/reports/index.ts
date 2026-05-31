@@ -162,26 +162,26 @@ createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => (
 create.form = createForm
 
 /**
-* @see \App\Filament\Resources\Reports\Pages\ViewReport::__invoke
-* @see app/Filament/Resources/Reports/Pages/ViewReport.php:7
-* @route '/admin/reports/{record}'
+* @see \App\Filament\Resources\Reports\Pages\EditReport::__invoke
+* @see app/Filament/Resources/Reports/Pages/EditReport.php:7
+* @route '/admin/reports/{record}/edit'
 */
-export const view = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: view.url(args, options),
+export const edit = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: edit.url(args, options),
     method: 'get',
 })
 
-view.definition = {
+edit.definition = {
     methods: ["get","head"],
-    url: '/admin/reports/{record}',
+    url: '/admin/reports/{record}/edit',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Filament\Resources\Reports\Pages\ViewReport::__invoke
-* @see app/Filament/Resources/Reports/Pages/ViewReport.php:7
-* @route '/admin/reports/{record}'
+* @see \App\Filament\Resources\Reports\Pages\EditReport::__invoke
+* @see app/Filament/Resources/Reports/Pages/EditReport.php:7
+* @route '/admin/reports/{record}/edit'
 */
-view.url = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions) => {
+edit.url = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { record: args }
     }
@@ -198,58 +198,58 @@ view.url = (args: { record: string | number } | [record: string | number ] | str
         record: args.record,
     }
 
-    return view.definition.url
+    return edit.definition.url
             .replace('{record}', parsedArgs.record.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
-* @see \App\Filament\Resources\Reports\Pages\ViewReport::__invoke
-* @see app/Filament/Resources/Reports/Pages/ViewReport.php:7
-* @route '/admin/reports/{record}'
+* @see \App\Filament\Resources\Reports\Pages\EditReport::__invoke
+* @see app/Filament/Resources/Reports/Pages/EditReport.php:7
+* @route '/admin/reports/{record}/edit'
 */
-view.get = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: view.url(args, options),
+edit.get = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: edit.url(args, options),
     method: 'get',
 })
 
 /**
-* @see \App\Filament\Resources\Reports\Pages\ViewReport::__invoke
-* @see app/Filament/Resources/Reports/Pages/ViewReport.php:7
-* @route '/admin/reports/{record}'
+* @see \App\Filament\Resources\Reports\Pages\EditReport::__invoke
+* @see app/Filament/Resources/Reports/Pages/EditReport.php:7
+* @route '/admin/reports/{record}/edit'
 */
-view.head = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: view.url(args, options),
+edit.head = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: edit.url(args, options),
     method: 'head',
 })
 
 /**
-* @see \App\Filament\Resources\Reports\Pages\ViewReport::__invoke
-* @see app/Filament/Resources/Reports/Pages/ViewReport.php:7
-* @route '/admin/reports/{record}'
+* @see \App\Filament\Resources\Reports\Pages\EditReport::__invoke
+* @see app/Filament/Resources/Reports/Pages/EditReport.php:7
+* @route '/admin/reports/{record}/edit'
 */
-const viewForm = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: view.url(args, options),
+const editForm = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: edit.url(args, options),
     method: 'get',
 })
 
 /**
-* @see \App\Filament\Resources\Reports\Pages\ViewReport::__invoke
-* @see app/Filament/Resources/Reports/Pages/ViewReport.php:7
-* @route '/admin/reports/{record}'
+* @see \App\Filament\Resources\Reports\Pages\EditReport::__invoke
+* @see app/Filament/Resources/Reports/Pages/EditReport.php:7
+* @route '/admin/reports/{record}/edit'
 */
-viewForm.get = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: view.url(args, options),
+editForm.get = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: edit.url(args, options),
     method: 'get',
 })
 
 /**
-* @see \App\Filament\Resources\Reports\Pages\ViewReport::__invoke
-* @see app/Filament/Resources/Reports/Pages/ViewReport.php:7
-* @route '/admin/reports/{record}'
+* @see \App\Filament\Resources\Reports\Pages\EditReport::__invoke
+* @see app/Filament/Resources/Reports/Pages/EditReport.php:7
+* @route '/admin/reports/{record}/edit'
 */
-viewForm.head = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-    action: view.url(args, {
+editForm.head = (args: { record: string | number } | [record: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: edit.url(args, {
         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
             _method: 'HEAD',
             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -258,12 +258,12 @@ viewForm.head = (args: { record: string | number } | [record: string | number ] 
     method: 'get',
 })
 
-view.form = viewForm
+edit.form = editForm
 
 const reports = {
     index: Object.assign(index, index),
     create: Object.assign(create, create),
-    view: Object.assign(view, view),
+    edit: Object.assign(edit, edit),
 }
 
 export default reports
