@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\CompleteProfileController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PsychologistAppointmentController;
@@ -34,6 +35,9 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('profile', [UserProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('profile', [UserProfileController::class, 'update'])->name('profile.update');
+    
     Route::get('dashboard', [DashboardController::class, 'show'])->name('dashboard');
     Route::get('psychologist-profile', [DashboardController::class, 'editPsychologistProfile'])
         ->name('psychologist.profile.edit');

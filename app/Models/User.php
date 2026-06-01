@@ -29,6 +29,7 @@ class User extends Authenticatable implements FilamentUser
         'address',
         'password',
         'google_id', // Tambahan google_id kamu
+        'photo_url',
     ];
 
     /**
