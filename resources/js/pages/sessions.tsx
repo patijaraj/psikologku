@@ -437,7 +437,7 @@ export default function Sessions({
                                         </div>
                                         <div className="my-2 h-px bg-[#f2f4f6]" />
                                         <Link
-                                            href="/profile"
+                                            href="/user-profile"
                                             className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#191c1e] transition-colors hover:bg-[#f7f9fb]"
                                             onClick={() =>
                                                 setIsUserMenuOpen(false)
