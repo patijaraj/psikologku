@@ -423,7 +423,6 @@ function ListingView({
                                 image={defaultAvatar}
                             />
                         ))}
-                        <ReferralCard />
                     </div>
                 ) : (
                     <div className="flex min-h-[320px] flex-col items-center justify-center rounded-3xl border border-dashed border-[#c1c7d3] bg-white p-8 text-center">
@@ -557,28 +556,7 @@ function TherapistCard({
     );
 }
 
-function ReferralCard() {
-    return (
-        <article className="flex min-h-[466px] flex-col items-center justify-center rounded-2xl border border-dashed border-[#d8dde5] bg-white p-8 text-center">
-            <span className="mb-6 flex size-16 items-center justify-center rounded-full bg-[#f2f4f6] text-[#717783]">
-                <ShieldQuestion className="h-8 w-8" />
-            </span>
-            <h2 className="m-0 text-xl font-black text-[#191c1e]">
-                Belum menemukan yang cocok?
-            </h2>
-            <p className="m-0 mt-3 text-sm leading-relaxed font-medium text-[#717783]">
-                Ceritakan kebutuhan Anda dan tim kami akan membantu memilih
-                therapist yang sesuai.
-            </p>
-            <button
-                type="button"
-                className="mt-8 h-14 w-full cursor-pointer rounded-xl border-2 border-[#1464BC] bg-white text-base font-bold text-[#1464BC] transition-colors hover:bg-[#eef5fe]"
-            >
-                Get a Referral
-            </button>
-        </article>
-    );
-}
+
 
 // Helper for date generation
 function getNext14Days(schedules?: Schedule[]) {
