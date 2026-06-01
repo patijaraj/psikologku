@@ -1,4 +1,5 @@
 import { Head, Link, usePage } from '@inertiajs/react';
+import {
     Activity,
     AlertCircle,
     Brain,
@@ -16,6 +17,7 @@ import { Head, Link, usePage } from '@inertiajs/react';
     Smile,
     Star,
     UserCheck,
+} from 'lucide-react';
 import { dashboard, login, register } from '@/routes';
 
 type Props = {
