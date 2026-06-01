@@ -20,7 +20,7 @@ import {
     Star,
     X,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
 import { logout, dashboard } from '@/routes';
 import userProfile from '@/routes/user-profile';
@@ -92,11 +92,9 @@ export default function Dashboard({
     ];
 
     const [quote, setQuote] = useState(quotesIndo[0]);
-
-    const handleRefresh = () => {
-        const randomIndex = Math.floor(Math.random() * quotesIndo.length);
-        setQuote(quotesIndo[randomIndex]);
-    };
+    useEffect(() => {
+        setQuote(quotesIndo[Math.floor(Math.random() * quotesIndo.length)]);
+    }, []);
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -418,26 +416,7 @@ export default function Dashboard({
                                     </p>
                                 </div>
 
-                                <button
-                                    type="button"
-                                    onClick={handleRefresh}
-                                    className="mt-2 flex cursor-pointer items-center gap-2 rounded-xl bg-[#f2f4f6] px-5 py-2.5 text-sm font-bold text-[#1464BC] transition-all hover:bg-[#eef5fe] active:scale-95"
-                                >
-                                    <svg
-                                        className="h-4 w-4"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-                                        />
-                                    </svg>
-                                    Refresh Inspirasi
-                                </button>
+
                             </div>
                         </section>
                     </div>
