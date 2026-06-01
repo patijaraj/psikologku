@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import InputError from '@/components/input-error';
 import { Spinner } from '@/components/ui/spinner';
 import { dashboard } from '@/routes';
-import profile from '@/routes/profile';
+import userProfile from '@/routes/user-profile';
 
 interface User {
     name: string;
@@ -64,7 +64,7 @@ export default function EditProfile({ user }: { user: User }) {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(profile.update(), {
+        post(userProfile.update(), {
             preserveScroll: true,
             onSuccess: () => {
                 // Handle success

@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../wayfinder'
 /**
 * @see \App\Http\Controllers\UserProfileController::edit
 * @see app/Http/Controllers/UserProfileController.php:11
@@ -136,6 +136,9 @@ updateForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => 
 
 update.form = updateForm
 
-const UserProfileController = { edit, update }
+const userProfile = {
+    edit: Object.assign(edit, edit),
+    update: Object.assign(update, update),
+}
 
-export default UserProfileController
+export default userProfile

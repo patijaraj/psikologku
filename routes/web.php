@@ -35,9 +35,9 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('profile', [UserProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('profile', [UserProfileController::class, 'update'])->name('profile.update');
-    
+    Route::get('user-profile', [UserProfileController::class, 'edit'])->name('user-profile.edit');
+    Route::post('user-profile', [UserProfileController::class, 'update'])->name('user-profile.update');
+
     Route::get('dashboard', [DashboardController::class, 'show'])->name('dashboard');
     Route::get('psychologist-profile', [DashboardController::class, 'editPsychologistProfile'])
         ->name('psychologist.profile.edit');
