@@ -40,9 +40,11 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'auth' => [
                 'user' => $request->user() ? array_merge($request->user()->toArray(), [
-                    'photo_url' => $request->user()->isPsychologist() ? $request->user()->psychologistProfile?->photo_url : null,
+                    'photo_url' => $request->user()->isPsychologist()
+                        ? $request->user()->psychologistProfile?->photo_url
+                        : $request->user()->photo_url,
                     'notifications' => $request->user()->unreadNotifications()
-                        ->where('type', '!=', 'Filament\Notifications\DatabaseNotification')
+                        ->where('type', '!=', 'Filament\\Notifications\\DatabaseNotification')
                         ->take(5)->get(),
                 ]) : null,
             ],
