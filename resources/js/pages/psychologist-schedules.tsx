@@ -7,7 +7,7 @@ import {
     Menu,
     MessageSquare,
     Plus,
-    Settings,
+    User,
     Smile,
     Trash2,
     X,
@@ -203,7 +203,7 @@ export default function PsychologistSchedules({
                                             className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#191c1e] transition-colors hover:bg-[#f7f9fb]"
                                         >
                                             <span className="flex size-9 items-center justify-center rounded-xl bg-[#eef5fe] text-[#1464BC]">
-                                                <Settings className="h-5 w-5" />
+                                                <User className="h-5 w-5" />
                                             </span>
                                             Profile
                                         </Link>

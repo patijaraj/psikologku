@@ -20,7 +20,9 @@ export default function CustomerService() {
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePhotoChange = async (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
@@ -50,9 +52,9 @@ export default function CustomerService() {
 
             if (uploadError) throw uploadError;
 
-            const { data: { publicUrl } } = supabase.storage
-                .from('avatars')
-                .getPublicUrl(filePath);
+            const {
+                data: { publicUrl },
+            } = supabase.storage.from('avatars').getPublicUrl(filePath);
 
             setPhotoUrl(publicUrl);
         } catch (err: any) {
@@ -88,23 +90,27 @@ export default function CustomerService() {
 
         setProcessing(true);
 
-        router.post('/customer-service', {
-            title,
-            content,
-            image_url: photoUrl ?? '',
-        }, {
-            onSuccess: () => {
-                setTitle('');
-                setContent('');
-                setPreviewUrl(null);
-                setPhotoUrl(null);
-                setProcessing(false);
+        router.post(
+            '/customer-service',
+            {
+                title,
+                content,
+                image_url: photoUrl ?? '',
             },
-            onError: (errs) => {
-                setErrors(errs as Record<string, string>);
-                setProcessing(false);
+            {
+                onSuccess: () => {
+                    setTitle('');
+                    setContent('');
+                    setPreviewUrl(null);
+                    setPhotoUrl(null);
+                    setProcessing(false);
+                },
+                onError: (errs) => {
+                    setErrors(errs as Record<string, string>);
+                    setProcessing(false);
+                },
             },
-        });
+        );
     };
 
     return (
@@ -192,12 +198,20 @@ export default function CustomerService() {
                             </label>
 
                             {!previewUrl ? (
-                                <label className={`group flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#e2e4e6] bg-[#f7f9fb] py-8 transition-colors ${isUploading ? 'cursor-not-allowed opacity-70' : 'hover:border-[#1464BC] hover:bg-[#eef5fe]'}`}>
+                                <label
+                                    className={`group flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#e2e4e6] bg-[#f7f9fb] py-8 transition-colors ${isUploading ? 'cursor-not-allowed opacity-70' : 'hover:border-[#1464BC] hover:bg-[#eef5fe]'}`}
+                                >
                                     <div className="flex size-12 items-center justify-center rounded-full bg-white text-[#717783] shadow-sm transition-colors group-hover:text-[#1464BC]">
-                                        {isUploading ? <Spinner className="h-5 w-5" /> : <UploadCloud className="h-5 w-5" />}
+                                        {isUploading ? (
+                                            <Spinner className="h-5 w-5" />
+                                        ) : (
+                                            <UploadCloud className="h-5 w-5" />
+                                        )}
                                     </div>
                                     <span className="mt-3 text-[14px] font-semibold text-[#191c1e]">
-                                        {isUploading ? 'Mengunggah...' : 'Klik untuk mengunggah foto'}
+                                        {isUploading
+                                            ? 'Mengunggah...'
+                                            : 'Klik untuk mengunggah foto'}
                                     </span>
                                     <span className="mt-1 text-[13px] text-[#717783]">
                                         Format JPG/PNG, Maks. 2MB
@@ -249,7 +263,11 @@ export default function CustomerService() {
                                 disabled={processing || isUploading}
                                 className="w-full rounded-xl bg-[#1464BC] px-6 py-4 text-[15px] font-bold text-white shadow-sm transition-colors hover:bg-[#104b8d] disabled:cursor-not-allowed disabled:opacity-70"
                             >
-                                {processing ? 'Mengirim...' : isUploading ? 'Tunggu, foto sedang diunggah...' : 'Kirim Laporan'}
+                                {processing
+                                    ? 'Mengirim...'
+                                    : isUploading
+                                      ? 'Tunggu, foto sedang diunggah...'
+                                      : 'Kirim Laporan'}
                             </button>
                         </div>
                     </form>

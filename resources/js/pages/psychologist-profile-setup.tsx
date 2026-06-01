@@ -81,7 +81,9 @@ export default function PsychologistProfileSetup({
         profile?.signature_path ?? null,
     );
     const [isSignatureUploading, setIsSignatureUploading] = useState(false);
-    const [signatureUploadError, setSignatureUploadError] = useState<string | null>(null);
+    const [signatureUploadError, setSignatureUploadError] = useState<
+        string | null
+    >(null);
 
     const [selectedProfession, setSelectedProfession] = useState<string>(
         profile?.profession ?? 'Psikolog Klinis',
@@ -175,7 +177,9 @@ export default function PsychologistProfileSetup({
             setSignaturePath(publicUrl);
         } catch (error: any) {
             console.error('Error uploading signature:', error);
-            setSignatureUploadError(error.message || 'Gagal mengunggah tanda tangan.');
+            setSignatureUploadError(
+                error.message || 'Gagal mengunggah tanda tangan.',
+            );
         } finally {
             setIsSignatureUploading(false);
         }
@@ -380,13 +384,23 @@ export default function PsychologistProfileSetup({
                                     <select
                                         name="profession"
                                         value={selectedProfession}
-                                        onChange={(e) => setSelectedProfession(e.target.value)}
+                                        onChange={(e) =>
+                                            setSelectedProfession(
+                                                e.target.value,
+                                            )
+                                        }
                                         className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                     >
-                                        <option value="Psikolog Klinis">Psikolog Klinis</option>
-                                        <option value="Psikiater">Psikiater</option>
+                                        <option value="Psikolog Klinis">
+                                            Psikolog Klinis
+                                        </option>
+                                        <option value="Psikiater">
+                                            Psikiater
+                                        </option>
                                     </select>
-                                    <InputError message={errors.profession as string} />
+                                    <InputError
+                                        message={errors.profession as string}
+                                    />
                                 </div>
 
                                 <div className="flex flex-col gap-1.5">
@@ -424,17 +438,25 @@ export default function PsychologistProfileSetup({
                                         htmlFor="str_number"
                                         className="ml-1 text-[13px] font-semibold text-[#191c1e]"
                                     >
-                                        {selectedProfession === 'Psikiater' ? 'Nomor STR' : 'Nomor STRPK'}
+                                        {selectedProfession === 'Psikiater'
+                                            ? 'Nomor STR'
+                                            : 'Nomor STRPK'}
                                     </label>
                                     <input
                                         id="str_number"
                                         name="str_number"
                                         type="text"
                                         defaultValue={profile?.str_number ?? ''}
-                                        placeholder={selectedProfession === 'Psikiater' ? "Contoh: STR-123456789" : "Contoh: STRPK-123456789"}
+                                        placeholder={
+                                            selectedProfession === 'Psikiater'
+                                                ? 'Contoh: STR-123456789'
+                                                : 'Contoh: STRPK-123456789'
+                                        }
                                         className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                     />
-                                    <InputError message={errors.str_number as string} />
+                                    <InputError
+                                        message={errors.str_number as string}
+                                    />
                                 </div>
 
                                 {selectedProfession === 'Psikiater' && (
@@ -453,7 +475,9 @@ export default function PsychologistProfileSetup({
                                             placeholder="Contoh: SIP-123456"
                                             className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                         />
-                                        <InputError message={errors.sipp as string} />
+                                        <InputError
+                                            message={errors.sipp as string}
+                                        />
                                     </div>
                                 )}
 
@@ -473,7 +497,9 @@ export default function PsychologistProfileSetup({
                                             placeholder="Contoh: SIPPK-123456"
                                             className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                         />
-                                        <InputError message={errors.sippk as string} />
+                                        <InputError
+                                            message={errors.sippk as string}
+                                        />
                                     </div>
                                 )}
 
@@ -505,8 +531,13 @@ export default function PsychologistProfileSetup({
                                                     <div className="flex size-12 items-center justify-center rounded-full bg-blue-50 text-[#1464BC]">
                                                         <Upload className="size-5" />
                                                     </div>
-                                                    <span className="text-sm font-semibold text-[#1464BC]">Klik untuk mengunggah</span>
-                                                    <span className="text-xs text-[#717783]">Atau seret & lepas file di sini</span>
+                                                    <span className="text-sm font-semibold text-[#1464BC]">
+                                                        Klik untuk mengunggah
+                                                    </span>
+                                                    <span className="text-xs text-[#717783]">
+                                                        Atau seret & lepas file
+                                                        di sini
+                                                    </span>
                                                 </label>
                                             )}
                                             {isSignatureUploading && (
@@ -528,7 +559,11 @@ export default function PsychologistProfileSetup({
                                                 {signatureUploadError}
                                             </span>
                                         )}
-                                        <InputError message={errors.signature_path as string} />
+                                        <InputError
+                                            message={
+                                                errors.signature_path as string
+                                            }
+                                        />
                                     </div>
                                 </div>
 

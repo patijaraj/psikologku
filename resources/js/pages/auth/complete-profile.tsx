@@ -57,7 +57,10 @@ export default function CompleteProfile() {
                     method="put"
                     transform={(data) => ({
                         ...data,
-                        gender: genderSelect === 'Lainnya' ? customGender : genderSelect,
+                        gender:
+                            genderSelect === 'Lainnya'
+                                ? customGender
+                                : genderSelect,
                         birthplace,
                         address,
                     })}
@@ -101,7 +104,9 @@ export default function CompleteProfile() {
                                     required
                                     placeholder="Jakarta"
                                     value={birthplace}
-                                    onChange={(e) => setBirthplace(e.target.value)}
+                                    onChange={(e) =>
+                                        setBirthplace(e.target.value)
+                                    }
                                     className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white/90 px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                 />
                                 <InputError message={errors.birthplace} />
@@ -126,13 +131,19 @@ export default function CompleteProfile() {
                                     aria-label="Jenis Kelamin"
                                     required
                                     value={genderSelect}
-                                    onChange={(e) => setGenderSelect(e.target.value)}
+                                    onChange={(e) =>
+                                        setGenderSelect(e.target.value)
+                                    }
                                     className="h-12 w-full cursor-pointer rounded-[14px] border border-[#e2e4e6] bg-white/90 px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                 >
-                                    <option value="" disabled hidden>Pilih</option>
+                                    <option value="" disabled hidden>
+                                        Pilih
+                                    </option>
                                     <option value="Laki-laki">Laki-laki</option>
                                     <option value="Perempuan">Perempuan</option>
-                                    <option value="Lainnya">Lainnya (Isi sendiri)</option>
+                                    <option value="Lainnya">
+                                        Lainnya (Isi sendiri)
+                                    </option>
                                 </select>
                                 {genderSelect === 'Lainnya' && (
                                     <input
@@ -140,7 +151,9 @@ export default function CompleteProfile() {
                                         placeholder="Sebutkan jenis kelamin"
                                         required
                                         value={customGender}
-                                        onChange={(e) => setCustomGender(e.target.value)}
+                                        onChange={(e) =>
+                                            setCustomGender(e.target.value)
+                                        }
                                         className="mt-2 h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white/90 px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                     />
                                 )}
@@ -148,7 +161,10 @@ export default function CompleteProfile() {
                             </div>
 
                             <div className="flex flex-col gap-1.5">
-                                <label htmlFor="address" className="ml-1 text-[13px] font-semibold text-[#191c1e]">
+                                <label
+                                    htmlFor="address"
+                                    className="ml-1 text-[13px] font-semibold text-[#191c1e]"
+                                >
                                     Alamat Lengkap
                                 </label>
                                 <textarea

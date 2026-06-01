@@ -38,7 +38,8 @@ export default function VerifyEmail({ status }: { status?: string }) {
                             Verify your identity.
                         </h2>
                         <p className="mb-8 pr-4 text-sm font-light text-blue-100/90 md:text-base">
-                            We just need to make sure it's really you. Please check your inbox for a verification link.
+                            We just need to make sure it's really you. Please
+                            check your inbox for a verification link.
                         </p>
                     </div>
                 </div>
@@ -50,12 +51,15 @@ export default function VerifyEmail({ status }: { status?: string }) {
                     </h1>
 
                     <p className="mb-8 text-sm text-gray-500">
-                        Please verify your email address by clicking on the link we just emailed to you. If you didn't receive the email, we will gladly send you another.
+                        Please verify your email address by clicking on the link
+                        we just emailed to you. If you didn't receive the email,
+                        we will gladly send you another.
                     </p>
 
                     {status === 'verification-link-sent' && (
                         <div className="mb-6 rounded-xl bg-green-50 p-4 text-sm font-medium text-green-700">
-                            A new verification link has been sent to the email address you provided during registration.
+                            A new verification link has been sent to the email
+                            address you provided during registration.
                         </div>
                     )}
 
@@ -68,7 +72,9 @@ export default function VerifyEmail({ status }: { status?: string }) {
                                         className="w-full rounded-xl bg-[#1464BC] py-6 font-semibold text-white shadow-lg shadow-blue-900/20 transition-all hover:bg-[#1053A0]"
                                         disabled={processing}
                                     >
-                                        {processing && <Spinner className="mr-2 h-4 w-4" />}
+                                        {processing && (
+                                            <Spinner className="mr-2 h-4 w-4" />
+                                        )}
                                         Resend Verification Email
                                     </Button>
 

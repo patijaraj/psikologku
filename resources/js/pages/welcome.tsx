@@ -74,7 +74,8 @@ const mainServices: Service[] = [
     {
         icon: FileText,
         title: 'Rekam Medis Tersimpan',
-        description: 'Akses hasil dan catatan konsultasi kapan saja dengan aman',
+        description:
+            'Akses hasil dan catatan konsultasi kapan saja dengan aman',
         color: 'bg-violet-50 text-violet-600',
     },
     {
@@ -230,7 +231,9 @@ export default function Welcome({ canRegister = true }: Props) {
                                 </div>
 
                                 <div>
-                                    <h3 className="mb-3 text-sm font-bold text-gray-900">Spesialisasi</h3>
+                                    <h3 className="mb-3 text-sm font-bold text-gray-900">
+                                        Spesialisasi
+                                    </h3>
                                     <div className="flex flex-wrap gap-3">
                                         {specializations.map((topic) => {
                                             const Icon = topic.icon;
@@ -408,14 +411,23 @@ export default function Welcome({ canRegister = true }: Props) {
                             <FooterColumn
                                 title="Layanan"
                                 links={[
-                                    { label: 'Pilih Psikolog', href: primaryAction },
-                                    { label: 'Buat Janji', href: primaryAction },
+                                    {
+                                        label: 'Pilih Psikolog',
+                                        href: primaryAction,
+                                    },
+                                    {
+                                        label: 'Buat Janji',
+                                        href: primaryAction,
+                                    },
                                 ]}
                             />
                             <FooterColumn
                                 title="Bantuan"
                                 links={[
-                                    { label: 'Hubungi CS', href: 'mailto:support@psikologku.com' },
+                                    {
+                                        label: 'Hubungi CS',
+                                        href: 'mailto:support@psikologku.com',
+                                    },
                                     { label: 'Pusat Bantuan', href: '#' },
                                 ]}
                             />
@@ -434,13 +446,23 @@ export default function Welcome({ canRegister = true }: Props) {
     );
 }
 
-function FooterColumn({ title, links }: { title: string; links: { label: string; href: any }[] }) {
+function FooterColumn({
+    title,
+    links,
+}: {
+    title: string;
+    links: { label: string; href: any }[];
+}) {
     return (
         <div className="flex flex-col gap-4">
             <h4 className="text-base font-bold">{title}</h4>
             {links.map((link) => {
                 const hrefString = String(link.href || '');
-                if (hrefString.startsWith('http') || hrefString.startsWith('mailto:') || hrefString === '#') {
+                if (
+                    hrefString.startsWith('http') ||
+                    hrefString.startsWith('mailto:') ||
+                    hrefString === '#'
+                ) {
                     return (
                         <a
                             key={link.label}

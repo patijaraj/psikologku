@@ -11,6 +11,8 @@ import {
     MessageSquare,
     ShieldCheck,
     Smile,
+    User,
+    LogOut,
     Wallet,
     X,
     Star,
@@ -92,6 +94,8 @@ export default function Payment({
     const [snapError, setSnapError] = useState<string | null>(null);
     const { auth } = usePage().props;
     const userName = auth.user?.name ?? 'Sarah';
+    const userEmail = auth.user?.email ?? 'sarah@example.com';
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const configurationError = clientKey
         ? null
         : 'Client key Midtrans belum dikonfigurasi.';
@@ -206,17 +210,83 @@ export default function Payment({
                             <NotificationDropdown />
                         </div>
                         <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
-                        <button
-                            type="button"
-                            aria-label="Profil"
-                            className="flex shrink-0 cursor-pointer items-center rounded-full border-none bg-transparent p-1 transition-all hover:ring-2 hover:ring-[#e2e4e6]"
-                        >
-                            <InitialsAvatar
-                                name={userName}
-                                photoUrl={(auth.user as any)?.photo_url}
-                                className="size-9"
-                            />
-                        </button>
+                        <div className="relative flex items-center">
+                            <button
+                                type="button"
+                                aria-label="Profil"
+                                aria-expanded={isUserMenuOpen}
+                                className={`flex shrink-0 cursor-pointer items-center rounded-full border-none bg-transparent p-1 transition-all ${
+                                    isUserMenuOpen
+                                        ? 'ring-2 ring-[#1464BC]/20'
+                                        : 'hover:ring-2 hover:ring-[#e2e4e6]'
+                                }`}
+                                onClick={() => {
+                                    setIsUserMenuOpen(!isUserMenuOpen);
+                                    setIsMobileMenuOpen(false);
+                                }}
+                            >
+                                <InitialsAvatar
+                                    name={userName}
+                                    photoUrl={(auth.user as any)?.photo_url}
+                                    className="size-9"
+                                />
+                            </button>
+
+                            {isUserMenuOpen && (
+                                <>
+                                    <button
+                                        type="button"
+                                        aria-label="Tutup menu profil"
+                                        className="fixed inset-0 z-40 cursor-default border-none bg-transparent"
+                                        onClick={() => setIsUserMenuOpen(false)}
+                                    />
+                                    <div className="absolute top-[52px] right-0 z-50 w-[260px] overflow-hidden rounded-3xl border border-[#e2e4e6] bg-white p-2 shadow-[0px_20px_48px_-18px_rgba(25,28,30,0.35)]">
+                                        <div className="flex items-center gap-3 rounded-2xl bg-[#f7f9fb] p-3">
+                                            <InitialsAvatar
+                                                name={userName}
+                                                photoUrl={
+                                                    (auth.user as any)
+                                                        ?.photo_url
+                                                }
+                                                className="size-11 text-base"
+                                            />
+                                            <div className="min-w-0">
+                                                <p className="m-0 truncate text-sm font-bold text-[#191c1e]">
+                                                    {userName}
+                                                </p>
+                                                <p className="m-0 mt-0.5 truncate text-xs font-medium text-[#717783]">
+                                                    {userEmail}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="my-2 h-px bg-[#f2f4f6]" />
+
+                                        <Link
+                                            href="/profile"
+                                            className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#191c1e] transition-colors hover:bg-[#f7f9fb]"
+                                        >
+                                            <span className="flex size-9 items-center justify-center rounded-xl bg-[#eef5fe] text-[#1464BC]">
+                                                <User className="h-5 w-5" />
+                                            </span>
+                                            Profile
+                                        </Link>
+
+                                        <Link
+                                            href={logout()}
+                                            as="button"
+                                            method="post"
+                                            className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#b02a2a] transition-colors hover:bg-[#feecec]"
+                                        >
+                                            <span className="flex size-9 items-center justify-center rounded-xl bg-[#feecec] text-[#b02a2a]">
+                                                <LogOut className="h-5 w-5" />
+                                            </span>
+                                            Log out
+                                        </Link>
+                                    </div>
+                                </>
+                            )}
+                        </div>
                         <button
                             type="button"
                             aria-label="Buka menu"

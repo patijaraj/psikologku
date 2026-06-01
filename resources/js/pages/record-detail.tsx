@@ -22,7 +22,7 @@ import {
     Edit3,
     Users,
     Coffee,
-    Moon
+    Moon,
 } from 'lucide-react';
 import { useState } from 'react';
 import { InitialsAvatar } from '@/components/initials-avatar';
@@ -40,7 +40,11 @@ type RecordDetail = {
     record_recommendation?: string;
     diagnostic_focus?: string;
     patient_state?: string[];
-    structured_recommendations?: { title: string; description: string; type: string }[];
+    structured_recommendations?: {
+        title: string;
+        description: string;
+        type: string;
+    }[];
     rating: number | null;
     review: string | null;
     has_referral_letter?: boolean;
@@ -207,6 +211,15 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                                         </div>
                                         <div className="my-2 h-px bg-[#f2f4f6]" />
                                         <Link
+                                            href="/profile"
+                                            className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#191c1e] transition-colors hover:bg-[#f7f9fb]"
+                                        >
+                                            <span className="flex size-9 items-center justify-center rounded-xl bg-[#eef5fe] text-[#1464BC]">
+                                                <User className="h-5 w-5" />
+                                            </span>
+                                            Profile
+                                        </Link>
+                                        <Link
                                             href={logout()}
                                             as="button"
                                             className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#b02a2a] transition-colors hover:bg-[#feecec]"
@@ -254,8 +267,8 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                 )}
             </nav>
 
-            <main className="mx-auto flex max-w-[900px] flex-col gap-6 px-4 py-8 sm:px-8 md:py-12 print:max-w-none print:py-0 print:px-0">
-                <div className="flex items-center justify-between print-hide">
+            <main className="mx-auto flex max-w-[900px] flex-col gap-6 px-4 py-8 sm:px-8 md:py-12 print:max-w-none print:px-0 print:py-0">
+                <div className="print-hide flex items-center justify-between">
                     <Link
                         href="/records"
                         className="inline-flex w-fit items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-bold text-[#717783] shadow-sm transition-colors hover:text-[#191c1e]"
@@ -288,23 +301,31 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                 </div>
 
                 {/* Document Header (Print Only) */}
-                <div className="hidden print:flex justify-between items-center mb-8 border-b-2 border-[#191c1e] pb-4">
+                <div className="mb-8 hidden items-center justify-between border-b-2 border-[#191c1e] pb-4 print:flex">
                     <div className="flex items-center gap-3">
                         <div className="flex size-10 items-center justify-center rounded-xl bg-[#1464BC] text-white">
                             <Smile className="h-6 w-6" />
                         </div>
                         <div>
-                            <h1 className="text-2xl font-black text-[#1464BC] m-0 tracking-tight">Psikologku</h1>
-                            <p className="text-xs font-semibold text-[#717783] m-0">Platform Konseling Psikologi Profesional</p>
+                            <h1 className="m-0 text-2xl font-black tracking-tight text-[#1464BC]">
+                                Psikologku
+                            </h1>
+                            <p className="m-0 text-xs font-semibold text-[#717783]">
+                                Platform Konseling Psikologi Profesional
+                            </p>
                         </div>
                     </div>
                     <div className="text-right">
-                        <h2 className="text-lg font-black text-[#191c1e] m-0 uppercase tracking-widest">Medical Report</h2>
-                        <p className="text-sm font-medium text-[#717783] m-0">Doc Ref: #{record.id.toString().padStart(6, '0')}</p>
+                        <h2 className="m-0 text-lg font-black tracking-widest text-[#191c1e] uppercase">
+                            Medical Report
+                        </h2>
+                        <p className="m-0 text-sm font-medium text-[#717783]">
+                            Doc Ref: #{record.id.toString().padStart(6, '0')}
+                        </p>
                     </div>
                 </div>
 
-                <div className="overflow-hidden rounded-3xl bg-white shadow-sm print-container print:rounded-none">
+                <div className="print-container overflow-hidden rounded-3xl bg-white shadow-sm print:rounded-none">
                     {/* Header Section */}
                     <div className="border-b border-[#f2f4f6] bg-[#fdfefe] p-6 sm:p-8">
                         <div className="mb-6 flex items-start justify-between print:hidden">
@@ -313,7 +334,8 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                                     Evaluation Report
                                 </h1>
                                 <p className="m-0 mt-2 text-sm font-medium text-[#717783]">
-                                    Laporan hasil evaluasi konsultasi profesional Anda.
+                                    Laporan hasil evaluasi konsultasi
+                                    profesional Anda.
                                 </p>
                             </div>
                             <div className="hidden size-12 items-center justify-center rounded-2xl bg-[#eef5fe] text-[#1464BC] sm:flex">
@@ -321,7 +343,7 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                             </div>
                         </div>
 
-                        <div className="grid gap-4 rounded-2xl bg-[#f7f9fb] p-5 sm:grid-cols-2 print:bg-white print:border print:border-[#e2e4e6]">
+                        <div className="grid gap-4 rounded-2xl bg-[#f7f9fb] p-5 sm:grid-cols-2 print:border print:border-[#e2e4e6] print:bg-white">
                             <div className="flex items-center gap-4">
                                 <InitialsAvatar
                                     name={record.psychologist_name}
@@ -363,23 +385,32 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
 
                     {/* Content Section */}
                     <div className="flex flex-col gap-8 p-6 sm:p-8">
-                        
                         {/* New Fields: Patient State & Diagnostic Focus */}
-                        <div className="grid gap-6 md:grid-cols-2 print-break-inside-avoid">
+                        <div className="print-break-inside-avoid grid gap-6 md:grid-cols-2">
                             <div className="rounded-2xl border border-[#e2e4e6] bg-[#fdfefe] p-5">
                                 <div className="mb-3 flex items-center gap-2">
                                     <AlertCircle className="h-4 w-4 text-[#1464BC]" />
-                                    <h3 className="m-0 text-sm font-black text-[#191c1e] uppercase tracking-wide">Patient State</h3>
+                                    <h3 className="m-0 text-sm font-black tracking-wide text-[#191c1e] uppercase">
+                                        Patient State
+                                    </h3>
                                 </div>
                                 <div className="flex flex-wrap gap-2">
-                                    {record.patient_state && record.patient_state.length > 0 ? (
-                                        record.patient_state.map((state, idx) => (
-                                            <span key={idx} className="inline-flex items-center rounded-lg bg-[#eef5fe] px-2.5 py-1 text-xs font-bold text-[#1464BC]">
-                                                {state}
-                                            </span>
-                                        ))
+                                    {record.patient_state &&
+                                    record.patient_state.length > 0 ? (
+                                        record.patient_state.map(
+                                            (state, idx) => (
+                                                <span
+                                                    key={idx}
+                                                    className="inline-flex items-center rounded-lg bg-[#eef5fe] px-2.5 py-1 text-xs font-bold text-[#1464BC]"
+                                                >
+                                                    {state}
+                                                </span>
+                                            ),
+                                        )
                                     ) : (
-                                        <span className="text-sm text-[#717783] italic">No state recorded.</span>
+                                        <span className="text-sm text-[#717783] italic">
+                                            No state recorded.
+                                        </span>
                                     )}
                                 </div>
                             </div>
@@ -387,10 +418,16 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                             <div className="rounded-2xl border border-[#e2e4e6] bg-[#fdfefe] p-5">
                                 <div className="mb-3 flex items-center gap-2">
                                     <Activity className="h-4 w-4 text-[#1464BC]" />
-                                    <h3 className="m-0 text-sm font-black text-[#191c1e] uppercase tracking-wide">Diagnostic Focus</h3>
+                                    <h3 className="m-0 text-sm font-black tracking-wide text-[#191c1e] uppercase">
+                                        Diagnostic Focus
+                                    </h3>
                                 </div>
                                 <p className="m-0 text-[15px] font-semibold text-[#191c1e]">
-                                    {record.diagnostic_focus || <span className="text-sm font-normal text-[#717783] italic">None specified.</span>}
+                                    {record.diagnostic_focus || (
+                                        <span className="text-sm font-normal text-[#717783] italic">
+                                            None specified.
+                                        </span>
+                                    )}
                                 </p>
                             </div>
                         </div>
@@ -422,50 +459,73 @@ export default function RecordDetailView({ record }: RecordDetailProps) {
                                     Treatment Plan & Recommendations
                                 </h2>
                             </div>
-                            
-                            {record.structured_recommendations && record.structured_recommendations.length > 0 ? (
+
+                            {record.structured_recommendations &&
+                            record.structured_recommendations.length > 0 ? (
                                 <div className="grid gap-4 sm:grid-cols-2">
-                                    {record.structured_recommendations.map((rec, idx) => (
-                                        <div key={idx} className="flex gap-4 rounded-2xl border border-[#e2e4e6] bg-[#f7f9fb] p-5 print:bg-white print:border-[#191c1e]">
-                                            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm border border-[#e2e4e6] print:border-[#191c1e]">
-                                                {getIconForType(rec.type)}
+                                    {record.structured_recommendations.map(
+                                        (rec, idx) => (
+                                            <div
+                                                key={idx}
+                                                className="flex gap-4 rounded-2xl border border-[#e2e4e6] bg-[#f7f9fb] p-5 print:border-[#191c1e] print:bg-white"
+                                            >
+                                                <div className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-[#e2e4e6] bg-white shadow-sm print:border-[#191c1e]">
+                                                    {getIconForType(rec.type)}
+                                                </div>
+                                                <div>
+                                                    <h4 className="m-0 mb-1 text-sm font-black text-[#191c1e]">
+                                                        {rec.title}
+                                                    </h4>
+                                                    <p className="m-0 text-sm leading-relaxed text-[#4a5568]">
+                                                        {rec.description}
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <h4 className="m-0 mb-1 text-sm font-black text-[#191c1e]">{rec.title}</h4>
-                                                <p className="m-0 text-sm leading-relaxed text-[#4a5568]">{rec.description}</p>
-                                            </div>
-                                        </div>
-                                    ))}
+                                        ),
+                                    )}
                                 </div>
                             ) : (
                                 <div className="rounded-2xl border border-[#e2e4e6] bg-[#fdfefe] p-5 print:border-none print:px-0">
                                     <p className="m-0 text-[15px] leading-relaxed whitespace-pre-wrap text-[#4a5568]">
-                                        {record.record_recommendation || <span className="italic text-[#717783]">No specific recommendations provided.</span>}
+                                        {record.record_recommendation || (
+                                            <span className="text-[#717783] italic">
+                                                No specific recommendations
+                                                provided.
+                                            </span>
+                                        )}
                                     </p>
                                 </div>
                             )}
                         </div>
 
                         {/* Signatures (Print Only) */}
-                        <div className="hidden print:flex mt-16 justify-between px-8">
+                        <div className="mt-16 hidden justify-between px-8 print:flex">
                             <div className="text-center">
                                 <div className="h-16"></div>
-                                <div className="border-t border-[#191c1e] w-48 mx-auto pt-2">
-                                    <p className="font-bold text-sm text-[#191c1e] m-0">{userName}</p>
-                                    <p className="text-xs text-[#717783] m-0">Patient</p>
+                                <div className="mx-auto w-48 border-t border-[#191c1e] pt-2">
+                                    <p className="m-0 text-sm font-bold text-[#191c1e]">
+                                        {userName}
+                                    </p>
+                                    <p className="m-0 text-xs text-[#717783]">
+                                        Patient
+                                    </p>
                                 </div>
                             </div>
                             <div className="text-center">
                                 <div className="h-16"></div>
-                                <div className="border-t border-[#191c1e] w-48 mx-auto pt-2">
-                                    <p className="font-bold text-sm text-[#191c1e] m-0">{record.psychologist_name}</p>
-                                    <p className="text-xs text-[#717783] m-0">Psychologist</p>
+                                <div className="mx-auto w-48 border-t border-[#191c1e] pt-2">
+                                    <p className="m-0 text-sm font-bold text-[#191c1e]">
+                                        {record.psychologist_name}
+                                    </p>
+                                    <p className="m-0 text-xs text-[#717783]">
+                                        Psychologist
+                                    </p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Review Section (Hidden in print) */}
-                        <div className="mt-4 border-t border-[#f2f4f6] pt-8 print-hide">
+                        <div className="print-hide mt-4 border-t border-[#f2f4f6] pt-8">
                             <div className="mb-4 flex items-center gap-3">
                                 <div className="flex size-8 items-center justify-center rounded-lg bg-[#fff8e6] text-[#f59e0b]">
                                     <Star className="h-4 w-4" />

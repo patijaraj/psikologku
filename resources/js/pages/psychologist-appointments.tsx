@@ -7,7 +7,7 @@ import {
     LogOut,
     Menu,
     MessageSquare,
-    Settings,
+    User,
     Smile,
     UserRound,
     X,
@@ -193,7 +193,7 @@ export default function PsychologistAppointments({
                                             }
                                         >
                                             <span className="flex size-9 items-center justify-center rounded-xl bg-[#eef5fe] text-[#1464BC]">
-                                                <Settings className="h-5 w-5" />
+                                                <User className="h-5 w-5" />
                                             </span>
                                             Profile
                                         </Link>
@@ -435,7 +435,9 @@ function AppointmentRow({ appointment }: { appointment: Appointment }) {
                         className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${
                             appointment.status === 'upcoming'
                                 ? 'bg-[#e1eef9] text-[#1464BC]'
-                                : ['due', 'ongoing'].includes(appointment.status)
+                                : ['due', 'ongoing'].includes(
+                                        appointment.status,
+                                    )
                                   ? 'bg-[#dcfce7] text-[#166534]'
                                   : appointment.status === 'overdue'
                                     ? 'bg-[#feecec] text-[#b02a2a]'

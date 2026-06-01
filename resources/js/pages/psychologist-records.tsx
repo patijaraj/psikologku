@@ -7,7 +7,7 @@ import {
     LogOut,
     Menu,
     MessageSquare,
-    Settings,
+    User,
     Smile,
     X,
     Edit3,
@@ -63,7 +63,9 @@ export default function PsychologistRecords({
 
     const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
     const [isReferralModalOpen, setIsReferralModalOpen] = useState(false);
-    const [selectedRecord, setSelectedRecord] = useState<RecordType | null>(null);
+    const [selectedRecord, setSelectedRecord] = useState<RecordType | null>(
+        null,
+    );
 
     const pendingRecords = records.filter((r) => r.status === 'Pending');
     const completedRecords = records.filter((r) => r.status === 'Selesai');
@@ -174,7 +176,7 @@ export default function PsychologistRecords({
                                             className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#191c1e] transition-colors hover:bg-[#f7f9fb]"
                                         >
                                             <span className="flex size-9 items-center justify-center rounded-xl bg-[#eef5fe] text-[#1464BC]">
-                                                <Settings className="h-5 w-5" />
+                                                <User className="h-5 w-5" />
                                             </span>
                                             Profile
                                         </Link>
@@ -250,7 +252,9 @@ export default function PsychologistRecords({
                                         <div className="flex items-center gap-4">
                                             <InitialsAvatar
                                                 name={record.patient_name}
-                                                photoUrl={record.patient_photo_url}
+                                                photoUrl={
+                                                    record.patient_photo_url
+                                                }
                                                 className="size-10 rounded-xl"
                                             />
                                             <div>
@@ -306,7 +310,9 @@ export default function PsychologistRecords({
                                         <div className="flex items-center gap-4">
                                             <InitialsAvatar
                                                 name={record.patient_name}
-                                                photoUrl={record.patient_photo_url}
+                                                photoUrl={
+                                                    record.patient_photo_url
+                                                }
                                                 className="size-10 rounded-xl"
                                             />
                                             <div>
@@ -386,7 +392,8 @@ export default function PsychologistRecords({
                     record_summary: selectedRecord?.record_summary || '',
                     diagnostic_focus: selectedRecord?.diagnostic_focus || '',
                     patient_state: selectedRecord?.patient_state || [],
-                    structured_recommendations: selectedRecord?.structured_recommendations || [],
+                    structured_recommendations:
+                        selectedRecord?.structured_recommendations || [],
                 }}
                 rating={selectedRecord?.rating}
                 review={selectedRecord?.review}

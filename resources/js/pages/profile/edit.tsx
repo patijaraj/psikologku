@@ -42,8 +42,12 @@ export default function EditProfile({ user }: { user: User }) {
     const userName = auth.user?.name ?? 'User';
 
     // Photo state — stores final Supabase public URL (like psychologist profile)
-    const [photoPreview, setPhotoPreview] = useState<string | null>(user.photo_url || null);
-    const [photoUrl, setPhotoUrl] = useState<string | null>(user.photo_url || null);
+    const [photoPreview, setPhotoPreview] = useState<string | null>(
+        user.photo_url || null,
+    );
+    const [photoUrl, setPhotoUrl] = useState<string | null>(
+        user.photo_url || null,
+    );
     const [isUploading, setIsUploading] = useState(false);
 
     // Form state
@@ -54,33 +58,56 @@ export default function EditProfile({ user }: { user: User }) {
 
     // Birthdate state
     const parsedDate = user.birthdate ? new Date(user.birthdate) : null;
-    const [birthDay, setBirthDay] = useState(parsedDate ? String(parsedDate.getDate()).padStart(2, '0') : '');
-    const [birthMonth, setBirthMonth] = useState(parsedDate ? String(parsedDate.getMonth() + 1).padStart(2, '0') : '');
-    const [birthYear, setBirthYear] = useState(parsedDate ? String(parsedDate.getFullYear()) : '');
+    const [birthDay, setBirthDay] = useState(
+        parsedDate ? String(parsedDate.getDate()).padStart(2, '0') : '',
+    );
+    const [birthMonth, setBirthMonth] = useState(
+        parsedDate ? String(parsedDate.getMonth() + 1).padStart(2, '0') : '',
+    );
+    const [birthYear, setBirthYear] = useState(
+        parsedDate ? String(parsedDate.getFullYear()) : '',
+    );
 
     // Gender state
-    const isCustomGender = user.gender && !['Laki-laki', 'Perempuan'].includes(user.gender);
-    const [genderSelect, setGenderSelect] = useState(isCustomGender ? 'Lainnya' : (user.gender || ''));
-    const [customGender, setCustomGender] = useState(isCustomGender ? user.gender : '');
+    const isCustomGender =
+        user.gender && !['Laki-laki', 'Perempuan'].includes(user.gender);
+    const [genderSelect, setGenderSelect] = useState(
+        isCustomGender ? 'Lainnya' : user.gender || '',
+    );
+    const [customGender, setCustomGender] = useState(
+        isCustomGender ? user.gender : '',
+    );
 
     // Errors & processing state (manual)
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
 
-    const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePhotoChange = async (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         const file = e.target.files?.[0];
         if (!file) return;
         if (!file.type.startsWith('image/')) {
-            setErrors(prev => ({ ...prev, photo: 'File harus berupa gambar.' }));
+            setErrors((prev) => ({
+                ...prev,
+                photo: 'File harus berupa gambar.',
+            }));
             return;
         }
         if (file.size > 2 * 1024 * 1024) {
-            setErrors(prev => ({ ...prev, photo: 'Ukuran gambar maksimal 2MB.' }));
+            setErrors((prev) => ({
+                ...prev,
+                photo: 'Ukuran gambar maksimal 2MB.',
+            }));
             return;
         }
 
         setIsUploading(true);
-        setErrors(prev => { const n = { ...prev }; delete n.photo; return n; });
+        setErrors((prev) => {
+            const n = { ...prev };
+            delete n.photo;
+            return n;
+        });
 
         // Show local preview immediately
         const reader = new FileReader();
@@ -98,15 +125,18 @@ export default function EditProfile({ user }: { user: User }) {
 
             if (uploadError) throw uploadError;
 
-            const { data: { publicUrl } } = supabase.storage
-                .from('avatars')
-                .getPublicUrl(filePath);
+            const {
+                data: { publicUrl },
+            } = supabase.storage.from('avatars').getPublicUrl(filePath);
 
             setPhotoUrl(publicUrl);
             setPhotoPreview(publicUrl);
         } catch (error: any) {
             console.error('Upload error:', error);
-            setErrors(prev => ({ ...prev, photo: error.message || 'Gagal mengunggah foto.' }));
+            setErrors((prev) => ({
+                ...prev,
+                photo: error.message || 'Gagal mengunggah foto.',
+            }));
         } finally {
             setIsUploading(false);
         }
@@ -205,7 +235,9 @@ export default function EditProfile({ user }: { user: User }) {
                             type="button"
                             aria-label="Buka menu"
                             className="cursor-pointer border-none bg-transparent p-1 text-[#717783] md:hidden"
-                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            onClick={() =>
+                                setIsMobileMenuOpen(!isMobileMenuOpen)
+                            }
                         >
                             {isMobileMenuOpen ? (
                                 <X className="h-6 w-6" />
@@ -277,7 +309,8 @@ export default function EditProfile({ user }: { user: User }) {
                             Profil Pengguna
                         </h2>
                         <p className="m-0 mt-2 text-sm leading-relaxed font-medium text-[#717783]">
-                            Isi data diri agar layanan konsultasi bisa digunakan.
+                            Isi data diri agar layanan konsultasi bisa
+                            digunakan.
                         </p>
                     </div>
 
@@ -317,8 +350,15 @@ export default function EditProfile({ user }: { user: User }) {
                                     }`}
                                 >
                                     {isUploading ? (
-                                        <><Spinner className="h-4 w-4" /> Mengunggah...</>
-                                    ) : photoPreview ? 'Ubah Foto' : 'Pilih Foto'}
+                                        <>
+                                            <Spinner className="h-4 w-4" />{' '}
+                                            Mengunggah...
+                                        </>
+                                    ) : photoPreview ? (
+                                        'Ubah Foto'
+                                    ) : (
+                                        'Pilih Foto'
+                                    )}
                                 </label>
                                 <input
                                     id="photo-upload"
@@ -410,7 +450,9 @@ export default function EditProfile({ user }: { user: User }) {
                                     type="text"
                                     required
                                     value={birthplace}
-                                    onChange={(e) => setBirthplace(e.target.value)}
+                                    onChange={(e) =>
+                                        setBirthplace(e.target.value)
+                                    }
                                     placeholder="Contoh: Jakarta"
                                     className="h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                 />
@@ -427,34 +469,46 @@ export default function EditProfile({ user }: { user: User }) {
                                 <select
                                     required
                                     value={birthDay}
-                                    onChange={(e) => setBirthDay(e.target.value)}
+                                    onChange={(e) =>
+                                        setBirthDay(e.target.value)
+                                    }
                                     className="h-12 w-full cursor-pointer rounded-[14px] border border-[#e2e4e6] bg-white px-3 text-[15px] text-[#191c1e] shadow-sm outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                 >
                                     <option value="">Tgl</option>
                                     {availableDays.map((d) => (
-                                        <option key={d} value={d}>{d}</option>
+                                        <option key={d} value={d}>
+                                            {d}
+                                        </option>
                                     ))}
                                 </select>
                                 <select
                                     required
                                     value={birthMonth}
-                                    onChange={(e) => setBirthMonth(e.target.value)}
+                                    onChange={(e) =>
+                                        setBirthMonth(e.target.value)
+                                    }
                                     className="h-12 w-full cursor-pointer rounded-[14px] border border-[#e2e4e6] bg-white px-3 text-[15px] text-[#191c1e] shadow-sm outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                 >
                                     <option value="">Bulan</option>
                                     {MONTHS.map((m) => (
-                                        <option key={m.value} value={m.value}>{m.label}</option>
+                                        <option key={m.value} value={m.value}>
+                                            {m.label}
+                                        </option>
                                     ))}
                                 </select>
                                 <select
                                     required
                                     value={birthYear}
-                                    onChange={(e) => setBirthYear(e.target.value)}
+                                    onChange={(e) =>
+                                        setBirthYear(e.target.value)
+                                    }
                                     className="h-12 w-full cursor-pointer rounded-[14px] border border-[#e2e4e6] bg-white px-3 text-[15px] text-[#191c1e] shadow-sm outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                 >
                                     <option value="">Tahun</option>
                                     {YEARS.map((y) => (
-                                        <option key={y} value={y}>{y}</option>
+                                        <option key={y} value={y}>
+                                            {y}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
@@ -469,7 +523,9 @@ export default function EditProfile({ user }: { user: User }) {
                             <select
                                 required
                                 value={genderSelect}
-                                onChange={(e) => setGenderSelect(e.target.value)}
+                                onChange={(e) =>
+                                    setGenderSelect(e.target.value)
+                                }
                                 className="h-12 w-full cursor-pointer rounded-[14px] border border-[#e2e4e6] bg-white px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                             >
                                 <option value="" disabled hidden>
@@ -485,7 +541,9 @@ export default function EditProfile({ user }: { user: User }) {
                                     placeholder="Sebutkan jenis kelamin"
                                     required
                                     value={customGender ?? ''}
-                                    onChange={(e) => setCustomGender(e.target.value)}
+                                    onChange={(e) =>
+                                        setCustomGender(e.target.value)
+                                    }
                                     className="mt-2 h-12 w-full rounded-[14px] border border-[#e2e4e6] bg-white px-4 text-[15px] text-[#191c1e] shadow-sm transition-all outline-none placeholder:text-[#a0a5b1] focus:border-transparent focus:ring-2 focus:ring-[#1464BC]"
                                 />
                             )}

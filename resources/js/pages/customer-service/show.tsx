@@ -88,7 +88,10 @@ export default function CustomerServiceShow({ report }: { report: Report }) {
                             {(report.image_url || report.photo_path) && (
                                 <div className="mt-4 overflow-hidden rounded-xl border border-[#e2e4e6]">
                                     <img
-                                        src={report.image_url ?? `/storage/${report.photo_path}`}
+                                        src={
+                                            report.image_url ??
+                                            `/storage/${report.photo_path}`
+                                        }
                                         alt="Bukti Laporan"
                                         className="max-h-[300px] w-auto object-contain"
                                     />

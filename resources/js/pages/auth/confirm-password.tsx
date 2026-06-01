@@ -39,7 +39,8 @@ export default function ConfirmPassword() {
                             Secure your access.
                         </h2>
                         <p className="mb-8 pr-4 text-sm font-light text-blue-100/90 md:text-base">
-                            This is a secure area of the application. Please confirm your password before continuing.
+                            This is a secure area of the application. Please
+                            confirm your password before continuing.
                         </p>
                     </div>
                 </div>
@@ -51,15 +52,23 @@ export default function ConfirmPassword() {
                     </h1>
 
                     <p className="mb-8 text-sm text-gray-500">
-                        Please confirm your password before continuing to the secure area.
+                        Please confirm your password before continuing to the
+                        secure area.
                     </p>
 
-                    <Form {...store.form()} resetOnSuccess={['password']} className="flex flex-col gap-6">
+                    <Form
+                        {...store.form()}
+                        resetOnSuccess={['password']}
+                        className="flex flex-col gap-6"
+                    >
                         {({ processing, errors }) => (
                             <>
                                 <div className="grid gap-5">
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password" className="font-bold text-gray-900">
+                                        <Label
+                                            htmlFor="password"
+                                            className="font-bold text-gray-900"
+                                        >
                                             Password
                                         </Label>
                                         <PasswordInput
@@ -79,7 +88,9 @@ export default function ConfirmPassword() {
                                         disabled={processing}
                                         data-test="confirm-password-button"
                                     >
-                                        {processing && <Spinner className="mr-2 h-4 w-4" />}
+                                        {processing && (
+                                            <Spinner className="mr-2 h-4 w-4" />
+                                        )}
                                         Confirm Password
                                     </Button>
                                 </div>

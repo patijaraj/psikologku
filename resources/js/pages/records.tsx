@@ -8,6 +8,7 @@ import {
     MessageSquare,
     Settings,
     Smile,
+    User,
     X,
     UserRound,
     Star,
@@ -136,6 +137,15 @@ export default function Records({ records = [] }: RecordsProps) {
                                         </div>
                                         <div className="my-2 h-px bg-[#f2f4f6]" />
                                         <Link
+                                            href="/profile"
+                                            className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#191c1e] transition-colors hover:bg-[#f7f9fb]"
+                                        >
+                                            <span className="flex size-9 items-center justify-center rounded-xl bg-[#eef5fe] text-[#1464BC]">
+                                                <User className="h-5 w-5" />
+                                            </span>
+                                            Profile
+                                        </Link>
+                                        <Link
                                             href={logout()}
                                             as="button"
                                             className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border-none bg-white px-3 py-3 text-left text-sm font-semibold text-[#b02a2a] transition-colors hover:bg-[#feecec]"
@@ -223,7 +233,9 @@ export default function Records({ records = [] }: RecordsProps) {
                                     <div className="flex items-center gap-4">
                                         <InitialsAvatar
                                             name={record.psychologist_name}
-                                            photoUrl={record.psychologist_photo_url}
+                                            photoUrl={
+                                                record.psychologist_photo_url
+                                            }
                                             className="size-12 rounded-xl"
                                         />
                                         <div>

@@ -26,32 +26,44 @@ export function NotificationDropdown() {
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node)
+            ) {
                 setIsOpen(false);
             }
         }
         document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+        return () =>
+            document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
     const markAsRead = (id: string, actionUrl?: string | null) => {
-        router.patch(`/notifications/${id}/mark-as-read`, {}, {
-            preserveScroll: true,
-            onSuccess: () => {
-                if (actionUrl) {
-                    router.visit(actionUrl);
-                }
-            }
-        });
+        router.patch(
+            `/notifications/${id}/mark-as-read`,
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    if (actionUrl) {
+                        router.visit(actionUrl);
+                    }
+                },
+            },
+        );
         setIsOpen(false);
     };
 
     const getIcon = (type: string) => {
         switch (type) {
-            case 'success': return <CheckCircle2 className="h-5 w-5 text-green-500" />;
-            case 'warning': return <Info className="h-5 w-5 text-amber-500" />;
-            case 'error': return <XCircle className="h-5 w-5 text-red-500" />;
-            default: return <Info className="h-5 w-5 text-blue-500" />;
+            case 'success':
+                return <CheckCircle2 className="h-5 w-5 text-green-500" />;
+            case 'warning':
+                return <Info className="h-5 w-5 text-amber-500" />;
+            case 'error':
+                return <XCircle className="h-5 w-5 text-red-500" />;
+            default:
+                return <Info className="h-5 w-5 text-blue-500" />;
         }
     };
 
@@ -72,47 +84,66 @@ export function NotificationDropdown() {
             {isOpen && (
                 <div className="absolute top-12 right-0 z-50 w-80 overflow-hidden rounded-2xl border border-[#e2e4e6] bg-white shadow-xl">
                     <div className="flex items-center justify-between border-b border-[#f2f4f6] bg-[#f7f9fb] px-4 py-3">
-                        <h3 className="m-0 text-sm font-bold text-[#191c1e]">Notifikasi ({unreadCount})</h3>
+                        <h3 className="m-0 text-sm font-bold text-[#191c1e]">
+                            Notifikasi ({unreadCount})
+                        </h3>
                         {unreadCount > 0 && (
                             <button
                                 type="button"
-                                onClick={() => router.patch('/notifications/mark-all-as-read', {}, { preserveScroll: true })}
-                                className="border-none bg-transparent text-xs font-semibold text-[#1464BC] hover:underline cursor-pointer"
+                                onClick={() =>
+                                    router.patch(
+                                        '/notifications/mark-all-as-read',
+                                        {},
+                                        { preserveScroll: true },
+                                    )
+                                }
+                                className="cursor-pointer border-none bg-transparent text-xs font-semibold text-[#1464BC] hover:underline"
                             >
                                 Tandai dibaca
                             </button>
                         )}
                     </div>
-                    
+
                     <div className="flex max-h-80 flex-col overflow-y-auto">
                         {notifications.length > 0 ? (
                             notifications.map((notification) => (
                                 <button
                                     key={notification.id}
                                     type="button"
-                                    onClick={() => markAsRead(notification.id, notification.data.action_url)}
-                                    className="flex w-full cursor-pointer items-start gap-3 border-b border-[#f2f4f6] border-none bg-transparent px-4 py-3 text-left transition-colors hover:bg-[#f7f9fb]"
+                                    onClick={() =>
+                                        markAsRead(
+                                            notification.id,
+                                            notification.data.action_url,
+                                        )
+                                    }
+                                    className="flex w-full cursor-pointer items-start gap-3 border-b border-none border-[#f2f4f6] bg-transparent px-4 py-3 text-left transition-colors hover:bg-[#f7f9fb]"
                                 >
                                     <div className="mt-0.5 shrink-0">
                                         {getIcon(notification.data.icon)}
                                     </div>
                                     <div className="flex flex-col gap-1">
-                                        <p className="m-0 text-sm font-bold text-[#191c1e]">{notification.data.title}</p>
-                                        <p className="m-0 text-xs leading-relaxed text-[#717783]">{notification.data.message}</p>
+                                        <p className="m-0 text-sm font-bold text-[#191c1e]">
+                                            {notification.data.title}
+                                        </p>
+                                        <p className="m-0 text-xs leading-relaxed text-[#717783]">
+                                            {notification.data.message}
+                                        </p>
                                     </div>
                                 </button>
                             ))
                         ) : (
                             <div className="px-4 py-6 text-center">
-                                <p className="m-0 text-sm font-medium text-[#717783]">Belum ada notifikasi baru.</p>
+                                <p className="m-0 text-sm font-medium text-[#717783]">
+                                    Belum ada notifikasi baru.
+                                </p>
                             </div>
                         )}
                     </div>
 
                     <div className="border-t border-[#f2f4f6] bg-[#f7f9fb]">
-                        <Link 
-                            href="/notifications" 
-                            className="block w-full py-2.5 text-center text-xs font-bold text-[#1464BC] hover:underline cursor-pointer no-underline"
+                        <Link
+                            href="/notifications"
+                            className="block w-full cursor-pointer py-2.5 text-center text-xs font-bold text-[#1464BC] no-underline hover:underline"
                             onClick={() => setIsOpen(false)}
                         >
                             Lihat Semua Notifikasi

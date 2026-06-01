@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useForm } from '@inertiajs/react';
 import { X, Send, Printer, FileText } from 'lucide-react';
 
-
 type ReferralLetterModalProps = {
     isOpen: boolean;
     onClose: () => void;
@@ -36,11 +35,11 @@ export function ReferralLetterModal({
             setIsLoading(true);
             // Fetch existing data if any
             fetch(`/records/${appointmentId}/referral-letter`)
-                .then(res => {
+                .then((res) => {
                     if (res.ok) return res.json();
                     throw new Error('Not found');
                 })
-                .then(responseData => {
+                .then((responseData) => {
                     if (responseData && responseData.id) {
                         setData({
                             addressed_to: responseData.addressed_to || '',
@@ -53,7 +52,10 @@ export function ReferralLetterModal({
                         if (initialData?.diagnostic_focus) {
                             defaultReason += `Fokus Diagnostik: ${initialData.diagnostic_focus}\n`;
                         }
-                        if (initialData?.patient_state && initialData.patient_state.length > 0) {
+                        if (
+                            initialData?.patient_state &&
+                            initialData.patient_state.length > 0
+                        ) {
                             defaultReason += `Kondisi Pasien: ${initialData.patient_state.join(', ')}\n`;
                         }
                         setData({
@@ -76,7 +78,7 @@ export function ReferralLetterModal({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         // Using Wayfinder for route, fallback if not fully typed yet
         const url = `/records/${appointmentId}/referral-letter`;
         post(url, {
@@ -117,17 +119,23 @@ export function ReferralLetterModal({
                 <div className="flex-1 overflow-y-auto p-6">
                     {isLoading ? (
                         <div className="flex h-40 items-center justify-center">
-                            <p className="text-sm font-medium text-[#717783]">Memuat data...</p>
+                            <p className="text-sm font-medium text-[#717783]">
+                                Memuat data...
+                            </p>
                         </div>
                     ) : (
-                        <form id="referral-form" onSubmit={handleSubmit} className="flex flex-col gap-6">
-                            
+                        <form
+                            id="referral-form"
+                            onSubmit={handleSubmit}
+                            className="flex flex-col gap-6"
+                        >
                             <div>
                                 <label
                                     htmlFor="addressed_to"
                                     className="mb-2 block text-sm font-bold text-[#191c1e]"
                                 >
-                                    Tujuan Surat (Kepada Yth.) <span className="text-[#e65c5c]">*</span>
+                                    Tujuan Surat (Kepada Yth.){' '}
+                                    <span className="text-[#e65c5c]">*</span>
                                 </label>
                                 <input
                                     type="text"
@@ -135,7 +143,9 @@ export function ReferralLetterModal({
                                     placeholder="Contoh: Prof/Dr/dr/Ts.: SPKJ/Psikiater"
                                     className="w-full rounded-xl border border-[#e2e4e6] bg-[#fdfefe] p-3 text-sm text-[#191c1e] transition-colors focus:border-[#1464BC] focus:ring-1 focus:ring-[#1464BC] focus:outline-none"
                                     value={data.addressed_to}
-                                    onChange={(e) => setData('addressed_to', e.target.value)}
+                                    onChange={(e) =>
+                                        setData('addressed_to', e.target.value)
+                                    }
                                 />
                                 {errors.addressed_to && (
                                     <p className="mt-2 text-xs font-bold text-[#e65c5c]">
@@ -149,7 +159,8 @@ export function ReferralLetterModal({
                                     htmlFor="reason"
                                     className="mb-2 block text-sm font-bold text-[#191c1e]"
                                 >
-                                    Hasil Pemeriksaan Psikologis / Alasan Rujukan
+                                    Hasil Pemeriksaan Psikologis / Alasan
+                                    Rujukan
                                 </label>
                                 <textarea
                                     id="reason"
@@ -157,10 +168,13 @@ export function ReferralLetterModal({
                                     placeholder="Jelaskan kondisi pasien saat ini..."
                                     className="w-full resize-y rounded-xl border border-[#e2e4e6] bg-[#fdfefe] p-3 text-sm text-[#191c1e] transition-colors focus:border-[#1464BC] focus:ring-1 focus:ring-[#1464BC] focus:outline-none"
                                     value={data.reason}
-                                    onChange={(e) => setData('reason', e.target.value)}
+                                    onChange={(e) =>
+                                        setData('reason', e.target.value)
+                                    }
                                 />
                                 <p className="mt-2 text-xs font-medium text-[#717783]">
-                                    Deskripsikan keluhan, durasi, dan rekomendasi tindak lanjut secara detail.
+                                    Deskripsikan keluhan, durasi, dan
+                                    rekomendasi tindak lanjut secara detail.
                                 </p>
                                 {errors.reason && (
                                     <p className="mt-2 text-xs font-bold text-[#e65c5c]">

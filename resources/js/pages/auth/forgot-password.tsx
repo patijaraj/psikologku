@@ -41,7 +41,8 @@ export default function ForgotPassword({ status }: { status?: string }) {
                             Recover your account.
                         </h2>
                         <p className="mb-8 pr-4 text-sm font-light text-blue-100/90 md:text-base">
-                            Don't worry, we'll help you get back to your journey towards emotional resilience.
+                            Don't worry, we'll help you get back to your journey
+                            towards emotional resilience.
                         </p>
 
                         <div className="flex items-center gap-3">
@@ -72,7 +73,8 @@ export default function ForgotPassword({ status }: { status?: string }) {
                     </h1>
 
                     <p className="mb-8 text-sm text-gray-500">
-                        Enter your email address and we will send you a link to reset your password.
+                        Enter your email address and we will send you a link to
+                        reset your password.
                     </p>
 
                     {status && (

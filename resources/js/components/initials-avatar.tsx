@@ -27,7 +27,10 @@ export function InitialsAvatar({
             <img
                 src={photoUrl}
                 alt={name ?? 'Avatar'}
-                className={cn('shrink-0 object-cover rounded-full border border-[#e2e4e6] bg-white', className)}
+                className={cn(
+                    'shrink-0 rounded-full border border-[#e2e4e6] bg-white object-cover',
+                    className,
+                )}
             />
         );
     }

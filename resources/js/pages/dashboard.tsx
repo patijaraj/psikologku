@@ -14,6 +14,8 @@ import {
     MessageSquare,
     Moon,
     Phone,
+    Search,
+    User,
     Settings,
     Smile,
     SmilePlus,
@@ -213,9 +215,9 @@ export default function Dashboard({
                                             }
                                         >
                                             <span className="flex size-9 items-center justify-center rounded-xl bg-[#eef5fe] text-[#1464BC]">
-                                                <Settings className="h-5 w-5" />
+                                                <User className="h-5 w-5" />
                                             </span>
-                                            Settings
+                                            Profile
                                         </Link>
 
                                         <Link
@@ -415,8 +417,6 @@ export default function Dashboard({
                                         "{quote}"
                                     </p>
                                 </div>
-
-
                             </div>
                         </section>
                     </div>

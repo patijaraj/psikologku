@@ -45,7 +45,8 @@ export default function ResetPassword({ token, email }: Props) {
                             Create a new password.
                         </h2>
                         <p className="mb-8 pr-4 text-sm font-light text-blue-100/90 md:text-base">
-                            Secure your account with a strong password to continue your journey.
+                            Secure your account with a strong password to
+                            continue your journey.
                         </p>
 
                         <div className="flex items-center gap-3">
@@ -89,7 +90,10 @@ export default function ResetPassword({ token, email }: Props) {
                             <>
                                 <div className="grid gap-5">
                                     <div className="grid gap-2">
-                                        <Label htmlFor="email" className="font-bold text-gray-900">
+                                        <Label
+                                            htmlFor="email"
+                                            className="font-bold text-gray-900"
+                                        >
                                             Email address
                                         </Label>
                                         <Input
@@ -99,13 +103,16 @@ export default function ResetPassword({ token, email }: Props) {
                                             autoComplete="email"
                                             value={email}
                                             readOnly
-                                            className="rounded-xl border-gray-200 bg-[#F8FAFC] px-4 py-6 text-gray-500 caret-[#1464BC] focus-visible:ring-[#1464BC] opacity-70"
+                                            className="rounded-xl border-gray-200 bg-[#F8FAFC] px-4 py-6 text-gray-500 caret-[#1464BC] opacity-70 focus-visible:ring-[#1464BC]"
                                         />
                                         <InputError message={errors.email} />
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password" className="font-bold text-gray-900">
+                                        <Label
+                                            htmlFor="password"
+                                            className="font-bold text-gray-900"
+                                        >
                                             New Password
                                         </Label>
                                         <PasswordInput
@@ -120,7 +127,10 @@ export default function ResetPassword({ token, email }: Props) {
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="password_confirmation" className="font-bold text-gray-900">
+                                        <Label
+                                            htmlFor="password_confirmation"
+                                            className="font-bold text-gray-900"
+                                        >
                                             Confirm New Password
                                         </Label>
                                         <PasswordInput
@@ -130,7 +140,11 @@ export default function ResetPassword({ token, email }: Props) {
                                             placeholder="••••••••"
                                             className="rounded-xl border-gray-200 bg-[#F8FAFC] px-4 py-6 text-gray-900 caret-[#1464BC] placeholder:text-gray-400 focus-visible:ring-[#1464BC]"
                                         />
-                                        <InputError message={errors.password_confirmation} />
+                                        <InputError
+                                            message={
+                                                errors.password_confirmation
+                                            }
+                                        />
                                     </div>
 
                                     <Button
@@ -139,7 +153,9 @@ export default function ResetPassword({ token, email }: Props) {
                                         disabled={processing}
                                         data-test="reset-password-button"
                                     >
-                                        {processing && <Spinner className="mr-2 h-4 w-4" />}
+                                        {processing && (
+                                            <Spinner className="mr-2 h-4 w-4" />
+                                        )}
                                         Reset Password
                                     </Button>
                                 </div>
