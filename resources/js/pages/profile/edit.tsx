@@ -1,18 +1,8 @@
 import { Head, Link, useForm, usePage, router } from '@inertiajs/react';
-import {
-    Menu,
-    Smile,
-    X,
-    User as UserIcon,
-    Settings,
-    ArrowRight
-} from 'lucide-react';
+import { ArrowRight, Settings, User as UserIcon } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 import InputError from '@/components/input-error';
 import { Spinner } from '@/components/ui/spinner';
-import { InitialsAvatar } from '@/components/initials-avatar';
-import { NotificationDropdown } from '@/components/notification-dropdown';
-import { dashboard } from '@/routes';
 import userProfile from '@/routes/user-profile';
 import { MiniFooter } from '@/components/mini-footer';
 
@@ -27,12 +17,7 @@ interface User {
     photo_url: string | null;
 }
 
-const navItems = [
-    { label: 'Dashboard', path: '/dashboard', active: false },
-    { label: 'Therapist', path: '/therapists', active: false },
-    { label: 'Sessions', path: '/sessions', active: false },
-    { label: 'Record', path: '/records', active: false },
-];
+
 
 function InfoPoint({ text }: { text: string }) {
     return (
@@ -48,9 +33,6 @@ function InfoPoint({ text }: { text: string }) {
 }
 
 export default function EditProfile({ user }: { user: User }) {
-    const { auth } = usePage().props as any;
-    const userName = auth.user?.name ?? 'User';
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [photoPreview, setPhotoPreview] = useState<string | null>(user.photo_url || null);
@@ -107,89 +89,10 @@ export default function EditProfile({ user }: { user: User }) {
     };
 
     return (
-        <div className="min-h-screen bg-[#f7f9fb] font-sans">
+        <>
             <Head title="Edit Profil Akun" />
             
-            <nav className="sticky top-0 z-50 border-b border-[#e2e4e6] bg-white">
-                <div className="mx-auto flex h-[72px] max-w-[1280px] items-center justify-between px-4 sm:px-8">
-                    <div className="flex items-center gap-8 lg:gap-16">
-                        <Link
-                            href={dashboard()}
-                            className="flex items-center gap-2 no-underline"
-                        >
-                            <div className="flex size-8 items-center justify-center rounded-xl bg-[#1464BC] text-white shadow-sm shadow-blue-900/20">
-                                <Smile className="h-5 w-5" />
-                            </div>
-                            <span className="text-xl font-black tracking-tight text-[#1464BC]">
-                                Psikologku
-                            </span>
-                        </Link>
 
-                        <div className="hidden items-center gap-8 md:flex">
-                            {navItems.map((item) => (
-                                <Link
-                                    key={item.label}
-                                    href={item.path}
-                                    className={`relative text-[15px] font-semibold transition-colors ${
-                                        item.active
-                                            ? 'text-[#1464BC]'
-                                            : 'text-[#717783] hover:text-[#191c1e]'
-                                    }`}
-                                >
-                                    {item.label}
-                                    {item.active && (
-                                        <span className="absolute right-0 -bottom-[25px] left-0 h-[3px] rounded-t-full bg-[#1464BC]" />
-                                    )}
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="flex items-center gap-4 sm:gap-6">
-                        <div className="hidden items-center gap-2 sm:flex">
-                            <NotificationDropdown />
-                        </div>
-                        <div className="hidden h-6 w-px bg-[#e2e4e6] sm:block" />
-                        <InitialsAvatar
-                            name={userName}
-                            photoUrl={(auth.user as any)?.photo_url}
-                            className="size-9"
-                        />
-                        <button
-                            type="button"
-                            aria-label="Buka menu"
-                            className="cursor-pointer border-none bg-transparent p-1 text-[#717783] md:hidden"
-                            onClick={() =>
-                                setIsMobileMenuOpen(!isMobileMenuOpen)
-                            }
-                        >
-                            {isMobileMenuOpen ? (
-                                <X className="h-6 w-6" />
-                            ) : (
-                                <Menu className="h-6 w-6" />
-                            )}
-                        </button>
-                    </div>
-                </div>
-
-                {isMobileMenuOpen && (
-                    <div className="absolute top-[72px] right-0 left-0 flex flex-col gap-2 border-b border-[#e2e4e6] bg-white p-4 shadow-lg md:hidden">
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.label}
-                                href={item.path}
-                                className={`rounded-xl p-3 text-[15px] font-semibold ${
-                                    item.active
-                                        ? 'bg-[#f0f6fc] text-[#1464BC]'
-                                        : 'text-[#717783] hover:bg-[#f7f9fb]'
-                                }`}
-                            >
-                                {item.label}
-                            </Link>
-                        ))}
-                    </div>
-                )}
-            </nav>
 
             <main className="mx-auto grid max-w-[1120px] grid-cols-1 gap-8 px-4 py-8 sm:px-8 md:py-12 lg:grid-cols-[0.9fr_1.1fr]">
                 <section className="h-fit rounded-3xl bg-[#1464BC] p-8 text-white shadow-[0_18px_40px_-24px_rgba(0,93,167,0.55)]">
@@ -390,7 +293,7 @@ export default function EditProfile({ user }: { user: User }) {
             </main>
             
             <MiniFooter />
-        </div>
+        </>
     );
 }
 
