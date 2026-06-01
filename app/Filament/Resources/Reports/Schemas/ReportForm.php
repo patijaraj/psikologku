@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources\Reports\Schemas;
 
-use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Support\HtmlString;
 
 class ReportForm
 {
@@ -29,12 +30,21 @@ class ReportForm
                     ->columnSpanFull()
                     ->disabled()
                     ->label('Isi Laporan'),
-                FileUpload::make('photo_path')
-                    ->image()
-                    ->directory('reports')
-                    ->disk('public')
-                    ->disabled()
-                    ->label('Foto Pendukung (Opsional)'),
+                Placeholder::make('foto')
+                    ->label('Foto Pendukung')
+                    ->content(function ($record) {
+                        if (! $record) {
+                            return '-';
+                        }
+                        if ($record->image_url) {
+                            return new HtmlString('<img src="'.$record->image_url.'" style="max-height: 300px; border-radius: 8px;" />');
+                        }
+                        if ($record->photo_path) {
+                            return new HtmlString('<img src="/storage/'.$record->photo_path.'" style="max-height: 300px; border-radius: 8px;" />');
+                        }
+
+                        return '-';
+                    }),
                 Select::make('status')
                     ->options([
                         'pending' => 'Pending',

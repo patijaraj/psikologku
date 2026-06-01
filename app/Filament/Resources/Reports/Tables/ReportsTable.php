@@ -23,8 +23,9 @@ class ReportsTable
                 TextColumn::make('title')
                     ->label('Judul Laporan')
                     ->searchable(),
-                ImageColumn::make('photo_path')
-                    ->label('Foto'),
+                ImageColumn::make('image_url')
+                    ->label('Foto')
+                    ->getStateUsing(fn ($record) => $record->image_url ?? ($record->photo_path ? '/storage/'.$record->photo_path : null)),
                 SelectColumn::make('status')
                     ->label('Status')
                     ->options([
@@ -46,7 +47,10 @@ class ReportsTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->label('Reply')
+                    ->icon('heroicon-o-chat-bubble-left-ellipsis')
+                    ->color('primary'),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
