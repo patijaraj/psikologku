@@ -16,6 +16,7 @@ import { NotificationDropdown } from '@/components/notification-dropdown';
 import { Spinner } from '@/components/ui/spinner';
 import { logout } from '@/routes';
 import userProfile from '@/routes/user-profile';
+import { supabase } from '@/lib/supabase';
 
 interface User {
     name: string;
@@ -40,9 +41,10 @@ export default function EditProfile({ user }: { user: User }) {
     const { auth } = usePage().props as any;
     const userName = auth.user?.name ?? 'User';
 
-    // Photo state
+    // Photo state — stores final Supabase public URL (like psychologist profile)
     const [photoPreview, setPhotoPreview] = useState<string | null>(user.photo_url || null);
-    const [photoFile, setPhotoFile] = useState<File | null>(null);
+    const [photoUrl, setPhotoUrl] = useState<string | null>(user.photo_url || null);
+    const [isUploading, setIsUploading] = useState(false);
 
     // Form state
     const [name, setName] = useState(user.name || '');
@@ -65,7 +67,7 @@ export default function EditProfile({ user }: { user: User }) {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [processing, setProcessing] = useState(false);
 
-    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
         if (!file.type.startsWith('image/')) {
@@ -76,11 +78,38 @@ export default function EditProfile({ user }: { user: User }) {
             setErrors(prev => ({ ...prev, photo: 'Ukuran gambar maksimal 2MB.' }));
             return;
         }
-        setPhotoFile(file);
+
+        setIsUploading(true);
+        setErrors(prev => { const n = { ...prev }; delete n.photo; return n; });
+
+        // Show local preview immediately
         const reader = new FileReader();
         reader.onloadend = () => setPhotoPreview(reader.result as string);
         reader.readAsDataURL(file);
-        setErrors(prev => { const n = { ...prev }; delete n.photo; return n; });
+
+        try {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${auth.user?.id}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+            const filePath = `avatars/${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('avatars')
+                .upload(filePath, file, { cacheControl: '3600', upsert: true });
+
+            if (uploadError) throw uploadError;
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('avatars')
+                .getPublicUrl(filePath);
+
+            setPhotoUrl(publicUrl);
+            setPhotoPreview(publicUrl);
+        } catch (error: any) {
+            console.error('Upload error:', error);
+            setErrors(prev => ({ ...prev, photo: error.message || 'Gagal mengunggah foto.' }));
+        } finally {
+            setIsUploading(false);
+        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -101,9 +130,7 @@ export default function EditProfile({ user }: { user: User }) {
         formData.append('birthdate', birthdate);
         formData.append('gender', gender);
         formData.append('address', address);
-        if (photoFile) {
-            formData.append('photo', photoFile);
-        }
+        formData.append('photo_url', photoUrl ?? '');
         formData.append('_method', 'POST');
 
         router.post(userProfile.update.url(), formData, {
@@ -258,7 +285,6 @@ export default function EditProfile({ user }: { user: User }) {
                         onSubmit={handleSubmit}
                         className="flex flex-col gap-5"
                     >
-                        {/* Photo upload */}
                         <div className="flex flex-col items-center gap-4 rounded-2xl border border-[#e2e4e6] bg-[#fdfdfd] p-5 shadow-xs">
                             <span className="ml-1 self-start text-[13px] font-semibold text-[#191c1e]">
                                 Foto Profil
@@ -275,19 +301,31 @@ export default function EditProfile({ user }: { user: User }) {
                                         <UserIcon className="size-12" />
                                     </div>
                                 )}
+                                {isUploading && (
+                                    <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40">
+                                        <Spinner className="h-6 w-6 text-white" />
+                                    </div>
+                                )}
                             </div>
                             <div className="flex w-full flex-col items-center gap-1.5">
                                 <label
                                     htmlFor="photo-upload"
-                                    className="flex h-10 w-fit cursor-pointer items-center justify-center rounded-lg border border-[#1464BC] bg-transparent px-4 text-sm font-semibold text-[#1464BC] transition-colors hover:bg-[#eef5fe]"
+                                    className={`flex h-10 w-fit items-center justify-center gap-2 rounded-lg border border-[#1464BC] bg-transparent px-4 text-sm font-semibold text-[#1464BC] transition-colors ${
+                                        isUploading
+                                            ? 'cursor-not-allowed opacity-60'
+                                            : 'cursor-pointer hover:bg-[#eef5fe]'
+                                    }`}
                                 >
-                                    {photoPreview ? 'Ubah Foto' : 'Pilih Foto'}
+                                    {isUploading ? (
+                                        <><Spinner className="h-4 w-4" /> Mengunggah...</>
+                                    ) : photoPreview ? 'Ubah Foto' : 'Pilih Foto'}
                                 </label>
                                 <input
                                     id="photo-upload"
                                     type="file"
                                     accept="image/*"
                                     className="hidden"
+                                    disabled={isUploading}
                                     onChange={handlePhotoChange}
                                 />
                                 <span className="text-[11px] text-[#717783]">
