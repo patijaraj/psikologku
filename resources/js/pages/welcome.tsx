@@ -36,27 +36,27 @@ const counselingTopics = [
 
 const mainServices = [
     {
-        icon: MessageCircle,
-        title: 'Chat Psikolog',
-        description: 'Konsultasi online via chat atau panggilan',
+        icon: UserCheck,
+        title: 'Psikolog Profesional',
+        description: 'Temukan tenaga ahli yang berlisensi dan berpengalaman',
         color: 'bg-blue-50 text-[#1464BC]',
     },
     {
         icon: Calendar,
-        title: 'Buat Janji',
-        description: 'Jadwalkan sesi tatap muka atau online',
+        title: 'Buat Jadwal Mudah',
+        description: 'Jadwalkan sesi konsultasi sesuai dengan waktu luangmu',
         color: 'bg-emerald-50 text-emerald-600',
     },
     {
         icon: FileText,
-        title: 'Tes Psikologi',
-        description: 'Ketahui lebih dalam kondisi mentalmu',
+        title: 'Rekam Medis Tersimpan',
+        description: 'Akses hasil dan catatan konsultasi kapan saja dengan aman',
         color: 'bg-violet-50 text-violet-600',
     },
     {
-        icon: BookOpen,
-        title: 'Artikel Edukasi',
-        description: 'Tips dan panduan kesehatan mental',
+        icon: ShieldCheck,
+        title: 'Privasi Terjamin',
+        description: 'Setiap sesi dan data pribadimu dijaga kerahasiaannya',
         color: 'bg-amber-50 text-amber-600',
     },
 ];
@@ -134,12 +134,6 @@ export default function Welcome({ canRegister = true }: Props) {
                                 className="text-[15px] font-medium text-gray-600 hover:text-[#1464BC]"
                             >
                                 Layanan
-                            </a>
-                            <a
-                                href="#artikel"
-                                className="text-[15px] font-medium text-gray-600 hover:text-[#1464BC]"
-                            >
-                                Artikel
                             </a>
                             <a
                                 href="#tentang"
@@ -394,29 +388,24 @@ export default function Welcome({ canRegister = true }: Props) {
                             </div>
 
                             <FooterColumn
-                                title="Layanan"
+                                title="Platform"
                                 links={[
-                                    'Chat Psikolog',
-                                    'Buat Janji Klinik',
-                                    'Tes Psikologi',
-                                    'Psikologku for Business',
+                                    { label: 'Masuk', href: login() },
+                                    { label: 'Daftar', href: register() },
                                 ]}
                             />
                             <FooterColumn
-                                title="Perusahaan"
+                                title="Layanan"
                                 links={[
-                                    'Tentang Kami',
-                                    'Karir',
-                                    'Hubungi Kami',
-                                    'Blog',
+                                    { label: 'Pilih Psikolog', href: primaryAction },
+                                    { label: 'Buat Janji', href: primaryAction },
                                 ]}
                             />
                             <FooterColumn
                                 title="Bantuan"
                                 links={[
-                                    'Pusat Bantuan',
-                                    'Syarat & Ketentuan',
-                                    'Kebijakan Privasi',
+                                    { label: 'Hubungi CS', href: 'mailto:support@psikologku.com' },
+                                    { label: 'Pusat Bantuan', href: '#' },
                                 ]}
                             />
                         </div>
@@ -434,19 +423,32 @@ export default function Welcome({ canRegister = true }: Props) {
     );
 }
 
-function FooterColumn({ title, links }: { title: string; links: string[] }) {
+function FooterColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
     return (
         <div className="flex flex-col gap-4">
             <h4 className="text-base font-bold">{title}</h4>
-            {links.map((link) => (
-                <a
-                    key={link}
-                    href="#"
-                    className="text-sm text-gray-400 transition-colors hover:text-white"
-                >
-                    {link}
-                </a>
-            ))}
+            {links.map((link) => {
+                if (link.href.startsWith('http') || link.href.startsWith('mailto:') || link.href === '#') {
+                    return (
+                        <a
+                            key={link.label}
+                            href={link.href}
+                            className="text-sm text-gray-400 transition-colors hover:text-white"
+                        >
+                            {link.label}
+                        </a>
+                    );
+                }
+                return (
+                    <Link
+                        key={link.label}
+                        href={link.href}
+                        className="text-sm text-gray-400 transition-colors hover:text-white"
+                    >
+                        {link.label}
+                    </Link>
+                );
+            })}
         </div>
     );
 }
