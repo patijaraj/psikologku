@@ -1,0 +1,114 @@
+
+> build
+> vite build
+
+vite v8.0.10 building client environment for production...
+[plugin @laravel/vite-plugin-wayfinder] Types generated for actions, routes, form variants
+[2Ktransforming...✓ 2309 modules transformed.
+rendering chunks...
+computing gzip size...
+public/build/manifest.json                                          24.92 kB │ gzip:  2.82 kB
+public/build/assets/app-1gxQPw9k.css                               128.17 kB │ gzip: 20.48 kB
+public/build/assets/check-XXmzH4Hg.js                                0.12 kB │ gzip:  0.14 kB
+public/build/assets/moon-B8H5Lwbn.js                                 0.14 kB │ gzip:  0.14 kB
+public/build/assets/loader-circle-1snhf8Lm.js                        0.14 kB │ gzip:  0.15 kB
+public/build/assets/plus-Clf-7J9O.js                                 0.15 kB │ gzip:  0.15 kB
+public/build/assets/x-fH2YdCS-.js                                    0.15 kB │ gzip:  0.15 kB
+public/build/assets/arrow-left-DCOjrce8.js                           0.16 kB │ gzip:  0.16 kB
+public/build/assets/arrow-right-HbO8OGhn.js                          0.16 kB │ gzip:  0.16 kB
+public/build/assets/search-Cx-Y5YeE.js                               0.17 kB │ gzip:  0.16 kB
+public/build/assets/circle-check-D8uTBWrG.js                         0.17 kB │ gzip:  0.16 kB
+public/build/assets/message-square-CGScISgX.js                       0.17 kB │ gzip:  0.16 kB
+public/build/assets/clock-FJKVM8FG.js                                0.18 kB │ gzip:  0.17 kB
+public/build/assets/user-BGSNIO3X.js                                 0.19 kB │ gzip:  0.18 kB
+public/build/assets/lock-CPQfLcQT.js                                 0.20 kB │ gzip:  0.19 kB
+public/build/assets/headphones-Cmm5S5Gv.js                           0.23 kB │ gzip:  0.18 kB
+public/build/assets/menu-DRyNxZj1.js                                 0.24 kB │ gzip:  0.17 kB
+public/build/assets/circle-alert-DOZceQ85.js                         0.24 kB │ gzip:  0.18 kB
+public/build/assets/calendar-BTOLudUq.js                             0.25 kB │ gzip:  0.20 kB
+public/build/assets/log-out-ClTXyaTK.js                              0.25 kB │ gzip:  0.22 kB
+public/build/assets/wallet-D125BXSv.js                               0.28 kB │ gzip:  0.20 kB
+public/build/assets/smile-CLDnGR5Y.js                                0.29 kB │ gzip:  0.21 kB
+public/build/assets/printer-DpswHXnX.js                              0.31 kB │ gzip:  0.23 kB
+public/build/assets/shield-check-trbrUpzE.js                         0.31 kB │ gzip:  0.24 kB
+public/build/assets/file-text-DD1DxMS5.js                            0.33 kB │ gzip:  0.21 kB
+public/build/assets/trash-2-CuutzB8V.js                              0.35 kB │ gzip:  0.24 kB
+public/build/assets/confirm-B49mKrwt.js                              0.36 kB │ gzip:  0.22 kB
+public/build/assets/phone-DImeSC5M.js                                0.39 kB │ gzip:  0.25 kB
+public/build/assets/input-error-5Mb_kX2V.js                          0.45 kB │ gzip:  0.33 kB
+public/build/assets/star-C7ZQoioa.js                                 0.47 kB │ gzip:  0.29 kB
+public/build/assets/spinner-DUEUC2n4.js                              0.48 kB │ gzip:  0.35 kB
+public/build/assets/users-DA_23X5Y.js                                0.48 kB │ gzip:  0.31 kB
+public/build/assets/text-link-K6MMw0wW.js                            0.62 kB │ gzip:  0.41 kB
+public/build/assets/eye-Cu2VquC8.js                                  0.63 kB │ gzip:  0.34 kB
+public/build/assets/brain-B4Zvs3jk.js                                0.73 kB │ gzip:  0.35 kB
+public/build/assets/label-COCGZQ5A.js                                0.87 kB │ gzip:  0.56 kB
+public/build/assets/wayfinder-D7sEU86k.js                            0.89 kB │ gzip:  0.53 kB
+public/build/assets/mini-footer-DZZ-HtGx.js                          0.96 kB │ gzip:  0.49 kB
+public/build/assets/wind-Bnen6scb.js                                 1.19 kB │ gzip:  0.58 kB
+public/build/assets/verify-email-C_lg1omA.js                         1.30 kB │ gzip:  0.71 kB
+public/build/assets/password-input-zzkqiaz1.js                       1.32 kB │ gzip:  0.79 kB
+public/build/assets/confirm-password-C7QHfbtr.js                     1.37 kB │ gzip:  0.69 kB
+public/build/assets/verification-DrfoXim2.js                         1.48 kB │ gzip:  0.52 kB
+public/build/assets/forgot-password-DS4EUjOv.js                      1.93 kB │ gzip:  0.90 kB
+public/build/assets/reset-password-DB641Vq1.js                       2.23 kB │ gzip:  0.92 kB
+public/build/assets/appearance-CpSFJiMm.js                           2.55 kB │ gzip:  1.24 kB
+public/build/assets/two-factor-challenge-CrS5wXOi.js                 2.73 kB │ gzip:  1.26 kB
+public/build/assets/password-DRjWwhzT.js                             2.73 kB │ gzip:  0.73 kB
+public/build/assets/PsychologistAppointmentController-D2r1Ek1w.js    3.04 kB │ gzip:  0.63 kB
+public/build/assets/dialog-CmO_-b23.js                               4.09 kB │ gzip:  1.23 kB
+public/build/assets/notification-dropdown-AJm2hon4.js                4.18 kB │ gzip:  1.76 kB
+public/build/assets/notifications-BS5O2NKP.js                        4.22 kB │ gzip:  1.69 kB
+public/build/assets/customer-service-CBlDgjvZ.js                     4.95 kB │ gzip:  1.79 kB
+public/build/assets/show-a2bOyBRd.js                                 5.42 kB │ gzip:  2.06 kB
+public/build/assets/profile-DC6tRuF1.js                              6.89 kB │ gzip:  2.35 kB
+public/build/assets/create-8hsDpfFV.js                               7.56 kB │ gzip:  2.86 kB
+public/build/assets/records-CmOdeBVq.js                              9.12 kB │ gzip:  3.15 kB
+public/build/assets/complete-profile-Dnf7WGXU.js                    11.38 kB │ gzip:  3.81 kB
+public/build/assets/record-form-modal-Caogmq2B.js                   12.42 kB │ gzip:  4.39 kB
+public/build/assets/payment-i53MHE1f.js                             13.83 kB │ gzip:  4.95 kB
+public/build/assets/psychologist-schedules-9o3HlwYU.js              13.87 kB │ gzip:  4.26 kB
+public/build/assets/register-BGJ80tuS.js                            14.03 kB │ gzip:  4.61 kB
+public/build/assets/psychologist-appointments-OFEwMEIw.js           14.27 kB │ gzip:  4.89 kB
+public/build/assets/login-BHeoXHNK.js                               15.78 kB │ gzip:  6.02 kB
+public/build/assets/psychologist-profile-setup-DxxlseJB.js          15.95 kB │ gzip:  4.52 kB
+public/build/assets/welcome-CnfOtqXL.js                             16.00 kB │ gzip:  5.30 kB
+public/build/assets/use-two-factor-auth-CXOePlhe.js                 16.69 kB │ gzip:  6.03 kB
+public/build/assets/sessions-Drc3JN7Q.js                            16.90 kB │ gzip:  4.78 kB
+public/build/assets/psychologist-records-DPzD-jwL.js                19.31 kB │ gzip:  5.96 kB
+public/build/assets/psychologist-dashboard-fzDEjxJg.js              20.31 kB │ gzip:  6.99 kB
+public/build/assets/security-DxMurs1x.js                            21.18 kB │ gzip:  6.91 kB
+public/build/assets/dashboard-k4FRqbeH.js                           21.96 kB │ gzip:  7.19 kB
+public/build/assets/record-detail-DK5V5FNq.js                       23.17 kB │ gzip:  6.84 kB
+public/build/assets/utils-AgFXQWXz.js                               26.46 kB │ gzip:  8.45 kB
+public/build/assets/therapists-bHZDXoh3.js                          32.97 kB │ gzip: 10.53 kB
+public/build/assets/app-CTz94THN.js                                146.63 kB │ gzip: 43.34 kB
+public/build/assets/supabase-CIWMYkIl.js                           198.84 kB │ gzip: 51.05 kB
+public/build/assets/createLucideIcon-CG4F2aYc.js                   314.38 kB │ gzip: 99.14 kB
+
+✗ Build failed in 8.77s
+error during build:
+Build failed with 1 error:
+
+Error: [vite]: Rolldown failed to resolve import "date-fns" from "/home/fatihza/Documents/psikologku/resources/js/pages/customer-service/index.tsx".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+    at viteLog (file:///home/fatihza/Documents/psikologku/node_modules/vite/dist/node/chunks/node.js:33111:57)
+    at file:///home/fatihza/Documents/psikologku/node_modules/vite/dist/node/chunks/node.js:33147:71
+    at onwarn (file:///home/fatihza/Documents/psikologku/node_modules/@vitejs/plugin-react/dist/index.js:76:7)
+    at file:///home/fatihza/Documents/psikologku/node_modules/vite/dist/node/chunks/node.js:33147:28
+    at onRollupLog (file:///home/fatihza/Documents/psikologku/node_modules/vite/dist/node/chunks/node.js:33142:63)
+    at onLog (file:///home/fatihza/Documents/psikologku/node_modules/vite/dist/node/chunks/node.js:32911:4)
+    at file:///home/fatihza/Documents/psikologku/node_modules/rolldown/dist/shared/rolldown-build-DSxL8qiP.mjs:50:26
+    at logger (file:///home/fatihza/Documents/psikologku/node_modules/rolldown/dist/shared/rolldown-build-DSxL8qiP.mjs:41:3)
+    at onLog (file:///home/fatihza/Documents/psikologku/node_modules/rolldown/dist/shared/bindingify-input-options-DbbBhzky.mjs:1991:32)
+    at aggregateBindingErrorsIntoJsError (file:///home/fatihza/Documents/psikologku/node_modules/rolldown/dist/shared/error-DL-e8-oE.mjs:48:18)
+    at unwrapBindingResult (file:///home/fatihza/Documents/psikologku/node_modules/rolldown/dist/shared/error-DL-e8-oE.mjs:18:128)
+    at #build (file:///home/fatihza/Documents/psikologku/node_modules/rolldown/dist/shared/rolldown-build-DSxL8qiP.mjs:3317:34)
+    at async buildEnvironment (file:///home/fatihza/Documents/psikologku/node_modules/vite/dist/node/chunks/node.js:33018:64)
+    at async Object.build (file:///home/fatihza/Documents/psikologku/node_modules/vite/dist/node/chunks/node.js:33440:19)
+    at async Object.buildApp (file:///home/fatihza/Documents/psikologku/node_modules/vite/dist/node/chunks/node.js:33437:153)
+    at async CAC.<anonymous> (file:///home/fatihza/Documents/psikologku/node_modules/vite/dist/node/cli.js:778:3) {
+  errors: [Getter/Setter]
+}
