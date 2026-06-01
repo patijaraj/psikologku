@@ -11,6 +11,7 @@ interface Report {
     status: 'pending' | 'in_progress' | 'resolved';
     admin_reply: string | null;
     photo_path: string | null;
+    image_url: string | null;
     created_at: string;
     updated_at: string;
 }
@@ -83,10 +84,11 @@ export default function CustomerServiceShow({ report }: { report: Report }) {
                             <p className="whitespace-pre-wrap">
                                 {report.content}
                             </p>
-                            {report.photo_path && (
+                            {/* Support both new Supabase URLs and old local paths */}
+                            {(report.image_url || report.photo_path) && (
                                 <div className="mt-4 overflow-hidden rounded-xl border border-[#e2e4e6]">
                                     <img
-                                        src={`/storage/${report.photo_path}`}
+                                        src={report.image_url ?? `/storage/${report.photo_path}`}
                                         alt="Bukti Laporan"
                                         className="max-h-[300px] w-auto object-contain"
                                     />

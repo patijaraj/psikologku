@@ -11,6 +11,7 @@ class Report extends Model
         'title',
         'content',
         'photo_path',
+        'image_url',
         'status',
         'admin_reply',
     ];

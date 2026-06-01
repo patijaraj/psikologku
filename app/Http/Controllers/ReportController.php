@@ -35,18 +35,15 @@ class ReportController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'photo' => 'nullable|image|max:2048',
+            'image_url' => 'nullable|string|max:2048',
         ]);
-
-        $photoPath = null;
-        if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('reports', 'public');
-        }
 
         $report = $request->user()->reports()->create([
             'title' => $validated['title'],
             'content' => $validated['content'],
-            'photo_path' => $photoPath,
+            'image_url' => ! empty($validated['image_url']) && str_starts_with($validated['image_url'], 'http')
+                ? $validated['image_url']
+                : null,
             'status' => 'pending',
         ]);
 

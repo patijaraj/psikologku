@@ -1,31 +1,73 @@
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { ArrowLeft, MessageSquare, UploadCloud, X } from 'lucide-react';
 import { useState, useRef } from 'react';
+import { router } from '@inertiajs/react';
 import { MiniFooter } from '@/components/mini-footer';
+import { Spinner } from '@/components/ui/spinner';
+import { supabase } from '@/lib/supabase';
 
 export default function CustomerService() {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        title: '',
-        content: '',
-        photo: null as File | null,
-    });
+    const { auth } = usePage().props as any;
 
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+    const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+    const [isUploading, setIsUploading] = useState(false);
+    const [uploadError, setUploadError] = useState<string | null>(null);
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState<Record<string, string>>({});
+
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+        if (!file) return;
 
-        if (file) {
-            setData('photo', file);
-            setPreviewUrl(URL.createObjectURL(file));
+        if (!file.type.startsWith('image/')) {
+            setUploadError('File harus berupa gambar.');
+            return;
+        }
+        if (file.size > 2 * 1024 * 1024) {
+            setUploadError('Ukuran gambar maksimal 2MB.');
+            return;
+        }
+
+        setUploadError(null);
+        setIsUploading(true);
+
+        // Show local preview immediately
+        setPreviewUrl(URL.createObjectURL(file));
+
+        try {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `report-${auth.user?.id}-${Date.now()}.${fileExt}`;
+            const filePath = `reports/${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('avatars')
+                .upload(filePath, file, { cacheControl: '3600', upsert: true });
+
+            if (uploadError) throw uploadError;
+
+            const { data: { publicUrl } } = supabase.storage
+                .from('avatars')
+                .getPublicUrl(filePath);
+
+            setPhotoUrl(publicUrl);
+        } catch (err: any) {
+            console.error('Upload error:', err);
+            setUploadError(err.message || 'Gagal mengunggah foto.');
+            setPreviewUrl(null);
+        } finally {
+            setIsUploading(false);
         }
     };
 
     const removePhoto = () => {
-        setData('photo', null);
+        setPhotoUrl(null);
         setPreviewUrl(null);
-
+        setUploadError(null);
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
         }
@@ -33,11 +75,34 @@ export default function CustomerService() {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/customer-service', {
-            forceFormData: true,
+        setErrors({});
+
+        if (!title.trim()) {
+            setErrors({ title: 'Topik wajib diisi.' });
+            return;
+        }
+        if (!content.trim()) {
+            setErrors({ content: 'Detail keluhan wajib diisi.' });
+            return;
+        }
+
+        setProcessing(true);
+
+        router.post('/customer-service', {
+            title,
+            content,
+            image_url: photoUrl ?? '',
+        }, {
             onSuccess: () => {
-                reset();
+                setTitle('');
+                setContent('');
                 setPreviewUrl(null);
+                setPhotoUrl(null);
+                setProcessing(false);
+            },
+            onError: (errs) => {
+                setErrors(errs as Record<string, string>);
+                setProcessing(false);
             },
         });
     };
@@ -86,10 +151,8 @@ export default function CustomerService() {
                                 type="text"
                                 className="w-full rounded-xl border border-[#e2e4e6] bg-[#f7f9fb] px-4 py-3.5 text-[15px] font-medium text-[#191c1e] transition-colors placeholder:font-normal placeholder:text-[#a0a5b1] focus:border-[#1464BC] focus:bg-white focus:ring-1 focus:ring-[#1464BC] focus:outline-none"
                                 placeholder="Contoh: Kendala saat sesi chat"
-                                value={data.title}
-                                onChange={(e) =>
-                                    setData('title', e.target.value)
-                                }
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
                             />
                             {errors.title && (
                                 <span className="text-xs font-semibold text-red-500">
@@ -110,10 +173,8 @@ export default function CustomerService() {
                                 rows={5}
                                 className="w-full resize-y rounded-xl border border-[#e2e4e6] bg-[#f7f9fb] px-4 py-3.5 text-[15px] font-medium text-[#191c1e] transition-colors placeholder:font-normal placeholder:text-[#a0a5b1] focus:border-[#1464BC] focus:bg-white focus:ring-1 focus:ring-[#1464BC] focus:outline-none"
                                 placeholder="Ceritakan detail masalah yang Anda alami..."
-                                value={data.content}
-                                onChange={(e) =>
-                                    setData('content', e.target.value)
-                                }
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
                             />
                             {errors.content && (
                                 <span className="text-xs font-semibold text-red-500">
@@ -131,12 +192,12 @@ export default function CustomerService() {
                             </label>
 
                             {!previewUrl ? (
-                                <label className="group flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#e2e4e6] bg-[#f7f9fb] py-8 transition-colors hover:border-[#1464BC] hover:bg-[#eef5fe]">
+                                <label className={`group flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#e2e4e6] bg-[#f7f9fb] py-8 transition-colors ${isUploading ? 'cursor-not-allowed opacity-70' : 'hover:border-[#1464BC] hover:bg-[#eef5fe]'}`}>
                                     <div className="flex size-12 items-center justify-center rounded-full bg-white text-[#717783] shadow-sm transition-colors group-hover:text-[#1464BC]">
-                                        <UploadCloud className="h-5 w-5" />
+                                        {isUploading ? <Spinner className="h-5 w-5" /> : <UploadCloud className="h-5 w-5" />}
                                     </div>
                                     <span className="mt-3 text-[14px] font-semibold text-[#191c1e]">
-                                        Klik untuk mengunggah foto
+                                        {isUploading ? 'Mengunggah...' : 'Klik untuk mengunggah foto'}
                                     </span>
                                     <span className="mt-1 text-[13px] text-[#717783]">
                                         Format JPG/PNG, Maks. 2MB
@@ -146,6 +207,7 @@ export default function CustomerService() {
                                         type="file"
                                         accept="image/*"
                                         className="hidden"
+                                        disabled={isUploading}
                                         onChange={handlePhotoChange}
                                     />
                                 </label>
@@ -156,20 +218,27 @@ export default function CustomerService() {
                                         alt="Preview"
                                         className="h-48 w-full object-cover sm:h-64"
                                     />
-                                    <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity hover:opacity-100">
-                                        <button
-                                            type="button"
-                                            onClick={removePhoto}
-                                            className="flex cursor-pointer items-center gap-2 rounded-lg bg-red-500 px-4 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-red-600"
-                                        >
-                                            <X className="h-4 w-4" /> Hapus
-                                        </button>
-                                    </div>
+                                    {isUploading && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                                            <Spinner className="h-8 w-8 text-white" />
+                                        </div>
+                                    )}
+                                    {!isUploading && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity hover:opacity-100">
+                                            <button
+                                                type="button"
+                                                onClick={removePhoto}
+                                                className="flex cursor-pointer items-center gap-2 rounded-lg bg-red-500 px-4 py-2 text-sm font-bold text-white shadow-sm transition-colors hover:bg-red-600"
+                                            >
+                                                <X className="h-4 w-4" /> Hapus
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             )}
-                            {errors.photo && (
+                            {uploadError && (
                                 <span className="text-xs font-semibold text-red-500">
-                                    {errors.photo}
+                                    {uploadError}
                                 </span>
                             )}
                         </div>
@@ -177,10 +246,10 @@ export default function CustomerService() {
                         <div className="mt-2">
                             <button
                                 type="submit"
-                                disabled={processing}
+                                disabled={processing || isUploading}
                                 className="w-full rounded-xl bg-[#1464BC] px-6 py-4 text-[15px] font-bold text-white shadow-sm transition-colors hover:bg-[#104b8d] disabled:cursor-not-allowed disabled:opacity-70"
                             >
-                                {processing ? 'Mengirim...' : 'Kirim Laporan'}
+                                {processing ? 'Mengirim...' : isUploading ? 'Tunggu, foto sedang diunggah...' : 'Kirim Laporan'}
                             </button>
                         </div>
                     </form>

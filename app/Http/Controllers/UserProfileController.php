@@ -25,7 +25,7 @@ class UserProfileController extends Controller
             'gender' => ['required', 'string', 'max:255'],
             'birthplace' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string'],
-            'photo_url' => ['nullable', 'string', 'url'],
+            'photo_url' => ['nullable', 'string', 'max:2048'],
         ]);
 
         $user = $request->user();
@@ -39,9 +39,10 @@ class UserProfileController extends Controller
             'address' => $validated['address'],
         ];
 
-        // Only update photo_url when a new URL is provided from Supabase
-        if (! empty($validated['photo_url'])) {
-            $updateData['photo_url'] = $validated['photo_url'];
+        // Only update photo_url when a new Supabase URL is provided
+        $photoUrl = $validated['photo_url'] ?? null;
+        if (! empty($photoUrl) && str_starts_with($photoUrl, 'http')) {
+            $updateData['photo_url'] = $photoUrl;
         }
 
         $user->forceFill($updateData)->save();

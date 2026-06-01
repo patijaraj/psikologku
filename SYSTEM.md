@@ -284,7 +284,24 @@ Semua perubahan dicatat di sini dengan format `[YYYY-MM-DD] Jenis: Deskripsi`.
 
 ---
 
-### [2026-06-01] — Sesi Development Terbaru
+### [2026-06-01] — Fix Photo URL & Customer Service Storage
+
+#### fix: Profile picture user tidak tampil setelah diubah
+- **File berubah:** `app/Http/Controllers/UserProfileController.php`
+- **Masalah:** Validasi `'url'` di Laravel menolak URL Supabase dalam beberapa kasus. Selain itu, jika user tidak upload foto baru, path lokal lama (`/storage/...`) dikirim sebagai `photo_url` dan gagal validasi, menyebabkan `photo_url` tidak tersimpan sama sekali.
+- **Solusi:** Ganti validasi `'url'` ke `'string'`. Tambahkan pengecekan `str_starts_with($photoUrl, 'http')` — hanya update `photo_url` jika URL baru adalah Supabase URL, bukan path lokal.
+
+#### fix: Foto laporan Customer Service disimpan ke Supabase (bukan local disk)
+- **File berubah:** `resources/js/pages/customer-service/create.tsx`, `app/Http/Controllers/ReportController.php`, `app/Models/Report.php`, `resources/js/pages/customer-service/show.tsx`
+- **Migrasi baru:** `add_image_url_to_reports_table` — tambah kolom `image_url` nullable ke tabel `reports`
+- **Masalah:** Foto bukti laporan CS disimpan ke disk lokal Railway (ephemeral) — hilang saat restart/redeploy.
+- **Solusi:** Upload foto dari browser langsung ke Supabase Storage (bucket `avatars`, folder `reports/`). Backend terima URL string di kolom `image_url`. Backward-compatible: halaman show mendukung `image_url` (baru) dengan fallback ke `photo_path` (lama).
+- **UX tambahan:** Spinner saat upload, tombol kirim disabled selama upload berlangsung.
+
+---
+
+### [2026-06-01] — Sesi Development Terdahulu
+
 
 #### fix: Upload foto user ke Supabase (bukan local disk)
 - **File berubah:** `resources/js/pages/profile/edit.tsx`, `app/Http/Controllers/UserProfileController.php`
