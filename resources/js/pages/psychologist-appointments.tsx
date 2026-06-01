@@ -22,6 +22,7 @@ type Appointment = {
     id: number;
     patient_name: string;
     patient_email?: string | null;
+    patient_photo_url?: string | null;
     date: string;
     time: string;
     status: string;
@@ -405,6 +406,7 @@ function AppointmentRow({ appointment }: { appointment: Appointment }) {
             <div className="flex items-center gap-4">
                 <InitialsAvatar
                     name={appointment.patient_name}
+                    photoUrl={appointment.patient_photo_url}
                     className="size-12 rounded-2xl"
                 />
                 <div>

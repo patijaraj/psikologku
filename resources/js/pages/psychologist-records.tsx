@@ -25,6 +25,7 @@ type RecordType = {
     id: number;
     patient_name: string;
     patient_email?: string | null;
+    patient_photo_url?: string | null;
     session_date: string;
     record_summary?: string | null;
     diagnostic_focus?: string | null;
@@ -249,6 +250,7 @@ export default function PsychologistRecords({
                                         <div className="flex items-center gap-4">
                                             <InitialsAvatar
                                                 name={record.patient_name}
+                                                photoUrl={record.patient_photo_url}
                                                 className="size-10 rounded-xl"
                                             />
                                             <div>
@@ -304,6 +306,7 @@ export default function PsychologistRecords({
                                         <div className="flex items-center gap-4">
                                             <InitialsAvatar
                                                 name={record.patient_name}
+                                                photoUrl={record.patient_photo_url}
                                                 className="size-10 rounded-xl"
                                             />
                                             <div>

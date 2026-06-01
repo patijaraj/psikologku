@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Notifications\SessionStartedNotification;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Notifications\SessionStartedNotification;
 
 class PsychologistAppointmentController extends Controller
 {
@@ -23,7 +23,7 @@ class PsychologistAppointmentController extends Controller
         abort_unless($profile, 404);
 
         $appointments = $profile->appointments()
-            ->with(['user:id,name,email', 'schedule', 'transaction'])
+            ->with(['user:id,name,email,photo_url', 'schedule', 'transaction'])
             ->whereHas('transaction', fn ($query) => $query->where('status', 'paid'))
             ->latest('appointment_date')
             ->get()
@@ -42,6 +42,7 @@ class PsychologistAppointmentController extends Controller
                     'id' => $appointment->id,
                     'patient_name' => $appointment->user?->name ?? 'Pasien',
                     'patient_email' => $appointment->user?->email,
+                    'patient_photo_url' => $appointment->user?->photo_url,
                     'date' => $appointment->appointment_date?->format('Y-m-d'),
                     'time' => $appointment->start_time && $appointment->end_time
                         ? $appointment->start_time->format('H:i').' - '.$appointment->end_time->format('H:i').' WIB'
@@ -51,7 +52,7 @@ class PsychologistAppointmentController extends Controller
                     'amount' => $appointment->transaction ? (float) $appointment->transaction->gross_amount : 0,
                     'can_complete' => $appointment->transaction?->status === 'paid'
                         && $isTimePassed
-                        && !in_array($appointment->status, ['completed', 'cancelled', 'failed'], true),
+                        && ! in_array($appointment->status, ['completed', 'cancelled', 'failed'], true),
                 ];
             });
 
@@ -74,14 +75,14 @@ class PsychologistAppointmentController extends Controller
 
         abort_if(in_array($appointment->status, ['cancelled', 'failed'], true), 422);
         abort_unless($appointment->transaction?->status === 'paid', 422);
-        
+
         $appointmentEnd = $appointment->appointment_date && $appointment->end_time
             ? CarbonImmutable::parse(
                 $appointment->appointment_date->format('Y-m-d').' '.$appointment->end_time->format('H:i:s'),
                 'Asia/Jakarta',
             )
             : null;
-            
+
         abort_unless($appointmentEnd && $appointmentEnd->isPast(), 422);
 
         $appointment->update([

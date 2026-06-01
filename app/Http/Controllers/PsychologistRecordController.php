@@ -20,7 +20,7 @@ class PsychologistRecordController extends Controller
         abort_unless($profile, 404);
 
         $appointments = $profile->appointments()
-            ->with(['user:id,name,email'])
+            ->with(['user:id,name,email,photo_url'])
             ->where('status', 'completed')
             ->latest('appointment_date')
             ->get()
@@ -29,6 +29,7 @@ class PsychologistRecordController extends Controller
                     'id' => $appointment->id,
                     'patient_name' => $appointment->user?->name ?? 'Pasien',
                     'patient_email' => $appointment->user?->email,
+                    'patient_photo_url' => $appointment->user?->photo_url,
                     'session_date' => $appointment->appointment_date?->format('Y-m-d') ?? '-',
                     'record_summary' => $appointment->record_summary,
                     'patient_state' => $appointment->patient_state ?? [],

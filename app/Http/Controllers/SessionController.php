@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -24,7 +25,7 @@ class SessionController extends Controller
             }
 
             $appointments = $profile->appointments()
-                ->with(['transaction', 'user:id,name,email'])
+                ->with(['transaction', 'user:id,name,email,photo_url'])
                 ->whereNotIn('status', ['cancelled', 'failed'])
                 ->whereHas('transaction', fn ($query) => $query->where('status', 'paid'))
                 ->orderBy('appointment_date')
@@ -34,8 +35,9 @@ class SessionController extends Controller
             $grouped = $appointments->groupBy('user_id');
             $chatContacts = $grouped->map(function ($userAppointments) {
                 $activeAppt = $this->findClosestAppointment($userAppointments);
-                return $activeAppt && $activeAppt->user 
-                    ? $this->serializeChatContact($activeAppt, $activeAppt->user, true) 
+
+                return $activeAppt && $activeAppt->user
+                    ? $this->serializeChatContact($activeAppt, $activeAppt->user, true)
                     : null;
             })->filter()->values();
 
@@ -46,7 +48,7 @@ class SessionController extends Controller
         }
 
         $appointments = $user->appointments()
-            ->with(['transaction', 'psychologist.user:id,name,email'])
+            ->with(['transaction', 'psychologist.user:id,name,email,photo_url'])
             ->whereNotIn('status', ['cancelled', 'failed'])
             ->whereHas('transaction', fn ($query) => $query->where('status', 'paid'))
             ->orderBy('appointment_date')
@@ -56,8 +58,9 @@ class SessionController extends Controller
         $grouped = $appointments->groupBy('psychologist_id');
         $chatContacts = $grouped->map(function ($psyAppointments) {
             $activeAppt = $this->findClosestAppointment($psyAppointments);
-            return $activeAppt && $activeAppt->psychologist?->user 
-                ? $this->serializeChatContact($activeAppt, $activeAppt->psychologist->user, false) 
+
+            return $activeAppt && $activeAppt->psychologist?->user
+                ? $this->serializeChatContact($activeAppt, $activeAppt->psychologist->user, false)
                 : null;
         })->filter()->values();
 
@@ -67,24 +70,33 @@ class SessionController extends Controller
         ]);
     }
 
-    private function findClosestAppointment(\Illuminate\Support\Collection $appointments)
+    private function findClosestAppointment(Collection $appointments)
     {
         $ongoing = $appointments->firstWhere('status', 'ongoing');
-        if ($ongoing) return $ongoing;
+        if ($ongoing) {
+            return $ongoing;
+        }
 
         $due = $appointments->first(function ($appt) {
             $status = $this->appointmentStatus($appt);
+
             return in_array($status, ['due', 'overdue']) && $appt->status !== 'completed';
         });
-        if ($due) return $due;
+        if ($due) {
+            return $due;
+        }
 
         $upcoming = $appointments->firstWhere('status', 'upcoming');
-        if ($upcoming) return $upcoming;
+        if ($upcoming) {
+            return $upcoming;
+        }
 
         $completed = $appointments->where('status', 'completed')->sortByDesc(function ($appt) {
-            return $appt->appointment_date . ' ' . $appt->start_time;
+            return $appt->appointment_date.' '.$appt->start_time;
         })->first();
-        if ($completed) return $completed;
+        if ($completed) {
+            return $completed;
+        }
 
         return $appointments->first();
     }
@@ -114,7 +126,7 @@ class SessionController extends Controller
         $time = $appointment->start_time && $appointment->end_time
             ? $appointment->start_time->format('H:i').' - '.$appointment->end_time->format('H:i').' WIB'
             : '--:-- WIB';
-        
+
         $isCompleted = $appointment->status === 'completed';
         $isOngoing = $appointment->status === 'ongoing';
         $displayStatus = $this->appointmentStatus($appointment);
@@ -138,7 +150,9 @@ class SessionController extends Controller
             'payment_status' => $appointment->transaction?->status ?? 'unpaid',
             'date' => $appointment->appointment_date?->format('Y-m-d'),
             'time' => $time,
-            'photo_url' => ! $isPsychologist ? $appointment->psychologist?->photo_url : null,
+            'photo_url' => $isPsychologist
+                ? $counterpart->photo_url  // patient's own photo_url from users table
+                : $appointment->psychologist?->photo_url, // psychologist's photo from psychologist_profiles
             'preview' => $preview,
             'online' => true,
             'can_chat' => $isOngoing,
