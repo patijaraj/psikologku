@@ -423,16 +423,17 @@ export default function Welcome({ canRegister = true }: Props) {
     );
 }
 
-function FooterColumn({ title, links }: { title: string; links: { label: string; href: string }[] }) {
+function FooterColumn({ title, links }: { title: string; links: { label: string; href: any }[] }) {
     return (
         <div className="flex flex-col gap-4">
             <h4 className="text-base font-bold">{title}</h4>
             {links.map((link) => {
-                if (link.href.startsWith('http') || link.href.startsWith('mailto:') || link.href === '#') {
+                const hrefString = String(link.href || '');
+                if (hrefString.startsWith('http') || hrefString.startsWith('mailto:') || hrefString === '#') {
                     return (
                         <a
                             key={link.label}
-                            href={link.href}
+                            href={hrefString}
                             className="text-sm text-gray-400 transition-colors hover:text-white"
                         >
                             {link.label}
