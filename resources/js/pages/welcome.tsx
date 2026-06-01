@@ -17,6 +17,12 @@ import {
     Smile,
     Star,
     UserCheck,
+    Briefcase,
+    ShieldAlert,
+    TrendingUp,
+    Baby,
+    Puzzle,
+    CloudLightning,
 } from 'lucide-react';
 import { dashboard, login, register } from '@/routes';
 
@@ -37,14 +43,19 @@ const heroImage =
 const mobileUserImage =
     'https://images.unsplash.com/photo-1775479367275-424c38c3df6f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMHdvbWFuJTIwc21pbGluZyUyMHBob25lfGVufDF8fHx8MTc3ODUxMzEzOXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral';
 
-const counselingTopics = [
-    { name: 'Stres', icon: Brain },
-    { name: 'Kecemasan', icon: Activity },
+const specializations = [
+    { name: 'Stress', icon: Brain },
+    { name: 'Gangguan Kecemasan', icon: Activity },
     { name: 'Depresi', icon: CloudRain },
-    { name: 'Keluarga', icon: Users },
+    { name: 'Keluarga dan Hubungan', icon: HeartHandshake },
     { name: 'Trauma', icon: AlertCircle },
-    { name: 'Hubungan', icon: HeartHandshake },
-    { name: 'Lainnya', icon: LayoutGrid },
+    { name: 'Gangguan Mood', icon: CloudLightning },
+    { name: 'Pekerjaan dan Karir', icon: Briefcase },
+    { name: 'Kecanduan', icon: ShieldAlert },
+    { name: 'Pengembangan Diri', icon: TrendingUp },
+    { name: 'Parenting dan Anak', icon: Baby },
+    { name: 'Gangguan Kepribadian', icon: Puzzle },
+    { name: 'Identitas Seksual', icon: Users },
 ];
 
 const mainServices: Service[] = [
@@ -218,23 +229,26 @@ export default function Welcome({ canRegister = true }: Props) {
                                     </p>
                                 </div>
 
-                                <div className="mt-4 flex flex-wrap gap-4">
-                                    {counselingTopics.map((topic) => {
-                                        const Icon = topic.icon;
-                                        return (
-                                            <button
-                                                key={topic.name}
-                                                className="group flex h-[100px] w-[100px] flex-col items-center justify-center gap-3 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:border-blue-200 hover:shadow-md hover:shadow-blue-900/5"
-                                            >
-                                                <div className="flex size-10 items-center justify-center rounded-full bg-blue-50 text-[#1464BC] transition-transform group-hover:scale-110">
-                                                    <Icon className="h-5 w-5" />
-                                                </div>
-                                                <span className="text-center text-[13px] font-semibold text-gray-700">
-                                                    {topic.name}
-                                                </span>
-                                            </button>
-                                        );
-                                    })}
+                                <div>
+                                    <h3 className="mb-3 text-sm font-bold text-gray-900">Spesialisasi</h3>
+                                    <div className="flex flex-wrap gap-3">
+                                        {specializations.map((topic) => {
+                                            const Icon = topic.icon;
+                                            return (
+                                                <button
+                                                    key={topic.name}
+                                                    className="group flex items-center gap-3 rounded-xl border border-gray-200 bg-white p-2 pr-4 shadow-sm transition-all hover:border-blue-200 hover:shadow-md hover:shadow-blue-900/5"
+                                                >
+                                                    <div className="flex size-8 items-center justify-center rounded-lg bg-blue-50 text-[#1464BC] transition-transform group-hover:scale-110">
+                                                        <Icon className="h-4 w-4" />
+                                                    </div>
+                                                    <span className="text-[13px] font-semibold text-gray-700">
+                                                        {topic.name}
+                                                    </span>
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
 
                                 <div className="flex flex-wrap items-center gap-6">
