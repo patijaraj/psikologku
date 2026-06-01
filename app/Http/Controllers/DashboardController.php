@@ -26,7 +26,7 @@ class DashboardController extends Controller
             $profile = $user->psychologistProfile()
                 ->with([
                     'appointments' => fn ($query) => $query
-                        ->with(['user:id,name,email', 'transaction'])
+                        ->with(['user:id,name,email,photo_url', 'transaction'])
                         ->whereNotIn('status', ['cancelled', 'failed'])
                         ->whereHas('transaction', fn ($query) => $query->where('status', 'paid'))
                         ->where(function ($q) use ($localToday) {
@@ -65,6 +65,7 @@ class DashboardController extends Controller
                         'id' => $appointment->id,
                         'patient_name' => $appointment->user?->name ?? 'Pasien',
                         'patient_email' => $appointment->user?->email,
+                        'patient_photo_url' => $appointment->user?->photo_url,
                         'status' => $isOverdue ? 'overdue' : $appointment->status,
                         'amount' => $appointment->transaction ? ((float) $appointment->transaction->gross_amount) : 0,
                         'time' => $appointment->start_time->format('H:i').' - '.$appointment->end_time->format('H:i'),

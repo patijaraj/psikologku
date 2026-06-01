@@ -32,6 +32,7 @@ type TodaySession = {
     id: number;
     patient_name: string;
     patient_email?: string | null;
+    patient_photo_url?: string | null;
     status: string;
     amount: number;
     time?: string | null;
@@ -543,6 +544,7 @@ function SessionRow({ session }: { session: TodaySession }) {
             <div className="flex items-center gap-4">
                 <InitialsAvatar
                     name={session.patient_name}
+                    photoUrl={session.patient_photo_url}
                     className="size-12 rounded-2xl"
                 />
                 <div>
