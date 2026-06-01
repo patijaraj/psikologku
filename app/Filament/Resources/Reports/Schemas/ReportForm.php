@@ -44,6 +44,10 @@ class ReportForm
                     ->required()
                     ->default('pending')
                     ->label('Status'),
+                Textarea::make('admin_reply')
+                    ->columnSpanFull()
+                    ->label('Balasan Admin')
+                    ->placeholder('Ketik balasan Anda di sini...'),
             ]);
     }
 }

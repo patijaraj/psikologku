@@ -88,8 +88,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('records/{appointment}/pdf', [UserRecordController::class, 'downloadPdf'])->name('records.pdf');
 
     // Customer Service (Reports)
-    Route::get('customer-service', [ReportController::class, 'create'])->name('reports.create');
+    Route::get('customer-service', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('customer-service/create', [ReportController::class, 'create'])->name('reports.create');
     Route::post('customer-service', [ReportController::class, 'store'])->name('reports.store');
+    Route::get('customer-service/{report}', [ReportController::class, 'show'])->name('reports.show');
 });
 
 require __DIR__.'/settings.php';

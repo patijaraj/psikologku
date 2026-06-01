@@ -12,6 +12,7 @@ class Report extends Model
         'content',
         'photo_path',
         'status',
+        'admin_reply',
     ];
 
     public function user()

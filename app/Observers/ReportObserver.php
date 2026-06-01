@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Report;
+use App\Notifications\ReportReplyNotification;
 use App\Notifications\ReportStatusUpdatedNotification;
 
 class ReportObserver
@@ -22,6 +23,10 @@ class ReportObserver
     {
         if ($report->wasChanged('status')) {
             $report->user->notify(new ReportStatusUpdatedNotification($report));
+        }
+
+        if ($report->wasChanged('admin_reply') && $report->admin_reply !== null) {
+            $report->user->notify(new ReportReplyNotification($report));
         }
     }
 
