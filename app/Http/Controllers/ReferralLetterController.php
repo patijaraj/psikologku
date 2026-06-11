@@ -40,6 +40,7 @@ class ReferralLetterController extends Controller
 
     public function downloadPdf(Appointment $appointment)
     {
+        ini_set('memory_limit', '256M');
         // Pastikan user punya akses ke appointment ini
         if (auth()->id() !== $appointment->psychologist?->user_id && auth()->id() !== $appointment->user_id) {
             abort(403);
