@@ -142,7 +142,7 @@
                 <div class="date-text">Jakarta, {{ now()->format('d F Y') }}</div>
                 <div class="signer-title">Mengetahui,</div>
                 @php
-                    $sigPath = $appointment->psychologist->signature_path;
+                    $sigPath = $appointment->psychologist?->signature_path;
                     $sigSrc = null;
                     if ($sigPath) {
                         try {
@@ -155,7 +155,8 @@
                             } else {
                                 $path = public_path('storage/' . $sigPath);
                                 if (file_exists($path)) {
-                                    $mime = mime_content_type($path);
+                                    $ext = pathinfo($path, PATHINFO_EXTENSION);
+                                    $mime = $ext ? 'image/' . ($ext === 'jpg' ? 'jpeg' : $ext) : 'image/png';
                                     $sigSrc = 'data:' . $mime . ';base64,' . base64_encode(file_get_contents($path));
                                 }
                             }
@@ -173,14 +174,14 @@
                     <div style="height: 80px; margin: 10px 0;"></div>
                 @endif
                 
-                @if(($appointment->psychologist->profession ?? 'Psikolog Klinis') == 'Psikiater')
-                    <div class="signer-name">({{ $appointment->psychologist->user->name }}, Sp.KJ)</div>
-                    <div class="signer-license">STR : {{ $appointment->psychologist->str_number ?? '-' }}</div>
-                    <div class="signer-license">SIP : {{ $appointment->psychologist->sipp ?? '-' }}</div>
+                @if(($appointment->psychologist?->profession ?? 'Psikolog Klinis') == 'Psikiater')
+                    <div class="signer-name">({{ $appointment->psychologist?->user?->name ?? '-' }}, Sp.KJ)</div>
+                    <div class="signer-license">STR : {{ $appointment->psychologist?->str_number ?? '-' }}</div>
+                    <div class="signer-license">SIP : {{ $appointment->psychologist?->sipp ?? '-' }}</div>
                 @else
-                    <div class="signer-name">({{ $appointment->psychologist->user->name }})</div>
-                    <div class="signer-license">STRPK : {{ $appointment->psychologist->str_number ?? '-' }}</div>
-                    <div class="signer-license">SIPPK : {{ $appointment->psychologist->sippk ?? '-' }}</div>
+                    <div class="signer-name">({{ $appointment->psychologist?->user?->name ?? '-' }})</div>
+                    <div class="signer-license">STRPK : {{ $appointment->psychologist?->str_number ?? '-' }}</div>
+                    <div class="signer-license">SIPPK : {{ $appointment->psychologist?->sippk ?? '-' }}</div>
                 @endif
             </div>
         </div>
