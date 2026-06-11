@@ -71,7 +71,7 @@
     <div class="header">
         <div class="logo-container">
             <div class="logo-box">
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTAiPjwvY2lyY2xlPjxwYXRoIGQ9Ik04IDE0czEuNSAyIDQgMiA0LTIgNC0yIj48L3BhdGg+PGxpbmUgeDE9IjkiIHgyPSI5LjAxIiB5MT0iOSIgeTI9IjkiPjwvbGluZT48bGluZSB4MT0iMTUiIHgyPSIxNS4wMSIgeTE9IjkiIHkyPSI5Ij48L2xpbmU+PC9zdmc+" style="width: 20px; height: 20px; vertical-align: middle; margin-top: 6px;">
+                P
             </div>
             <div class="logo-text">Psikologku</div>
         </div>
@@ -147,7 +147,7 @@
                     if ($sigPath) {
                         try {
                             if (str_starts_with($sigPath, 'http')) {
-                                $response = \Illuminate\Support\Facades\Http::get($sigPath);
+                                $response = \Illuminate\Support\Facades\Http::timeout(5)->get($sigPath);
                                 if ($response->successful()) {
                                     $mime = $response->header('Content-Type') ?? 'image/png';
                                     $sigSrc = 'data:' . $mime . ';base64,' . base64_encode($response->body());

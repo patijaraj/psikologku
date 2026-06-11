@@ -11,7 +11,7 @@ class ReferralLetterController extends Controller
     public function show(Appointment $appointment)
     {
         // Pastikan user punya akses ke appointment ini (sebagai psikolog atau pasien)
-        if (auth()->id() !== $appointment->psychologist->user_id && auth()->id() !== $appointment->user_id) {
+        if (auth()->id() !== $appointment->psychologist?->user_id && auth()->id() !== $appointment->user_id) {
             abort(403);
         }
 
@@ -21,7 +21,7 @@ class ReferralLetterController extends Controller
     public function store(Request $request, Appointment $appointment)
     {
         // Hanya psikolog yang bisa membuat
-        if (auth()->id() !== $appointment->psychologist->user_id) {
+        if (auth()->id() !== $appointment->psychologist?->user_id) {
             abort(403);
         }
 
@@ -41,7 +41,7 @@ class ReferralLetterController extends Controller
     public function downloadPdf(Appointment $appointment)
     {
         // Pastikan user punya akses ke appointment ini
-        if (auth()->id() !== $appointment->psychologist->user_id && auth()->id() !== $appointment->user_id) {
+        if (auth()->id() !== $appointment->psychologist?->user_id && auth()->id() !== $appointment->user_id) {
             abort(403);
         }
 
